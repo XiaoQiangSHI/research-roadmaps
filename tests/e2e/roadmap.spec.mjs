@@ -81,9 +81,7 @@ test('homepage and empty domains expose first-paper contribution entry points', 
   await expect(page.getByRole('heading', { name: '横向与应用领域' })).toBeVisible();
   await page.getByRole('link', { name: /计算机视觉研究路线图/ }).click();
   await expect(page.getByText('路线骨架已经建立，等待第一篇论文')).toBeVisible();
-  await expect(page.getByRole('heading', { name: '这个领域收录什么' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '收录', exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '不收录', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '这个领域收录什么' })).toHaveCount(0);
   await expect(page.locator('.contribute-button')).toHaveAttribute('href', '/contribute/?domain=computer-vision');
   await expect(page.getByRole('link', { name: '贡献第一篇论文' })).toHaveAttribute('href', '/contribute/?domain=computer-vision');
 });
