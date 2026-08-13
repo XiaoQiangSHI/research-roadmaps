@@ -21,11 +21,6 @@ const base = import.meta.env.BASE_URL;
           </dl>
         </a>
       ))}
-      <a class="roadmap-card contribute" href={`${base}contribute/`}>
-        <span>CONTRIBUTE</span>
-        <h2>选择领域并贡献论文</h2>
-        <p>每个领域都接受论文贡献。使用网页向导填写信息、生成 YAML，并直接在 GitHub 发起贡献。</p>
-      </a>
     </section>
   </main>
 </BaseLayout>
@@ -41,6 +36,5 @@ const base = import.meta.env.BASE_URL;
   dl div { display: flex; gap: 6px; }
   dt { color: var(--muted); }
   dd { margin: 0; font-weight: 800; }
-  .contribute { border-style: dashed; }
   @media (max-width: 760px) { .roadmap-grid { grid-template-columns: 1fr; padding-top: 32px; } }
 </style>
