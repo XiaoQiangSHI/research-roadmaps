@@ -130,3 +130,7 @@ datasets/_shared/institutions.yaml  # 各领域共用的机构名称与徽标
 - 使用或改编路线数据时，请注明项目名称、仓库链接，并标记你的修改。
 
 如果这个项目帮助了你的研究或学习，欢迎 Star、分享、提交论文或共同维护一个新领域。
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=XiaoQiangSHI/research-roadmaps&type=Date)](https://www.star-history.com/#XiaoQiangSHI/research-roadmaps&Date)
