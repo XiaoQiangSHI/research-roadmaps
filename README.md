@@ -25,7 +25,6 @@
 | 路线图 | 类型 | 内容 |
 | --- | --- | --- |
 | [具身智能论文发展路线图](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/embodied-ai/) | 完整领域 | 60 篇论文、7 条发展线路、31 家机构 |
-| [视觉—语言—动作模型专题](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/vla/) | 专题视图 | 从具身智能数据动态提取 VLA 与世界模型线路 |
 
 ## 这个项目与普通论文列表的区别
 

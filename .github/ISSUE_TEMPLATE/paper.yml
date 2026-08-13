@@ -32,7 +32,6 @@ body:
       label: 建议加入的路线图
       options:
         - 具身智能
-        - 视觉—语言—动作模型专题
         - 尚未建立的新领域
         - 不确定
     validations:

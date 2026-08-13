@@ -14,13 +14,6 @@ test('renders, filters, and opens paper details', async ({ page }) => {
   await expect(page.getByRole('dialog').getByRole('link', { name: '打开论文 ↗' })).toHaveAttribute('href', 'https://arxiv.org/abs/2303.02506');
 });
 
-test('supports a focused view without duplicating data', async ({ page }) => {
-  await page.goto('/roadmaps/vla/');
-  await expect(page.getByRole('heading', { name: '视觉—语言—动作模型专题' })).toBeVisible();
-  await expect(page.locator('[data-track]')).toHaveCount(2);
-  await expect(page.locator('[data-paper-node]')).toHaveCount(24);
-});
-
 test('mobile layout has no horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/roadmaps/embodied-ai/');
