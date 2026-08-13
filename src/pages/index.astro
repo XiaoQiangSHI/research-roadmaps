@@ -8,11 +8,6 @@ const base = import.meta.env.BASE_URL;
 
 <BaseLayout title="Open Research Roadmaps" description="开放、可审查、数据驱动的研究发展路线图库。">
   <main class="shell">
-    <header class="hero">
-      <p>OPEN DATA · REVIEWABLE CLASSIFICATION</p>
-      <h1>把研究演进<br />画成可维护的路线图</h1>
-      <div>用结构化数据记录论文、问题、解决方案、机构和归类依据；同一套渲染器服务完整领域与专题视图。</div>
-    </header>
     <section class="roadmap-grid" aria-label="路线图列表">
       {roadmaps.map((roadmap) => (
         <a class="roadmap-card" href={`${base}roadmaps/${roadmap.id}/`}>
@@ -36,11 +31,7 @@ const base = import.meta.env.BASE_URL;
 </BaseLayout>
 
 <style>
-  .hero { padding: 90px 0 48px; }
-  .hero > p { margin: 0 0 12px; color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
-  h1 { max-width: 980px; margin: 0; font-family: Georgia, "Songti SC", serif; font-size: clamp(45px, 7vw, 88px); font-weight: 500; line-height: 1.03; letter-spacing: -.04em; }
-  .hero > div { max-width: 760px; margin-top: 24px; color: var(--muted); font-size: 17px; line-height: 1.8; }
-  .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-bottom: 80px; }
+  .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 48px 0 80px; }
   .roadmap-card { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 78%, transparent); color: inherit; text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
   .roadmap-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(31, 39, 35, .09); }
   .roadmap-card > span { color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .12em; }
@@ -51,5 +42,5 @@ const base = import.meta.env.BASE_URL;
   dt { color: var(--muted); }
   dd { margin: 0; font-weight: 800; }
   .contribute { border-style: dashed; }
-  @media (max-width: 760px) { .hero { padding-top: 54px; } .roadmap-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .roadmap-grid { grid-template-columns: 1fr; padding-top: 32px; } }
 </style>
