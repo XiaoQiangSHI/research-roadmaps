@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import YAML from 'yaml';
+import { readStandalonePapers } from '../src/lib/data.ts';
 
 const roadmap = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/roadmap.yaml', import.meta.url), 'utf8'));
 const { papers } = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/papers.yaml', import.meta.url), 'utf8'));
@@ -25,4 +28,13 @@ test('every paper has a valid institution and source', () => {
 test('Prismer and AMAGO retain the reviewed institution attribution', () => {
   assert.deepEqual(papers.find((paper) => paper.id === 'prismer').institutions.primary, ['nvidia']);
   assert.deepEqual(papers.find((paper) => paper.id === 'amago').institutions.primary, ['ut-austin', 'nvidia']);
+});
+
+test('standalone paper files can be loaded without editing the aggregate file', async (context) => {
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'research-roadmaps-'));
+  context.after(() => fs.rm(directory, { recursive: true, force: true }));
+  await fs.mkdir(path.join(directory, 'papers'));
+  await fs.writeFile(path.join(directory, 'papers', 'example-paper.yaml'), YAML.stringify({ id: 'example-paper', title: 'Example Paper' }));
+
+  assert.deepEqual(await readStandalonePapers(directory), [{ id: 'example-paper', title: 'Example Paper' }]);
 });

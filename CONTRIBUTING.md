@@ -6,13 +6,17 @@
 
 | 你想做什么 | 推荐方式 |
 | --- | --- |
-| 推荐一篇论文 | 使用“推荐论文”Issue 模板 |
+| 推荐一篇论文 | 使用[网页贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/)，或“推荐论文”Issue 模板 |
 | 修正机构、日期、链接或文字 | 使用“数据纠错”Issue，或直接提交 PR |
 | 调整论文路线归属 | 提交 Issue 讨论，或在 PR 中给出明确理由 |
 | 新建一个研究领域 | 先使用“新领域提案”Issue 对齐范围，再提交数据 |
 | 改进页面、Schema 或工具 | 直接提交 PR，并说明行为变化 |
 
 Issue 入口：<https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose>
+
+网页贡献向导：<https://xiaoqiangshi.github.io/research-roadmaps/contribute/>
+
+网页向导会把每篇新论文保存为 `datasets/<domain>/papers/<paper-id>.yaml`。这种独立文件与领域原有的 `papers.yaml` 同时加载，减少合并冲突，也方便单独审核和回退。
 
 ## 开始之前
 

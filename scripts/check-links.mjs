@@ -16,6 +16,16 @@ for (const directory of directories) {
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
+  const standaloneDir = path.join(datasetsDir, directory.name, 'papers');
+  try {
+    const entries = await fs.readdir(standaloneDir, { withFileTypes: true });
+    for (const entry of entries.filter((item) => item.isFile() && /\.ya?ml$/i.test(item.name))) {
+      const paper = YAML.parse(await fs.readFile(path.join(standaloneDir, entry.name), 'utf8'));
+      for (const source of paper.sources || []) urls.add(source.url);
+    }
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
 }
 
 const failures = [];

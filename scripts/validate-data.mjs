@@ -22,6 +22,7 @@ const [roadmapSchema, papersSchema, institutionsSchema] = await Promise.all([
 const validators = {
   roadmap: ajv.compile(roadmapSchema),
   papers: ajv.compile(papersSchema),
+  paper: ajv.compile(papersSchema.$defs.paper),
   institutions: ajv.compile(institutionsSchema)
 };
 
@@ -31,11 +32,30 @@ const errors = [];
 const fullDatasets = new Map();
 const viewDatasets = [];
 
-function validateDocument(datasetId, kind, data) {
+function validateDocument(datasetId, kind, data, label = kind) {
   const valid = validators[kind](data);
   if (!valid) {
-    for (const error of validators[kind].errors || []) errors.push(`${datasetId}/${kind}: ${error.instancePath || '/'} ${error.message}`);
+    for (const error of validators[kind].errors || []) errors.push(`${datasetId}/${label}: ${error.instancePath || '/'} ${error.message}`);
   }
+}
+
+async function readStandalonePapers(directory, datasetId) {
+  const papersDir = path.join(directory, 'papers');
+  let entries;
+  try {
+    entries = await fs.readdir(papersDir, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+  const standalonePapers = [];
+  for (const entry of entries.filter((item) => item.isFile() && /\.ya?ml$/i.test(item.name)).sort((a, b) => a.name.localeCompare(b.name))) {
+    const paper = await readYaml(path.join(papersDir, entry.name));
+    validateDocument(datasetId, 'paper', paper, `papers/${entry.name}`);
+    if (paper.id && entry.name.replace(/\.ya?ml$/i, '') !== paper.id) errors.push(`${datasetId}/papers/${entry.name}: filename must match paper.id`);
+    standalonePapers.push(paper);
+  }
+  return standalonePapers;
 }
 
 function duplicates(values) {
@@ -53,22 +73,24 @@ for (const datasetId of datasetIds) {
     continue;
   }
 
-  const [papers, institutions] = await Promise.all([
+  const [papers, standalonePapers, institutions] = await Promise.all([
     readYaml(path.join(directory, 'papers.yaml')),
+    readStandalonePapers(directory, datasetId),
     readYaml(path.join(directory, 'institutions.yaml'))
   ]);
   validateDocument(datasetId, 'papers', papers);
   validateDocument(datasetId, 'institutions', institutions);
-  fullDatasets.set(datasetId, { roadmap, papers: papers.papers || [], institutions: institutions.institutions || [] });
+  const allPapers = [...(papers.papers || []), ...standalonePapers];
+  fullDatasets.set(datasetId, { roadmap, papers: allPapers, institutions: institutions.institutions || [] });
 
-  for (const duplicate of duplicates((papers.papers || []).map((paper) => paper.id))) errors.push(`${datasetId}: duplicate paper id ${duplicate}`);
-  for (const duplicate of duplicates((papers.papers || []).map((paper) => paper.arxiv))) errors.push(`${datasetId}: duplicate arXiv id ${duplicate}`);
+  for (const duplicate of duplicates(allPapers.map((paper) => paper.id))) errors.push(`${datasetId}: duplicate paper id ${duplicate}`);
+  for (const duplicate of duplicates(allPapers.map((paper) => paper.arxiv))) errors.push(`${datasetId}: duplicate arXiv id ${duplicate}`);
   for (const duplicate of duplicates((roadmap.tracks || []).map((track) => track.id))) errors.push(`${datasetId}: duplicate track id ${duplicate}`);
   for (const duplicate of duplicates((institutions.institutions || []).map((institution) => institution.id))) errors.push(`${datasetId}: duplicate institution id ${duplicate}`);
 
   const trackIds = new Set((roadmap.tracks || []).map((track) => track.id));
   const institutionIds = new Set((institutions.institutions || []).map((institution) => institution.id));
-  for (const paper of papers.papers || []) {
+  for (const paper of allPapers) {
     if (!trackIds.has(paper.track)) errors.push(`${datasetId}/${paper.id}: unknown track ${paper.track}`);
     for (const related of paper.relatedTracks || []) if (!trackIds.has(related)) errors.push(`${datasetId}/${paper.id}: unknown related track ${related}`);
     for (const institution of [...paper.institutions.primary, ...(paper.institutions.collaborators || [])]) {

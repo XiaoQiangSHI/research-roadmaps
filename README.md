@@ -41,7 +41,9 @@
 
 ### 1. 推荐论文或纠正信息
 
-在 [Issues](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose) 中选择对应模板：
+优先使用在线的 [论文贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/)：填写表单后会实时校验、生成 YAML，并跳转到 GitHub 创建 Pull Request，不需要本地安装环境或手写数据文件。
+
+也可以在 [Issues](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose) 中选择对应模板：
 
 - **推荐论文**：提供论文链接，并说明它解决了什么问题。
 - **数据纠错**：报告日期、机构、链接、摘要或路线归属问题。
@@ -82,6 +84,7 @@
 datasets/<domain>/
 ├─ roadmap.yaml       # 领域边界、路线、持续问题与演进阶段
 ├─ papers.yaml        # 论文事实、原创概括、链接与归类依据
+├─ papers/*.yaml      # 贡献向导生成的单篇论文文件
 ├─ institutions.yaml  # 机构名称、类型、网站与离线徽标
 └─ references.yaml    # 领域级来源、筛选规则与排除标准
 ```

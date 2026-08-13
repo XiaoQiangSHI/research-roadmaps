@@ -9,7 +9,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <section><h2>收录目标</h2><p>路线图不是论文数量排行榜。我们优先收录能说明问题定义、关键方法、规模化、泛化、真实部署或线路交叉发生明显变化的代表工作。</p></section>
     <section><h2>事实层</h2><p>论文日期、链接、作者机构和项目仓库必须附一手来源。机构使用论文作者单位或官方项目维护方，不把高校合作论文简单标成公司工作。</p></section>
     <section><h2>编辑层</h2><p>主线路、阶段和问题演进属于编辑判断。每篇论文必须填写归类理由和置信度，允许通过 Issue 和 Pull Request 讨论、补充证据与修订。</p></section>
-    <section><h2>如何贡献</h2><ol><li>不会写代码也可以通过 Issue 推荐论文、纠错或提议新领域。</li><li>直接修改数据时，参考 <code>datasets/_template</code> 填写 YAML。</li><li>提交 Pull Request，列出事实来源并解释路线归属。</li><li>CI 通过后，由相关领域维护者审核。</li></ol><p><a href="https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose" target="_blank" rel="noreferrer">创建贡献 Issue ↗</a> · <a href="https://github.com/XiaoQiangSHI/research-roadmaps/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer">阅读完整贡献指南 ↗</a></p></section>
+    <section><h2>如何贡献</h2><ol><li>使用网页向导填写论文信息并生成可提交的 YAML。</li><li>不会写代码也可以通过 Issue 推荐论文、纠错或提议新领域。</li><li>提交 Pull Request，列出事实来源并解释路线归属。</li><li>CI 通过后，由相关领域维护者审核。</li></ol><p><a href={`${import.meta.env.BASE_URL}contribute/`}>打开论文贡献向导</a> · <a href="https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose" target="_blank" rel="noreferrer">创建贡献 Issue ↗</a> · <a href="https://github.com/XiaoQiangSHI/research-roadmaps/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer">阅读完整贡献指南 ↗</a></p></section>
     <section><h2>维护与争议</h2><p>每个领域在数据中声明维护者。事实争议以论文和官方来源为准；路线争议围绕主要问题与核心贡献讨论。无法唯一归类时，可以保留相关线路、降低置信度并记录理由。</p></section>
     <section><h2>版权</h2><p>代码使用 Apache-2.0；路线数据使用 CC BY 4.0。论文内容采用原创概括，Logo 仅用于机构识别并遵循各品牌规范。</p></section>
   </main>

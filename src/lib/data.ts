@@ -79,6 +79,21 @@ async function readYaml<T>(filePath: string): Promise<T> {
   return YAML.parse(await fs.readFile(filePath, 'utf8')) as T;
 }
 
+export async function readStandalonePapers(datasetDir: string): Promise<Paper[]> {
+  const papersDir = path.join(datasetDir, 'papers');
+  let entries;
+  try {
+    entries = await fs.readdir(papersDir, { withFileTypes: true });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
+    throw error;
+  }
+  return Promise.all(entries
+    .filter((entry) => entry.isFile() && /\.ya?ml$/i.test(entry.name))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((entry) => readYaml<Paper>(path.join(papersDir, entry.name))));
+}
+
 export async function listRoadmapIds(): Promise<string[]> {
   const entries = await fs.readdir(datasetsDir, { withFileTypes: true });
   return entries
@@ -112,11 +127,12 @@ export async function loadRoadmap(id: string): Promise<ResolvedRoadmap> {
   }
 
   const datasetDir = path.join(datasetsDir, id);
-  const [{ papers }, { institutions }] = await Promise.all([
+  const [{ papers }, standalonePapers, { institutions }] = await Promise.all([
     readYaml<{ papers: Paper[] }>(path.join(datasetDir, 'papers.yaml')),
+    readStandalonePapers(datasetDir),
     readYaml<{ institutions: Institution[] }>(path.join(datasetDir, 'institutions.yaml'))
   ]);
-  return { ...definition, papers, institutions };
+  return { ...definition, papers: [...papers, ...standalonePapers], institutions };
 }
 
 export async function listRoadmaps(): Promise<ResolvedRoadmap[]> {

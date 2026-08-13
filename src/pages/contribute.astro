@@ -1,0 +1,332 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { loadRoadmap } from '@/lib/data';
+
+const roadmap = await loadRoadmap('embodied-ai');
+const base = import.meta.env.BASE_URL;
+const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.com/XiaoQiangSHI/research-roadmaps';
+const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<BaseLayout title="贡献论文 · Open Research Roadmaps" description="通过网页向导生成经过校验的论文 YAML，并在 GitHub 上提交贡献。">
+  <header class="contribute-hero shell">
+    <p>CONTRIBUTION WIZARD</p>
+    <h1>贡献一篇论文</h1>
+    <div>填写论文事实与路线判断，页面会实时生成符合项目格式的 YAML。无需手写数据文件，也无需在本地安装开发环境。</div>
+    <ol aria-label="贡献步骤">
+      <li><span>1</span>填写信息</li>
+      <li><span>2</span>检查预览</li>
+      <li><span>3</span>在 GitHub 提交</li>
+    </ol>
+  </header>
+
+  <main class="contribution-layout shell">
+    <form id="paper-form" novalidate>
+      <section class="form-section">
+        <div class="section-heading"><span>01</span><div><h2>论文信息</h2><p>使用论文首次公开的信息，不要根据标题猜测日期或机构。</p></div></div>
+        <div class="field-grid two-columns">
+          <label><span>论文标题 <em>必填</em></span><input id="title" name="title" required minlength="2" autocomplete="off" /></label>
+          <label><span>数据 ID <em>自动生成，可修改</em></span><input id="paper-id" name="id" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" autocomplete="off" /></label>
+          <label><span>arXiv 编号 <em>必填</em></span><input id="arxiv" name="arxiv" required pattern="[0-9]{4}\.[0-9]{5}" placeholder="例如 2303.02506" inputmode="decimal" /></label>
+          <label><span>首次公开日期 <em>必填</em></span><input id="date" name="date" type="date" required /></label>
+          <label class="wide"><span>论文链接 <em>必填</em></span><input id="paper-url" name="paperUrl" type="url" required placeholder="https://arxiv.org/abs/2303.02506" /></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span>02</span><div><h2>工作概括</h2><p>请用自己的语言回答“做了什么、为什么做、怎么解决”，不要复制论文摘要。</p></div></div>
+        <div class="field-grid">
+          <label><span>主要工作 <em>必填</em></span><textarea id="summary" name="summary" required minlength="10" rows="3" placeholder="用一两句话概括论文的主要贡献。"></textarea></label>
+          <label><span>要解决的问题 <em>必填</em></span><textarea id="problem" name="problem" required minlength="10" rows="4" placeholder="说明已有方法的具体困难，以及这个问题为什么重要。"></textarea></label>
+          <label><span>核心解决方案 <em>必填</em></span><textarea id="solution" name="solution" required minlength="10" rows="4" placeholder="说明论文提出的关键机制，而不只是列出模型名称。"></textarea></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span>03</span><div><h2>路线归属</h2><p>每篇论文只选择一条主线路，重要交叉关系可以放到相关线路。</p></div></div>
+        <div class="field-grid two-columns">
+          <label><span>主线路 <em>必填</em></span><select id="track" name="track" required><option value="">请选择</option>{roadmap.tracks.map((track) => <option value={track.id}>{track.index} · {track.name}</option>)}</select></label>
+          <label><span>归类置信度 <em>必填</em></span><select id="confidence" name="confidence" required><option value="high">高：核心贡献直接属于该线路</option><option value="medium">中：跨多条线路，但主贡献明确</option><option value="low">低：暂时归入最接近的线路</option></select></label>
+        </div>
+        <fieldset class="related-tracks"><legend>相关线路 <small>可选</small></legend>{roadmap.tracks.map((track) => <label><input type="checkbox" name="relatedTracks" value={track.id} /><span>{track.index} · {track.name}</span></label>)}</fieldset>
+        <label><span>归类理由 <em>必填</em></span><textarea id="rationale" name="rationale" required minlength="8" rows="3" placeholder="说明论文的主要问题和核心贡献为什么属于这条线路。"></textarea></label>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span>04</span><div><h2>研究机构</h2><p>依据论文作者单位或官方项目页面，保留明确的联合机构。</p></div></div>
+        <div class="picker-grid">
+          <div class="institution-picker" data-picker="primary">
+            <label for="primary-select"><span>主导机构 <em>至少一个</em></span></label>
+            <div class="picker-control"><select id="primary-select"><option value="">选择机构</option>{institutions.map((institution) => <option value={institution.id}>{institution.name} · {institution.id}</option>)}</select><button type="button" data-add-institution="primary">添加</button></div>
+            <div class="selected-institutions" data-selected="primary" aria-live="polite"></div>
+          </div>
+          <div class="institution-picker" data-picker="collaborators">
+            <label for="collaborator-select"><span>合作机构 <em>可选</em></span></label>
+            <div class="picker-control"><select id="collaborator-select"><option value="">选择机构</option>{institutions.map((institution) => <option value={institution.id}>{institution.name} · {institution.id}</option>)}</select><button type="button" data-add-institution="collaborators">添加</button></div>
+            <div class="selected-institutions" data-selected="collaborators" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="field-note">列表中没有机构？请先通过 <a href="https://github.com/XiaoQiangSHI/research-roadmaps/issues/new?template=correction.yml" target="_blank" rel="noreferrer">数据纠错 Issue</a> 告诉维护者，或按贡献指南新增机构。</p>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span>05</span><div><h2>补充链接</h2><p>项目主页、代码和中文详解均为可选；填写后会同时加入来源列表。</p></div></div>
+        <div class="field-grid two-columns">
+          <label><span>项目主页</span><input id="project-url" name="projectUrl" type="url" placeholder="https://..." /></label>
+          <label><span>代码仓库</span><input id="code-url" name="codeUrl" type="url" placeholder="https://github.com/..." /></label>
+          <label class="wide"><span>中文详解</span><input id="blog-url" name="blogUrl" type="url" placeholder="https://..." /></label>
+        </div>
+      </section>
+    </form>
+
+    <aside class="submission-panel">
+      <div class="submission-status"><span id="status-dot"></span><strong id="status-title">等待填写</strong><small id="status-detail">完成必填项后即可提交</small></div>
+      <div id="validation-errors" class="validation-errors" aria-live="polite"></div>
+      <div class="preview-heading"><h2>YAML 预览</h2><button id="copy-yaml" type="button" disabled>复制</button></div>
+      <pre><code id="yaml-preview"># 填写表单后在这里生成数据</code></pre>
+      <div class="submission-actions">
+        <a id="github-submit" class="submit-primary" href="#" aria-disabled="true">在 GitHub 提交 <span>↗</span></a>
+        <button id="download-yaml" type="button" disabled>下载 YAML</button>
+      </div>
+      <p class="submission-help">GitHub 会打开新文件页面。登录后选择 <strong>Propose changes</strong>，再创建 Pull Request；维护者审核通过后论文会自动出现在路线图中。</p>
+      <a class="manual-link" href={`${base}about/`}>查看审核原则</a>
+    </aside>
+  </main>
+</BaseLayout>
+
+<script is:inline define:vars={{ availableInstitutions: institutions, existingPaperIds: roadmap.papers.map((paper) => paper.id), existingPaperTitles: roadmap.papers.map((paper) => paper.title.toLowerCase()), existingArxivIds: roadmap.papers.map((paper) => paper.arxiv), repositoryUrl }}>
+  const form = document.getElementById('paper-form');
+  const preview = document.getElementById('yaml-preview');
+  const errorsElement = document.getElementById('validation-errors');
+  const githubSubmit = document.getElementById('github-submit');
+  const copyButton = document.getElementById('copy-yaml');
+  const downloadButton = document.getElementById('download-yaml');
+  const statusDot = document.getElementById('status-dot');
+  const statusTitle = document.getElementById('status-title');
+  const statusDetail = document.getElementById('status-detail');
+  const institutionMap = new Map(availableInstitutions.map((institution) => [institution.id, institution]));
+  const selectedInstitutions = { primary: [], collaborators: [] };
+  const touchedFields = new Set();
+  const touchedInstitutionGroups = new Set();
+  let generatedYaml = '';
+  let idWasEdited = false;
+
+  const quote = (value) => JSON.stringify(String(value).trim());
+  const slugify = (value) => value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64);
+  const value = (id) => document.getElementById(id).value.trim();
+  const checkedValues = (name) => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
+  const line = (key, text, indent = 0) => `${' '.repeat(indent)}${key}: ${quote(text)}`;
+
+  function buildYaml() {
+    const links = [['paper', value('paper-url')], ['project', value('project-url')], ['code', value('code-url')], ['blog', value('blog-url')]].filter(([, url]) => url);
+    const relatedTracks = checkedValues('relatedTracks');
+    const lines = [
+      line('id', value('paper-id')),
+      line('title', value('title')),
+      line('date', value('date')),
+      line('arxiv', value('arxiv')),
+      line('track', value('track'))
+    ];
+    if (relatedTracks.length) {
+      lines.push('relatedTracks:', ...relatedTracks.map((track) => `  - ${quote(track)}`));
+    }
+    lines.push(
+      line('summary', value('summary')),
+      line('problem', value('problem')),
+      line('solution', value('solution')),
+      'institutions:',
+      '  primary:',
+      ...selectedInstitutions.primary.map((institution) => `    - ${quote(institution)}`)
+    );
+    if (selectedInstitutions.collaborators.length) {
+      lines.push('  collaborators:', ...selectedInstitutions.collaborators.map((institution) => `    - ${quote(institution)}`));
+    }
+    lines.push('links:', ...links.map(([key, url]) => line(key, url, 2)));
+    lines.push('classification:', line('confidence', value('confidence'), 2), line('rationale', value('rationale'), 2));
+    lines.push('sources:', ...links.map(([type, url]) => `  - type: ${quote(type)}\n    url: ${quote(url)}`));
+    return `${lines.join('\n')}\n`;
+  }
+
+  function validate(visibleOnly = false) {
+    const errors = [];
+    for (const field of form.querySelectorAll('input, select, textarea')) {
+      if (!field.checkValidity() && field.type !== 'checkbox' && (!visibleOnly || touchedFields.has(field))) {
+        const label = field.closest('label')?.querySelector(':scope > span')?.childNodes[0]?.textContent?.trim() || field.name;
+        errors.push(`${label}格式不完整`);
+      }
+    }
+    if (!selectedInstitutions.primary.length && (!visibleOnly || touchedInstitutionGroups.has('primary'))) errors.push('至少添加一个主导机构');
+    if (existingPaperIds.includes(value('paper-id')) && (!visibleOnly || touchedFields.has(document.getElementById('paper-id')))) errors.push('数据 ID 已存在，请确认是否重复收录');
+    if (existingPaperTitles.includes(value('title').toLowerCase()) && (!visibleOnly || touchedFields.has(document.getElementById('title')))) errors.push('论文标题已存在，请确认是否重复收录');
+    if (existingArxivIds.includes(value('arxiv')) && (!visibleOnly || touchedFields.has(document.getElementById('arxiv')))) errors.push('arXiv 编号已存在，请确认是否重复收录');
+    const overlaps = selectedInstitutions.primary.filter((id) => selectedInstitutions.collaborators.includes(id));
+    if (overlaps.length && (!visibleOnly || touchedInstitutionGroups.size > 0)) errors.push('同一机构不能同时作为主导和合作机构');
+    if (checkedValues('relatedTracks').includes(value('track')) && (!visibleOnly || touchedFields.has(document.getElementById('track')))) errors.push('主线路不需要重复加入相关线路');
+    return [...new Set(errors)];
+  }
+
+  function updatePreview() {
+    generatedYaml = buildYaml();
+    preview.textContent = generatedYaml;
+    const errors = validate();
+    const visibleErrors = validate(true);
+    const ready = errors.length === 0;
+    const hasStarted = touchedFields.size > 0 || touchedInstitutionGroups.size > 0;
+    errorsElement.innerHTML = hasStarted ? visibleErrors.map((error) => `<p>${error}</p>`).join('') : '';
+    statusDot.dataset.ready = String(ready);
+    statusTitle.textContent = ready ? '可以提交' : hasStarted ? '继续填写' : '等待填写';
+    statusDetail.textContent = ready ? '格式与基础引用检查已通过' : hasStarted ? `还有 ${errors.length} 项必填内容` : '完成必填项后即可提交';
+    copyButton.disabled = !ready;
+    downloadButton.disabled = !ready;
+    githubSubmit.setAttribute('aria-disabled', String(!ready));
+    if (ready) {
+      const filename = `datasets/embodied-ai/papers/${value('paper-id')}.yaml`;
+      githubSubmit.href = `${repositoryUrl}/new/main?filename=${encodeURIComponent(filename)}&value=${encodeURIComponent(generatedYaml)}&message=${encodeURIComponent(`Add ${value('title')}`)}`;
+    } else {
+      githubSubmit.href = '#';
+    }
+  }
+
+  function renderInstitutions(type) {
+    const container = document.querySelector(`[data-selected="${type}"]`);
+    container.innerHTML = selectedInstitutions[type].map((id) => {
+      const institution = institutionMap.get(id);
+      return `<span><strong>${institution.shortName}</strong><small>${institution.name}</small><button type="button" data-remove-institution="${type}" data-institution-id="${id}" aria-label="移除 ${institution.name}">×</button></span>`;
+    }).join('') || '<p>尚未添加</p>';
+    updatePreview();
+  }
+
+  document.querySelectorAll('[data-add-institution]').forEach((button) => button.addEventListener('click', () => {
+    const type = button.dataset.addInstitution;
+    touchedInstitutionGroups.add(type);
+    const select = document.getElementById(type === 'primary' ? 'primary-select' : 'collaborator-select');
+    if (select.value && !selectedInstitutions[type].includes(select.value)) selectedInstitutions[type].push(select.value);
+    select.value = '';
+    renderInstitutions(type);
+  }));
+
+  document.querySelectorAll('.selected-institutions').forEach((container) => container.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-remove-institution]');
+    if (!button) return;
+    const type = button.dataset.removeInstitution;
+    selectedInstitutions[type] = selectedInstitutions[type].filter((id) => id !== button.dataset.institutionId);
+    renderInstitutions(type);
+  }));
+
+  document.getElementById('title').addEventListener('input', (event) => {
+    if (!idWasEdited) document.getElementById('paper-id').value = slugify(event.target.value);
+  });
+  document.getElementById('paper-id').addEventListener('input', () => { idWasEdited = true; });
+  document.getElementById('arxiv').addEventListener('input', (event) => {
+    const match = event.target.value.match(/([0-9]{4}\.[0-9]{5})/);
+    if (match) {
+      event.target.value = match[1];
+      const paperUrl = document.getElementById('paper-url');
+      if (!paperUrl.value || paperUrl.dataset.auto === 'true') {
+        paperUrl.value = `https://arxiv.org/abs/${match[1]}`;
+        paperUrl.dataset.auto = 'true';
+      }
+    }
+  });
+  document.getElementById('paper-url').addEventListener('input', (event) => { event.target.dataset.auto = 'false'; });
+  document.getElementById('track').addEventListener('change', (event) => {
+    form.querySelectorAll('input[name="relatedTracks"]').forEach((input) => {
+      input.disabled = input.value === event.target.value;
+      if (input.disabled) input.checked = false;
+    });
+  });
+  form.addEventListener('input', (event) => { touchedFields.add(event.target); updatePreview(); });
+  form.addEventListener('change', (event) => { touchedFields.add(event.target); updatePreview(); });
+  githubSubmit.addEventListener('click', (event) => { if (githubSubmit.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+  copyButton.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(generatedYaml);
+    copyButton.textContent = '已复制';
+    setTimeout(() => { copyButton.textContent = '复制'; }, 1400);
+  });
+  downloadButton.addEventListener('click', () => {
+    const url = URL.createObjectURL(new Blob([generatedYaml], { type: 'text/yaml;charset=utf-8' }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${value('paper-id')}.yaml`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  });
+
+  renderInstitutions('primary');
+  renderInstitutions('collaborators');
+</script>
+
+<style>
+  .contribute-hero { padding: 64px 0 34px; }
+  .contribute-hero > p { margin: 0 0 10px; color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .13em; }
+  .contribute-hero h1 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: clamp(45px, 7vw, 76px); font-weight: 500; line-height: 1; }
+  .contribute-hero > div { max-width: 760px; margin-top: 17px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+  .contribute-hero ol { display: flex; gap: 28px; margin: 28px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 12px; }
+  .contribute-hero li { display: flex; gap: 8px; align-items: center; }
+  .contribute-hero li span { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); font-family: Georgia, serif; }
+  .contribution-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(340px, .75fr); gap: 22px; align-items: start; padding-bottom: 80px; }
+  #paper-form { display: grid; gap: 14px; }
+  .form-section, .submission-panel { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 88%, transparent); }
+  .form-section { padding: 25px; }
+  .section-heading { display: grid; grid-template-columns: 28px 1fr; gap: 11px; margin-bottom: 22px; }
+  .section-heading > span { padding-top: 3px; color: var(--accent); font-family: Georgia, serif; font-size: 12px; }
+  .section-heading h2 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: 24px; font-weight: 500; }
+  .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .field-grid { display: grid; gap: 15px; }
+  .two-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wide { grid-column: 1 / -1; }
+  label { display: grid; gap: 7px; color: var(--ink); font-size: 12px; }
+  label > span, .institution-picker label span { font-weight: 750; }
+  em, legend small { color: var(--muted); font-size: 9px; font-style: normal; font-weight: 500; }
+  input, select, textarea, button { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; }
+  input, select { min-height: 43px; padding: 0 11px; }
+  textarea { padding: 11px; resize: vertical; line-height: 1.65; }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); outline: 3px solid color-mix(in srgb, var(--accent) 12%, transparent); }
+  .related-tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 16px 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+  .related-tracks legend { padding: 0 5px; font-size: 12px; font-weight: 750; }
+  .related-tracks label { display: flex; grid: none; gap: 7px; align-items: start; color: var(--muted); font-size: 11px; line-height: 1.4; }
+  .related-tracks input { flex: 0 0 auto; width: 14px; min-height: 14px; margin: 1px 0 0; padding: 0; }
+  .related-tracks input:checked + span { color: var(--ink); }
+  .picker-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .institution-picker { min-width: 0; }
+  .picker-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; margin-top: 7px; }
+  .picker-control button { padding: 0 13px; cursor: pointer; }
+  .selected-institutions { display: grid; gap: 6px; margin-top: 8px; }
+  .selected-institutions > p { margin: 0; padding: 9px 11px; border: 1px dashed var(--line); border-radius: 9px; color: var(--muted); font-size: 10px; }
+  :global(.selected-institutions > span) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 8px; padding: 8px 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+  :global(.selected-institutions strong), :global(.selected-institutions small) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  :global(.selected-institutions strong) { font-size: 11px; }
+  :global(.selected-institutions small) { color: var(--muted); font-size: 9px; }
+  :global(.selected-institutions button) { grid-row: 1 / 3; grid-column: 2; align-self: center; width: 26px; height: 26px; padding: 0; border-radius: 50%; cursor: pointer; }
+  .field-note { margin: 12px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+  .field-note a { color: var(--accent); }
+  .submission-panel { position: sticky; top: 16px; padding: 22px; }
+  .submission-status { display: grid; grid-template-columns: 10px 1fr; gap: 3px 9px; align-items: center; }
+  .submission-status > span { grid-row: 1 / 3; width: 9px; height: 9px; border-radius: 50%; background: #c79737; box-shadow: 0 0 0 4px color-mix(in srgb, #c79737 12%, transparent); }
+  .submission-status > span[data-ready='true'] { background: #3e796d; box-shadow: 0 0 0 4px color-mix(in srgb, #3e796d 12%, transparent); }
+  .submission-status strong { font-size: 13px; }
+  .submission-status small { color: var(--muted); font-size: 10px; }
+  .validation-errors { display: grid; gap: 5px; margin-top: 15px; }
+  :global(.validation-errors p) { margin: 0; padding: 7px 9px; border-radius: 7px; background: color-mix(in srgb, #b74532 7%, var(--surface)); color: #8f392b; font-size: 10px; }
+  .preview-heading { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+  .preview-heading h2 { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .preview-heading button { min-height: 30px; padding: 0 10px; cursor: pointer; font-size: 10px; }
+  pre { max-height: 430px; margin: 9px 0 0; padding: 15px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: #222925; color: #e7e9e4; font-size: 10px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .submission-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 13px; }
+  .submit-primary, .submission-actions button { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 0 13px; border-radius: 10px; font-size: 11px; font-weight: 800; text-decoration: none; }
+  .submit-primary { background: var(--accent); color: var(--surface); }
+  .submit-primary[aria-disabled='true'] { background: var(--line-strong); cursor: not-allowed; }
+  .submission-actions button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; opacity: .55; }
+  .submission-help { margin: 15px 0 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+  .manual-link { display: inline-block; margin-top: 10px; color: var(--accent); font-size: 10px; }
+  @media (max-width: 980px) { .contribution-layout { grid-template-columns: 1fr; } .submission-panel { position: static; } }
+  @media (max-width: 620px) {
+    .contribute-hero { padding-top: 42px; }
+    .contribute-hero ol { gap: 12px; justify-content: space-between; }
+    .contribute-hero li { display: grid; justify-items: center; gap: 5px; text-align: center; }
+    .form-section { padding: 20px 16px; }
+    .two-columns, .picker-grid, .related-tracks { grid-template-columns: 1fr; }
+    .submission-actions { grid-template-columns: 1fr; }
+  }
+</style>
