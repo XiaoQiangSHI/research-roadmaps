@@ -23,6 +23,9 @@ export type Institution = {
   logo: { kind: 'brand' | 'text'; value: string };
 };
 
+export type ExplanationLink = { title: string; url: string };
+export type ExplanationContribution = ExplanationLink & { id: string; paperId: string };
+
 export type Paper = {
   id: string;
   title: string;
@@ -35,7 +38,7 @@ export type Paper = {
   problem: string;
   solution: string;
   institutions: { primary: string[]; collaborators?: string[] };
-  links: { paper: string; project?: string; code?: string; blog?: string };
+  links: { paper: string; project?: string; code?: string; blog?: string; explanations?: ExplanationLink[] };
   classification: { confidence: 'high' | 'medium' | 'low' | 'editorial'; rationale: string };
   sources: Array<{ type: string; url: string }>;
 };
@@ -102,6 +105,18 @@ function mergeInstitutions(shared: Institution[], local: Institution[]): Institu
   return [...institutions.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+function normalizePaper(paper: Paper): Paper {
+  const explanations = [...(paper.links.explanations || [])];
+  if (paper.links.blog && !explanations.some((explanation) => explanation.url === paper.links.blog)) {
+    explanations.push({ title: '中文详解', url: paper.links.blog });
+  }
+  const { blog: legacyBlog, ...links } = paper.links;
+  return {
+    ...paper,
+    links: { ...links, ...(explanations.length ? { explanations } : {}) }
+  };
+}
+
 export async function readStandalonePapers(datasetDir: string): Promise<Paper[]> {
   const papersDir = path.join(datasetDir, 'papers');
   let entries;
@@ -115,6 +130,28 @@ export async function readStandalonePapers(datasetDir: string): Promise<Paper[]>
     .filter((entry) => entry.isFile() && /\.ya?ml$/i.test(entry.name))
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((entry) => readYaml<Paper>(path.join(papersDir, entry.name))));
+}
+
+export async function readStandaloneExplanations(datasetDir: string): Promise<ExplanationContribution[]> {
+  const explanationsDir = path.join(datasetDir, 'explanations');
+  let paperDirectories;
+  try {
+    paperDirectories = await fs.readdir(explanationsDir, { withFileTypes: true });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
+    throw error;
+  }
+  const contributions: ExplanationContribution[] = [];
+  for (const paperDirectory of paperDirectories.filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name))) {
+    const directory = path.join(explanationsDir, paperDirectory.name);
+    const entries = await fs.readdir(directory, { withFileTypes: true });
+    const explanations = await Promise.all(entries
+      .filter((entry) => entry.isFile() && /\.ya?ml$/i.test(entry.name))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((entry) => readYaml<ExplanationContribution>(path.join(directory, entry.name))));
+    contributions.push(...explanations);
+  }
+  return contributions;
 }
 
 export async function listRoadmapIds(): Promise<string[]> {
@@ -152,15 +189,25 @@ export async function loadRoadmap(id: string): Promise<ResolvedRoadmap> {
   }
 
   const datasetDir = path.join(datasetsDir, id);
-  const [{ papers }, standalonePapers, sharedInstitutions, localInstitutions] = await Promise.all([
+  const [{ papers }, standalonePapers, standaloneExplanations, sharedInstitutions, localInstitutions] = await Promise.all([
     readOptionalYaml<{ papers: Paper[] }>(path.join(datasetDir, 'papers.yaml'), { papers: [] }),
     readStandalonePapers(datasetDir),
+    readStandaloneExplanations(datasetDir),
     readOptionalYaml<{ institutions: Institution[] }>(path.join(datasetsDir, '_shared', 'institutions.yaml'), { institutions: [] }),
     readOptionalYaml<{ institutions: Institution[] }>(path.join(datasetDir, 'institutions.yaml'), { institutions: [] })
   ]);
+  const normalizedPapers = [...papers, ...standalonePapers].map(normalizePaper);
+  const paperMap = new Map(normalizedPapers.map((paper) => [paper.id, paper]));
+  for (const explanation of standaloneExplanations) {
+    const paper = paperMap.get(explanation.paperId);
+    if (!paper) continue;
+    const explanations = paper.links.explanations || [];
+    if (!explanations.some((item) => item.url === explanation.url)) explanations.push({ title: explanation.title, url: explanation.url });
+    paper.links.explanations = explanations;
+  }
   return {
     ...definition,
-    papers: [...papers, ...standalonePapers].sort((a, b) => a.date.localeCompare(b.date)),
+    papers: normalizedPapers.sort((a, b) => a.date.localeCompare(b.date)),
     institutions: mergeInstitutions(sharedInstitutions.institutions, localInstitutions.institutions)
   };
 }

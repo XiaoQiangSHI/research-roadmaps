@@ -13,17 +13,19 @@ addFormats(ajv);
 
 const readJson = async (file) => JSON.parse(await fs.readFile(file, 'utf8'));
 const readYaml = async (file) => YAML.parse(await fs.readFile(file, 'utf8'));
-const [roadmapSchema, papersSchema, institutionsSchema] = await Promise.all([
+const [roadmapSchema, papersSchema, institutionsSchema, explanationSchema] = await Promise.all([
   readJson(path.join(schemasDir, 'roadmap.schema.json')),
   readJson(path.join(schemasDir, 'papers.schema.json')),
-  readJson(path.join(schemasDir, 'institutions.schema.json'))
+  readJson(path.join(schemasDir, 'institutions.schema.json')),
+  readJson(path.join(schemasDir, 'explanation.schema.json'))
 ]);
 
 const validators = {
   roadmap: ajv.compile(roadmapSchema),
   papers: ajv.compile(papersSchema),
   paper: ajv.compile(papersSchema.$defs.paper),
-  institutions: ajv.compile(institutionsSchema)
+  institutions: ajv.compile(institutionsSchema),
+  explanation: ajv.compile(explanationSchema)
 };
 
 async function readOptionalYaml(file, fallback) {
@@ -70,6 +72,30 @@ async function readStandalonePapers(directory, datasetId) {
   return standalonePapers;
 }
 
+async function readStandaloneExplanations(directory, datasetId) {
+  const explanationsDir = path.join(directory, 'explanations');
+  let paperDirectories;
+  try {
+    paperDirectories = await fs.readdir(explanationsDir, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+  const explanations = [];
+  for (const paperDirectory of paperDirectories.filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name))) {
+    const paperDir = path.join(explanationsDir, paperDirectory.name);
+    const entries = await fs.readdir(paperDir, { withFileTypes: true });
+    for (const entry of entries.filter((item) => item.isFile() && /\.ya?ml$/i.test(item.name)).sort((a, b) => a.name.localeCompare(b.name))) {
+      const explanation = await readYaml(path.join(paperDir, entry.name));
+      validateDocument(datasetId, 'explanation', explanation, `explanations/${paperDirectory.name}/${entry.name}`);
+      if (explanation.id && entry.name.replace(/\.ya?ml$/i, '') !== explanation.id) errors.push(`${datasetId}/explanations/${paperDirectory.name}/${entry.name}: filename must match explanation.id`);
+      if (explanation.paperId && paperDirectory.name !== explanation.paperId) errors.push(`${datasetId}/explanations/${paperDirectory.name}/${entry.name}: directory must match explanation.paperId`);
+      explanations.push(explanation);
+    }
+  }
+  return explanations;
+}
+
 function duplicates(values) {
   const seen = new Set();
   return [...new Set(values.filter((value) => seen.size === seen.add(value).size))];
@@ -85,9 +111,10 @@ for (const datasetId of datasetIds) {
     continue;
   }
 
-  const [papers, standalonePapers, institutions] = await Promise.all([
+  const [papers, standalonePapers, explanations, institutions] = await Promise.all([
     readOptionalYaml(path.join(directory, 'papers.yaml'), { papers: [] }),
     readStandalonePapers(directory, datasetId),
+    readStandaloneExplanations(directory, datasetId),
     readOptionalYaml(path.join(directory, 'institutions.yaml'), { institutions: [] })
   ]);
   validateDocument(datasetId, 'papers', papers);
@@ -95,7 +122,7 @@ for (const datasetId of datasetIds) {
   const allPapers = [...(papers.papers || []), ...standalonePapers];
   const mergedInstitutions = new Map((sharedInstitutions.institutions || []).map((institution) => [institution.id, institution]));
   for (const institution of institutions.institutions || []) mergedInstitutions.set(institution.id, institution);
-  fullDatasets.set(datasetId, { roadmap, papers: allPapers, institutions: [...mergedInstitutions.values()] });
+  fullDatasets.set(datasetId, { roadmap, papers: allPapers, explanations, institutions: [...mergedInstitutions.values()] });
 
   for (const duplicate of duplicates(allPapers.map((paper) => paper.id))) errors.push(`${datasetId}: duplicate paper id ${duplicate}`);
   for (const duplicate of duplicates(allPapers.map((paper) => paper.arxiv))) errors.push(`${datasetId}: duplicate arXiv id ${duplicate}`);
@@ -112,6 +139,26 @@ for (const datasetId of datasetIds) {
     }
     const sourceUrls = new Set(paper.sources.map((source) => source.url));
     if (!sourceUrls.has(paper.links.paper)) errors.push(`${datasetId}/${paper.id}: paper link must also appear in sources`);
+    const explanationUrls = [
+      ...(paper.links.blog ? [paper.links.blog] : []),
+      ...(paper.links.explanations || []).map((explanation) => explanation.url)
+    ];
+    for (const explanationUrl of explanationUrls) {
+      if (!sourceUrls.has(explanationUrl)) errors.push(`${datasetId}/${paper.id}: explanation link must also appear in sources`);
+    }
+    for (const duplicate of duplicates(explanationUrls)) errors.push(`${datasetId}/${paper.id}: duplicate explanation URL ${duplicate}`);
+  }
+  const paperIds = new Set(allPapers.map((paper) => paper.id));
+  const explanationUrlsByPaper = new Map(allPapers.map((paper) => [paper.id, [
+    ...(paper.links.blog ? [paper.links.blog] : []),
+    ...(paper.links.explanations || []).map((explanation) => explanation.url)
+  ]]));
+  for (const explanation of explanations) {
+    if (!paperIds.has(explanation.paperId)) errors.push(`${datasetId}/explanations/${explanation.id}: unknown paper ${explanation.paperId}`);
+    const urls = explanationUrlsByPaper.get(explanation.paperId) || [];
+    if (urls.includes(explanation.url)) errors.push(`${datasetId}/explanations/${explanation.id}: duplicate explanation URL ${explanation.url}`);
+    urls.push(explanation.url);
+    explanationUrlsByPaper.set(explanation.paperId, urls);
   }
 }
 

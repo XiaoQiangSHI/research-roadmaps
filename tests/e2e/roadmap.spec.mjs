@@ -12,6 +12,8 @@ test('renders, filters, and opens paper details', async ({ page }) => {
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('NVIDIA');
   await expect(page.getByRole('dialog').getByRole('link', { name: '阅读论文' })).toHaveAttribute('href', 'https://arxiv.org/abs/2303.02506');
+  await expect(page.getByRole('dialog').getByRole('heading', { name: '论文讲解' })).toBeVisible();
+  await expect(page.getByRole('dialog').getByRole('link', { name: '贡献讲解' })).toHaveAttribute('href', '/contribute/explanation/?domain=embodied-ai&paper=prismer');
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {
@@ -43,15 +45,32 @@ test('contribution wizard validates and prepares a standalone paper file', async
   await page.locator('#rationale').fill('主要贡献直接改善视觉表征与识别线路的资料维护流程。');
   await page.locator('#primary-select').selectOption('nvidia');
   await page.getByRole('button', { name: '添加' }).first().click();
+  await page.getByRole('button', { name: '添加讲解' }).click();
+  await page.locator('[data-explanation-title]').fill('Example Author · 深入讲解');
+  await page.locator('[data-explanation-url]').fill('https://example.org/explanation');
 
   await expect(page.getByText('可以提交', { exact: true })).toBeVisible();
   await expect(page.locator('#yaml-preview')).toContainText('id: "example-contribution-paper"');
   await expect(page.locator('#yaml-preview')).toContainText('primary:\n    - "nvidia"');
+  await expect(page.locator('#yaml-preview')).toContainText('explanations:');
+  await expect(page.locator('#yaml-preview')).toContainText('title: "Example Author · 深入讲解"');
   const submitUrl = await page.locator('#github-submit').getAttribute('href');
   expect(submitUrl).toContain('/new/main?filename=datasets%2Fcomputer-vision%2Fpapers%2Fexample-contribution-paper.yaml');
   expect(submitUrl).toContain('value=');
   const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+});
+
+test('existing papers accept independent explanation contributions', async ({ page }) => {
+  await page.goto('/contribute/explanation/?domain=embodied-ai&paper=prismer');
+  await expect(page.locator('#domain')).toHaveValue('embodied-ai');
+  await expect(page.locator('#paper')).toHaveValue('prismer');
+  await page.locator('#explanation-title').fill('Community Author · Prismer 讲解');
+  await page.locator('#explanation-url').fill('https://example.org/prismer-guide');
+  await expect(page.locator('#preview')).toContainText('paperId: "prismer"');
+  await expect(page.locator('#preview')).toContainText('title: "Community Author · Prismer 讲解"');
+  const submitUrl = await page.locator('#github-submit').getAttribute('href');
+  expect(submitUrl).toContain('datasets%2Fembodied-ai%2Fexplanations%2Fprismer%2Fcommunity-author-prismer.yaml');
 });
 
 test('homepage and empty domains expose first-paper contribution entry points', async ({ page }) => {

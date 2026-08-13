@@ -130,7 +130,7 @@ const papers = paperRows.map(([date, title, track, summary, problem, solution, a
   }
   const blog = directBlog || (blogByArxiv[arxiv] ? `https://www.cnblogs.com/sxq-blog/p/${blogByArxiv[arxiv]}` : undefined);
   const links = { paper: `https://arxiv.org/abs/${arxiv}` };
-  if (blog) links.blog = blog;
+  if (blog) links.explanations = [{ title: '中文详解', url: blog }];
   return {
     id,
     title,
@@ -148,7 +148,7 @@ const papers = paperRows.map(([date, title, track, summary, problem, solution, a
     },
     sources: [
       { type: 'paper', url: links.paper },
-      ...(blog ? [{ type: 'blog', url: blog }] : [])
+      ...(blog ? [{ type: 'explanation', url: blog }] : [])
     ]
   };
 });

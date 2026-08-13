@@ -7,6 +7,7 @@
 | 你想做什么 | 推荐方式 |
 | --- | --- |
 | 推荐一篇论文 | 从对应领域页点击“贡献论文”，或使用[网页贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/) |
+| 为已有论文补充讲解 | 从论文详情点击“贡献讲解”，只提交讲解标题与链接 |
 | 修正机构、日期、链接或文字 | 使用“数据纠错”Issue，或直接提交 PR |
 | 调整论文路线归属 | 提交 Issue 讨论，或在 PR 中给出明确理由 |
 | 新建一个研究领域 | 先使用“新领域提案”Issue 对齐范围，再提交数据 |
@@ -89,13 +90,17 @@ npm install
     paper: https://arxiv.org/abs/2401.00001
     project: https://example.org/project
     code: https://github.com/example/project
-    blog: https://example.org/explanation
+    explanations:
+      - title: Example Author · 论文深入讲解
+        url: https://example.org/explanation
   classification:
     confidence: high
     rationale: 解释这篇论文的主要贡献为什么属于该线路。
   sources:
     - type: paper
       url: https://arxiv.org/abs/2401.00001
+    - type: explanation
+      url: https://example.org/explanation
 ```
 
 ### 字段要求
@@ -110,7 +115,7 @@ npm install
 - `solution`：它通过什么关键机制解决。
 - `institutions.primary`：论文主要完成机构，可以有多个。
 - `institutions.collaborators`：其他明确参与机构，可选。
-- `links.blog`：可选，优先收录原创、稳定、能解释论文细节的文章。
+- `links.explanations`：可选列表，每条包含显示标题和 URL；标题建议标明作者或网站，链接应公开、稳定并包含实质性论文解释。
 - `classification.rationale`：路线归属的可审查依据，不能只写“与该路线相关”。
 
 ### 置信度
@@ -131,6 +136,21 @@ npm install
 - 通用机构优先加入 `datasets/_shared/institutions.yaml`；只有领域专属机构才加入对应领域的 `institutions.yaml`，然后在论文中引用其 `id`。
 
 若机构归属存在歧义，请在 PR 中附论文作者列表或官方页面，并明确说明判断过程。
+
+## 为已有论文贡献讲解
+
+论文详情弹窗中的“贡献讲解”会打开轻量向导，并生成：
+
+```text
+datasets/<domain>/explanations/<paper-id>/<explanation-id>.yaml
+```
+
+每条讲解独立保存，因此不同贡献者可以并行追加链接而不修改原论文文件。讲解需要满足：
+
+- 链接公开可访问，并实际解释论文方法、问题或实验；
+- 标题能区分作者或来源，例如“作者名 · 文章标题”；
+- 不重复已有 URL，不收录只有摘要搬运、广告或无实质内容的页面；
+- 讲解内容的观点属于原作者，本项目只做索引，不代表维护者背书。
 
 ## 新增完整领域
 

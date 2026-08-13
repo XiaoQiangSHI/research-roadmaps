@@ -5,6 +5,7 @@ import { brandPaths } from '@/lib/brand-icons';
 
 interface Props { roadmap: ResolvedRoadmap }
 const { roadmap } = Astro.props;
+const base = import.meta.env.BASE_URL;
 const institutionMap = new Map(roadmap.institutions.map((institution) => [institution.id, institution]));
 const start = Date.parse(`${roadmap.period.start}T00:00:00Z`);
 const end = Date.parse(`${roadmap.period.end}T00:00:00Z`);
@@ -96,11 +97,15 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
       </div>
       <section class="classification-note"><span>归类说明</span><p id="dialog-rationale"></p></section>
       <nav id="dialog-links" class="dialog-links" aria-label="论文链接"></nav>
+      <section id="dialog-explanations-section" class="dialog-explanations">
+        <header><div><span>COMMUNITY EXPLANATIONS</span><h3>论文讲解</h3></div><a id="contribute-explanation" href="#">贡献讲解</a></header>
+        <div id="dialog-explanations"></div>
+      </section>
     </div>
   </article>
 </dialog>
 
-<script is:inline define:vars={{ papers: roadmap.papers, tracks: roadmap.tracks, orgs: roadmap.institutions, brandIcons: brandPaths }}>
+<script is:inline define:vars={{ papers: roadmap.papers, tracks: roadmap.tracks, orgs: roadmap.institutions, brandIcons: brandPaths, roadmapId: roadmap.id, base }}>
   const paperMap = new Map(papers.map((paper) => [paper.id, paper]));
   const trackMap = new Map(tracks.map((track) => [track.id, track]));
   const institutionMap = new Map(orgs.map((institution) => [institution.id, institution]));
@@ -141,8 +146,16 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     document.getElementById('dialog-problem').textContent = paper.problem;
     document.getElementById('dialog-solution').textContent = paper.solution;
     document.getElementById('dialog-rationale').textContent = paper.classification.rationale;
-    const labels = { paper: '阅读论文', project: '项目主页', code: '查看代码', blog: '中文详解' };
-    document.getElementById('dialog-links').innerHTML = Object.entries(paper.links).map(([key, url], index) => `<a class="dialog-link${index === 0 ? ' primary' : ''}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer"><span>${labels[key] || key}</span><span aria-hidden="true">↗</span></a>`).join('');
+    const labels = { paper: '阅读论文', project: '项目主页', code: '查看代码' };
+    const primaryLinks = Object.entries(paper.links).filter(([key, url]) => key !== 'explanations' && typeof url === 'string');
+    document.getElementById('dialog-links').innerHTML = primaryLinks.map(([key, url], index) => `<a class="dialog-link${index === 0 ? ' primary' : ''}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer"><span>${labels[key] || key}</span><span aria-hidden="true">↗</span></a>`).join('');
+    const explanations = paper.links.explanations || [];
+    const explanationSection = document.getElementById('dialog-explanations-section');
+    explanationSection.dataset.empty = String(explanations.length === 0);
+    document.getElementById('dialog-explanations').innerHTML = explanations.length
+      ? explanations.map((explanation) => `<a href="${escapeHtml(explanation.url)}" target="_blank" rel="noreferrer"><span>${escapeHtml(explanation.title)}</span><span aria-hidden="true">↗</span></a>`).join('')
+      : '<p>暂时还没有社区讲解，欢迎贡献第一条。</p>';
+    document.getElementById('contribute-explanation').href = `${base}contribute/explanation/?domain=${encodeURIComponent(roadmapId)}&paper=${encodeURIComponent(paper.id)}`;
     dialog.showModal();
     history.replaceState(null, '', `#paper-${paper.id}`);
   }
@@ -300,6 +313,14 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
   :global(.dialog-link) { display: inline-flex; gap: 22px; justify-content: space-between; align-items: center; min-width: 138px; padding: 11px 14px; border: 1px solid color-mix(in srgb, var(--route) 25%, var(--line)); border-radius: 11px; color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
   :global(.dialog-link:hover) { transform: translateY(-2px); border-color: var(--route); background: color-mix(in srgb, var(--route) 7%, var(--surface)); }
   :global(.dialog-link.primary) { border-color: var(--route); background: var(--route); color: var(--surface); }
+  .dialog-explanations { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .dialog-explanations header { display: flex; justify-content: space-between; gap: 16px; align-items: end; }
+  .dialog-explanations header span { color: var(--route); font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+  .dialog-explanations h3 { margin: 4px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 22px; font-weight: 500; }
+  .dialog-explanations header a { color: var(--route); font-size: 11px; font-weight: 800; }
+  #dialog-explanations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+  :global(#dialog-explanations a) { display: flex; justify-content: space-between; gap: 12px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; background: color-mix(in srgb, var(--route) 5%, var(--surface)); color: var(--ink); font-size: 12px; font-weight: 700; text-decoration: none; }
+  :global(#dialog-explanations > p) { grid-column: 1 / -1; margin: 0; padding: 12px 13px; border: 1px dashed var(--line); border-radius: 11px; color: var(--muted); font-size: 11px; }
   @media (max-width: 980px) {
     .axis { display: none; }
     .track-section { grid-template-columns: 1fr; padding: 24px 0 28px; }
@@ -319,6 +340,7 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     .dialog-header > h2 { font-size: clamp(32px, 12vw, 44px); }
     .dialog-close { top: 16px; right: 14px; width: 38px; min-height: 38px; }
     .dialog-orgs, .detail-columns { grid-template-columns: 1fr; }
+    #dialog-explanations { grid-template-columns: 1fr; }
     .detail-card { padding: 18px 16px; }
     .detail-summary p { font-size: 16px; }
     .classification-note { grid-template-columns: 1fr; gap: 6px; }

@@ -84,11 +84,15 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
       </section>
 
       <section class="form-section">
-        <div class="section-heading"><span>05</span><div><h2>补充链接</h2><p>项目主页、代码和中文详解均为可选；填写后会同时加入来源列表。</p></div></div>
+        <div class="section-heading"><span>05</span><div><h2>补充链接</h2><p>项目主页、代码和论文讲解均为可选；可以添加多条不同作者或网站的优质讲解。</p></div></div>
         <div class="field-grid two-columns">
           <label><span>项目主页</span><input id="project-url" name="projectUrl" type="url" placeholder="https://..." /></label>
           <label><span>代码仓库</span><input id="code-url" name="codeUrl" type="url" placeholder="https://github.com/..." /></label>
-          <label class="wide"><span>中文详解</span><input id="blog-url" name="blogUrl" type="url" placeholder="https://..." /></label>
+        </div>
+        <div class="explanation-editor">
+          <div><span>论文讲解 <em>可选，可添加多条</em></span><button id="add-explanation" type="button">添加讲解</button></div>
+          <div id="explanation-rows"></div>
+          <p>标题建议包含作者或网站名称，便于读者区分不同讲解来源。</p>
         </div>
       </section>
     </form>
@@ -124,6 +128,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   const relatedTrackOptions = document.getElementById('related-track-options');
   const primarySelect = document.getElementById('primary-select');
   const collaboratorSelect = document.getElementById('collaborator-select');
+  const explanationRows = document.getElementById('explanation-rows');
   let activeDomain;
   let institutionMap = new Map();
   let existingPaperIds = new Set();
@@ -146,9 +151,14 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   const checkedValues = (name) => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
   const line = (key, text, indent = 0) => `${' '.repeat(indent)}${key}: ${quote(text)}`;
   const escapeHtml = (text) => String(text).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+  const explanations = () => [...explanationRows.querySelectorAll('[data-explanation-row]')].map((row) => ({
+    title: row.querySelector('[data-explanation-title]').value.trim(),
+    url: row.querySelector('[data-explanation-url]').value.trim()
+  })).filter((explanation) => explanation.title || explanation.url);
 
   function buildYaml() {
-    const links = [['paper', value('paper-url')], ['project', value('project-url')], ['code', value('code-url')], ['blog', value('blog-url')]].filter(([, url]) => url);
+    const links = [['paper', value('paper-url')], ['project', value('project-url')], ['code', value('code-url')]].filter(([, url]) => url);
+    const explanationLinks = explanations();
     const relatedTracks = checkedValues('relatedTracks');
     const lines = [
       line('id', value('paper-id')),
@@ -172,8 +182,11 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
       lines.push('  collaborators:', ...selectedInstitutions.collaborators.map((institution) => `    - ${quote(institution)}`));
     }
     lines.push('links:', ...links.map(([key, url]) => line(key, url, 2)));
+    if (explanationLinks.length) {
+      lines.push('  explanations:', ...explanationLinks.flatMap((explanation) => [`    - title: ${quote(explanation.title)}`, `      url: ${quote(explanation.url)}`]));
+    }
     lines.push('classification:', line('confidence', value('confidence'), 2), line('rationale', value('rationale'), 2));
-    lines.push('sources:', ...links.map(([type, url]) => `  - type: ${quote(type)}\n    url: ${quote(url)}`));
+    lines.push('sources:', ...links.map(([type, url]) => `  - type: ${quote(type)}\n    url: ${quote(url)}`), ...explanationLinks.map((explanation) => `  - type: "explanation"\n    url: ${quote(explanation.url)}`));
     return `${lines.join('\n')}\n`;
   }
 
@@ -194,6 +207,8 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     const overlaps = selectedInstitutions.primary.filter((id) => selectedInstitutions.collaborators.includes(id));
     if (overlaps.length && (!visibleOnly || touchedInstitutionGroups.size > 0)) errors.push('同一机构不能同时作为主导和合作机构');
     if (checkedValues('relatedTracks').includes(value('track')) && (!visibleOnly || touchedFields.has(document.getElementById('track')))) errors.push('主线路不需要重复加入相关线路');
+    const explanationLinks = explanations();
+    if (new Set(explanationLinks.map((explanation) => explanation.url)).size !== explanationLinks.length) errors.push('讲解链接不能重复');
     return [...new Set(errors)];
   }
 
@@ -251,6 +266,14 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     updatePreview();
   }
 
+  function addExplanation() {
+    const row = document.createElement('div');
+    row.dataset.explanationRow = '';
+    row.innerHTML = `<label><span>显示标题</span><input data-explanation-title required minlength="2" placeholder="作者或网站 · 讲解标题" /></label><label><span>讲解链接</span><input data-explanation-url type="url" required placeholder="https://..." /></label><button type="button" data-remove-explanation aria-label="移除这条讲解">×</button>`;
+    explanationRows.append(row);
+    updatePreview();
+  }
+
   document.querySelectorAll('[data-add-institution]').forEach((button) => button.addEventListener('click', () => {
     const type = button.dataset.addInstitution;
     touchedInstitutionGroups.add(type);
@@ -293,6 +316,13 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   form.addEventListener('input', (event) => { touchedFields.add(event.target); updatePreview(); });
   form.addEventListener('change', (event) => { touchedFields.add(event.target); updatePreview(); });
   domainSelect.addEventListener('change', () => activateDomain(domainSelect.value));
+  document.getElementById('add-explanation').addEventListener('click', addExplanation);
+  explanationRows.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-remove-explanation]');
+    if (!button) return;
+    button.closest('[data-explanation-row]').remove();
+    updatePreview();
+  });
   githubSubmit.addEventListener('click', (event) => { if (githubSubmit.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
   copyButton.addEventListener('click', async () => {
     await navigator.clipboard.writeText(generatedYaml);
@@ -363,6 +393,14 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   :global(.selected-institutions button) { grid-row: 1 / 3; grid-column: 2; align-self: center; width: 26px; height: 26px; padding: 0; border-radius: 50%; cursor: pointer; }
   .field-note { margin: 12px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
   .field-note a { color: var(--accent); }
+  .explanation-editor { margin-top: 18px; }
+  .explanation-editor > div:first-child { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .explanation-editor > div:first-child > span { font-size: 12px; font-weight: 750; }
+  .explanation-editor > div:first-child button { min-height: 34px; padding: 0 11px; cursor: pointer; font-size: 10px; }
+  #explanation-rows { display: grid; gap: 8px; margin-top: 9px; }
+  :global([data-explanation-row]) { display: grid; grid-template-columns: minmax(150px, .8fr) minmax(220px, 1.2fr) auto; gap: 8px; align-items: end; padding: 11px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+  :global([data-explanation-row] > button) { width: 36px; min-height: 43px; cursor: pointer; }
+  .explanation-editor > p { margin: 8px 0 0; color: var(--muted); font-size: 10px; }
   .submission-panel { position: sticky; top: 16px; padding: 22px; }
   .active-domain { display: flex; justify-content: space-between; gap: 14px; margin: -4px 0 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-size: 11px; }
   .active-domain span { color: var(--muted); }
@@ -392,7 +430,8 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     .contribute-hero ol { gap: 12px; justify-content: space-between; }
     .contribute-hero li { display: grid; justify-items: center; gap: 5px; text-align: center; }
     .form-section { padding: 20px 16px; }
-    .two-columns, .picker-grid, #related-track-options { grid-template-columns: 1fr; }
+    .two-columns, .picker-grid, #related-track-options, :global([data-explanation-row]) { grid-template-columns: 1fr; }
+    :global([data-explanation-row] > button) { width: 100%; min-height: 34px; }
     .submission-actions { grid-template-columns: 1fr; }
   }
 </style>

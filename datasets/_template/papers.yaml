@@ -12,9 +12,14 @@ papers:
         - example-university
     links:
       paper: https://arxiv.org/abs/2401.00001
+      explanations:
+        - title: 示例论文讲解
+          url: https://example.org/explanation
     classification:
       confidence: editorial
       rationale: 解释为什么这篇论文的主要贡献属于该发展线路。
     sources:
       - type: paper
         url: https://arxiv.org/abs/2401.00001
+      - type: explanation
+        url: https://example.org/explanation

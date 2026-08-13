@@ -26,6 +26,19 @@ for (const directory of directories) {
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
+  const explanationsDir = path.join(datasetsDir, directory.name, 'explanations');
+  try {
+    const paperDirectories = await fs.readdir(explanationsDir, { withFileTypes: true });
+    for (const paperDirectory of paperDirectories.filter((entry) => entry.isDirectory())) {
+      const entries = await fs.readdir(path.join(explanationsDir, paperDirectory.name), { withFileTypes: true });
+      for (const entry of entries.filter((item) => item.isFile() && /\.ya?ml$/i.test(item.name))) {
+        const explanation = YAML.parse(await fs.readFile(path.join(explanationsDir, paperDirectory.name, entry.name), 'utf8'));
+        urls.add(explanation.url);
+      }
+    }
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
 }
 
 const failures = [];

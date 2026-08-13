@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import YAML from 'yaml';
-import { listRoadmaps, loadRoadmap, readStandalonePapers } from '../src/lib/data.ts';
+import { listRoadmaps, loadRoadmap, readStandaloneExplanations, readStandalonePapers } from '../src/lib/data.ts';
 
 const roadmap = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/roadmap.yaml', import.meta.url), 'utf8'));
 const { papers } = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/papers.yaml', import.meta.url), 'utf8'));
@@ -31,6 +31,14 @@ test('Prismer and AMAGO retain the reviewed institution attribution', () => {
   assert.deepEqual(papers.find((paper) => paper.id === 'amago').institutions.primary, ['ut-austin', 'nvidia']);
 });
 
+test('legacy blog links are exposed as explanation lists', () => {
+  const legacyPaper = papers.find((paper) => paper.links.blog);
+  const normalizedPaper = embodiedRoadmap.papers.find((paper) => paper.id === legacyPaper.id);
+  assert.ok(Array.isArray(normalizedPaper.links.explanations));
+  assert.ok(normalizedPaper.links.explanations.some((explanation) => explanation.url === legacyPaper.links.blog));
+  assert.equal(normalizedPaper.links.blog, undefined);
+});
+
 test('standalone paper files can be loaded without editing the aggregate file', async (context) => {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'research-roadmaps-'));
   context.after(() => fs.rm(directory, { recursive: true, force: true }));
@@ -38,6 +46,15 @@ test('standalone paper files can be loaded without editing the aggregate file', 
   await fs.writeFile(path.join(directory, 'papers', 'example-paper.yaml'), YAML.stringify({ id: 'example-paper', title: 'Example Paper' }));
 
   assert.deepEqual(await readStandalonePapers(directory), [{ id: 'example-paper', title: 'Example Paper' }]);
+});
+
+test('standalone explanation files can be appended independently', async (context) => {
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'research-roadmaps-explanation-'));
+  context.after(() => fs.rm(directory, { recursive: true, force: true }));
+  await fs.mkdir(path.join(directory, 'explanations', 'example-paper'), { recursive: true });
+  const explanation = { id: 'example-guide', paperId: 'example-paper', title: 'Example Guide', url: 'https://example.org/guide' };
+  await fs.writeFile(path.join(directory, 'explanations', 'example-paper', 'example-guide.yaml'), YAML.stringify(explanation));
+  assert.deepEqual(await readStandaloneExplanations(directory), [explanation]);
 });
 
 test('the catalogue includes active and empty research domains', async () => {

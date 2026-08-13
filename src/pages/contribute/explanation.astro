@@ -1,0 +1,119 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { listRoadmaps } from '@/lib/data';
+
+const roadmaps = (await listRoadmaps()).filter((roadmap) => roadmap.kind === 'full' && roadmap.papers.length > 0);
+const contributionDomains = roadmaps.map((roadmap) => ({
+  id: roadmap.id,
+  name: roadmap.name,
+  papers: roadmap.papers.map((paper) => ({
+    id: paper.id,
+    title: paper.title,
+    explanations: paper.links.explanations || []
+  }))
+}));
+const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.com/XiaoQiangSHI/research-roadmaps';
+---
+
+<BaseLayout title="贡献论文讲解 · Open Research Roadmaps" description="为已收录论文贡献一条高质量讲解链接。">
+  <header class="hero shell">
+    <p>EXPLANATION CONTRIBUTION</p>
+    <h1>贡献一条论文讲解</h1>
+    <div>选择已收录论文，填写讲解标题和链接。每条讲解独立保存，其他贡献者可以继续追加自己认可的优质内容。</div>
+  </header>
+  <main class="layout shell">
+    <form id="explanation-form" novalidate>
+      <section>
+        <h2>选择论文</h2>
+        <label><span>研究领域</span><select id="domain" required>{roadmaps.map((roadmap) => <option value={roadmap.id}>{roadmap.name}</option>)}</select></label>
+        <label><span>论文</span><select id="paper" required></select></label>
+      </section>
+      <section>
+        <h2>讲解信息</h2>
+        <label><span>显示标题</span><input id="explanation-title" required minlength="2" placeholder="例如：作者名 · 深入解读" /></label>
+        <label><span>讲解链接</span><input id="explanation-url" type="url" required placeholder="https://..." /></label>
+        <label><span>数据 ID</span><input id="explanation-id" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" /></label>
+        <p>标题应帮助读者识别内容来源，例如“作者 / 网站名 · 文章标题”。链接需要公开可访问，并应当包含实质性的论文解释。</p>
+      </section>
+    </form>
+    <aside>
+      <strong id="status">等待填写</strong>
+      <div id="errors"></div>
+      <pre><code id="preview"># 填写后生成 YAML</code></pre>
+      <a id="github-submit" href="#" aria-disabled="true">在 GitHub 提交 <span>↗</span></a>
+      <p>GitHub 会创建一个独立讲解文件。提交 Pull Request 后，维护者只需审核链接质量，不会改动原论文数据。</p>
+    </aside>
+  </main>
+</BaseLayout>
+
+<script is:inline define:vars={{ contributionDomains, repositoryUrl }}>
+  const form = document.getElementById('explanation-form');
+  const domainSelect = document.getElementById('domain');
+  const paperSelect = document.getElementById('paper');
+  const titleInput = document.getElementById('explanation-title');
+  const urlInput = document.getElementById('explanation-url');
+  const idInput = document.getElementById('explanation-id');
+  const preview = document.getElementById('preview');
+  const errorsElement = document.getElementById('errors');
+  const submit = document.getElementById('github-submit');
+  let idEdited = false;
+  const quote = (value) => JSON.stringify(String(value).trim());
+  const slugify = (value) => value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64);
+  const shortHash = (value) => [...String(value)].reduce((hash, character) => ((hash * 31) + character.codePointAt(0)) >>> 0, 2166136261).toString(36);
+
+  function activeDomain() { return contributionDomains.find((domain) => domain.id === domainSelect.value) || contributionDomains[0]; }
+  function activePaper() { return activeDomain().papers.find((paper) => paper.id === paperSelect.value); }
+  function renderPapers(requestedPaper) {
+    paperSelect.innerHTML = activeDomain().papers.map((paper) => `<option value="${paper.id}">${paper.title}</option>`).join('');
+    if (requestedPaper && activeDomain().papers.some((paper) => paper.id === requestedPaper)) paperSelect.value = requestedPaper;
+    update();
+  }
+  function update() {
+    if (!idEdited) idInput.value = slugify(titleInput.value) || (titleInput.value ? `explanation-${shortHash(`${titleInput.value}|${urlInput.value}`)}` : '');
+    const paper = activePaper();
+    const yaml = `id: ${quote(idInput.value)}\npaperId: ${quote(paper?.id || '')}\ntitle: ${quote(titleInput.value)}\nurl: ${quote(urlInput.value)}\n`;
+    preview.textContent = yaml;
+    const errors = [];
+    for (const field of form.querySelectorAll('input, select')) if (!field.checkValidity()) errors.push(`${field.closest('label')?.querySelector('span')?.textContent || '字段'}格式不完整`);
+    if (paper?.explanations.some((explanation) => explanation.url === urlInput.value.trim())) errors.push('这个讲解链接已经存在');
+    errorsElement.innerHTML = errors.map((error) => `<p>${error}</p>`).join('');
+    const ready = errors.length === 0;
+    document.getElementById('status').textContent = ready ? '可以提交' : '继续填写';
+    submit.setAttribute('aria-disabled', String(!ready));
+    if (ready) {
+      const filename = `datasets/${activeDomain().id}/explanations/${paper.id}/${idInput.value}.yaml`;
+      submit.href = `${repositoryUrl}/new/main?filename=${encodeURIComponent(filename)}&value=${encodeURIComponent(yaml)}&message=${encodeURIComponent(`Add explanation for ${paper.title}`)}`;
+    } else submit.href = '#';
+  }
+  const parameters = new URLSearchParams(location.search);
+  const requestedDomain = parameters.get('domain');
+  if (requestedDomain && contributionDomains.some((domain) => domain.id === requestedDomain)) domainSelect.value = requestedDomain;
+  renderPapers(parameters.get('paper'));
+  domainSelect.addEventListener('change', () => { renderPapers(); history.replaceState(null, '', `${location.pathname}?domain=${encodeURIComponent(domainSelect.value)}&paper=${encodeURIComponent(paperSelect.value)}`); });
+  paperSelect.addEventListener('change', () => { history.replaceState(null, '', `${location.pathname}?domain=${encodeURIComponent(domainSelect.value)}&paper=${encodeURIComponent(paperSelect.value)}`); update(); });
+  titleInput.addEventListener('input', update);
+  urlInput.addEventListener('input', update);
+  idInput.addEventListener('input', () => { idEdited = true; update(); });
+  submit.addEventListener('click', (event) => { if (submit.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+</script>
+
+<style>
+  .hero { padding: 64px 0 34px; }
+  .hero > p { margin: 0 0 10px; color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .13em; }
+  .hero h1 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: clamp(43px, 7vw, 72px); font-weight: 500; line-height: 1; }
+  .hero > div { max-width: 800px; margin-top: 17px; color: var(--muted); line-height: 1.75; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(330px, .8fr); gap: 18px; align-items: start; padding-bottom: 80px; }
+  form { display: grid; gap: 14px; }
+  form section, aside { padding: 25px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 88%, transparent); }
+  h2 { margin: 0 0 18px; font-family: Georgia, "Songti SC", serif; font-size: 24px; font-weight: 500; }
+  label { display: grid; gap: 7px; margin-top: 14px; font-size: 12px; font-weight: 750; }
+  input, select { min-height: 44px; padding: 0 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; }
+  form p, aside p { color: var(--muted); font-size: 11px; line-height: 1.65; }
+  aside { position: sticky; top: 16px; }
+  aside > strong { font-size: 13px; }
+  :global(#errors p) { margin: 8px 0 0; padding: 7px 9px; border-radius: 7px; background: color-mix(in srgb, #b74532 7%, var(--surface)); color: #8f392b; font-size: 10px; }
+  pre { max-height: 360px; margin: 16px 0 12px; padding: 15px; overflow: auto; border-radius: 12px; background: #222925; color: #e7e9e4; font-size: 11px; line-height: 1.55; white-space: pre-wrap; }
+  aside > a { display: flex; justify-content: space-between; padding: 13px; border-radius: 10px; background: var(--accent); color: var(--surface); font-size: 12px; font-weight: 800; text-decoration: none; }
+  aside > a[aria-disabled='true'] { background: var(--line-strong); cursor: not-allowed; }
+  @media (max-width: 850px) { .layout { grid-template-columns: 1fr; } aside { position: static; } }
+</style>
