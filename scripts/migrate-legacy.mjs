@@ -162,7 +162,7 @@ const roadmap = {
   tracks,
   editorial: {
     note: '每篇论文只指定一条主线路；路线归属是便于理解技术演进的编辑判断。',
-    maintainers: ['Open Research Roadmaps maintainers']
+    maintainers: ['XiaoQiangSHI']
   }
 };
 

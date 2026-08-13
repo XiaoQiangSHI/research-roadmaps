@@ -1,8 +1,21 @@
 {
   "name": "research-roadmaps",
   "version": "0.1.0",
+  "description": "Data-driven, reviewable interactive roadmaps for research fields.",
   "private": true,
+  "license": "Apache-2.0",
+  "homepage": "https://xiaoqiangshi.github.io/research-roadmaps/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoQiangSHI/research-roadmaps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoQiangSHI/research-roadmaps/issues"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "npm run validate && astro build",

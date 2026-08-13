@@ -1,0 +1,63 @@
+name: 新领域提案
+description: 提议建立一个新的研究领域路线图并招募维护者
+title: "[Domain] "
+body:
+  - type: input
+    id: domain_name
+    attributes:
+      label: 领域名称
+      placeholder: 例如 3D 生成、世界模型或强化学习
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 领域边界
+      description: 说明包含什么、不包含什么，以及与相邻领域的区别
+    validations:
+      required: true
+  - type: textarea
+    id: tracks
+    attributes:
+      label: 建议的发展线路
+      description: 建议列出 3–8 条线路，并说明每条线路长期解决的问题
+    validations:
+      required: true
+  - type: textarea
+    id: papers
+    attributes:
+      label: 初始代表论文
+      description: 每条线路列出若干代表论文与链接
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: 收录与排除标准
+      description: 说明如何判断工作是否应进入该路线图
+    validations:
+      required: true
+  - type: dropdown
+    id: maintenance
+    attributes:
+      label: 维护意愿
+      options:
+        - 我愿意成为领域维护者
+        - 我愿意提供首批数据，但需要共同维护者
+        - 我只提出建议，暂时无法维护
+    validations:
+      required: true
+  - type: textarea
+    id: background
+    attributes:
+      label: 相关背景与资源
+      description: 可说明你的研究背景、已有文献列表或博客索引；不要求正式资历
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我理解路线图需要持续维护，而不是一次性论文列表
+          required: true
+        - label: 我已搜索现有路线图和提案，未发现重复领域
+          required: true

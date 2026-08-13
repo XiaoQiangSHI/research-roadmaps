@@ -1,0 +1,51 @@
+name: 数据纠错
+description: 修正论文日期、机构、链接、文字或路线归属
+title: "[Correction] "
+body:
+  - type: dropdown
+    id: correction_type
+    attributes:
+      label: 问题类型
+      options:
+        - 论文日期或标识
+        - 机构归属
+        - 论文、项目、代码或博客链接
+        - 主要工作、问题或解决方案描述
+        - 路线或阶段归属
+        - 页面显示问题
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: 涉及的论文、路线或页面
+      placeholder: 例如 AMAGO、policy 或具体页面 URL
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前内容或行为
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 建议如何修改
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 依据
+      description: 事实纠错请提供论文、官方项目页或官方仓库；路线调整请解释主要贡献
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issues，未发现相同问题
+          required: true

@@ -1,0 +1,74 @@
+name: 推荐论文
+description: 推荐一篇有助于解释研究路线演进的论文或技术工作
+title: "[Paper] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢推荐。我们关注论文如何推进一条研究路线，而不只是论文热度。
+  - type: input
+    id: title
+    attributes:
+      label: 论文标题
+      placeholder: 请输入完整英文标题
+    validations:
+      required: true
+  - type: input
+    id: paper_url
+    attributes:
+      label: 论文链接
+      description: 优先提供 arXiv、会议或作者公开页面
+      placeholder: https://arxiv.org/abs/...
+    validations:
+      required: true
+  - type: input
+    id: project_url
+    attributes:
+      label: 项目、代码或中文详解链接
+      description: 可选，多个链接可以用空格分隔
+  - type: dropdown
+    id: domain
+    attributes:
+      label: 建议加入的路线图
+      options:
+        - 具身智能
+        - 视觉—语言—动作模型专题
+        - 尚未建立的新领域
+        - 不确定
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 它解决了什么问题？
+      description: 请用自己的语言说明具体问题及其重要性
+    validations:
+      required: true
+  - type: textarea
+    id: contribution
+    attributes:
+      label: 它相对已有工作推进了什么？
+      description: 说明关键方案、差异和可能所属的发展线路
+    validations:
+      required: true
+  - type: textarea
+    id: institutions
+    attributes:
+      label: 机构与依据
+      description: 列出主要机构；若存在联合机构或公司合作，请附论文中的依据
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有数据和 Issues，未发现相同论文
+          required: true
+        - label: 我与该论文存在作者、实验室或公司关系时，已在补充说明中披露
+          required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 补充说明
+      description: 可填写影响、争议、利益关系或其他背景
