@@ -111,30 +111,6 @@ datasets/_shared/institutions.yaml  # 各领域共用的机构名称与徽标
 
 完整领域使用 `kind: full`；专题使用 `kind: view` 引用现有领域中的若干线路，因此不会复制论文事实。
 
-## 本地开发
-
-需要 Node.js 22 或更高版本。
-
-```bash
-git clone https://github.com/XiaoQiangSHI/research-roadmaps.git
-cd research-roadmaps
-npm install
-npm run dev
-```
-
-提交前运行：
-
-```bash
-npm run check
-npm run validate
-npm test
-npm run build
-npm run test:e2e
-npm run check:links
-```
-
-`check:links` 会访问外部论文来源，适合在网络可用时运行。构建后请使用 `npm run preview` 预览，不要直接双击 `dist/index.html`。
-
 ## 项目治理
 
 - 项目发起人与总维护者：[@XiaoQiangSHI](https://github.com/XiaoQiangSHI)
@@ -143,10 +119,6 @@ npm run check:links
 - 事实争议以一手来源为准；路线争议优先保留可解释性，并在归类理由中记录判断依据。
 
 完整决策方式见 [GOVERNANCE.md](GOVERNANCE.md)。
-
-## 技术栈
-
-Astro、TypeScript、YAML、JSON Schema、Ajv、Node Test、Playwright 和 GitHub Pages。站点是纯静态生成，不需要数据库或后端服务。
 
 ## 许可证与引用
 
