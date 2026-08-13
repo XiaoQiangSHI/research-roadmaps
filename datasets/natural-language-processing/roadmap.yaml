@@ -2,6 +2,15 @@ id: natural-language-processing
 name: 自然语言处理研究路线图
 description: 梳理语言表示、结构化理解、生成与交互、多语言和知识密集型 NLP 的技术演进。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 语言表示、信息抽取、文本生成、对话、多语言和低资源语言处理任务与方法。
+    - 主要贡献由语言任务定义、语言现象建模或 NLP 专项评测体现的工作。
+  exclude:
+    - 以大规模基础语言模型训练、通用对齐或推理能力为核心的工作归入大语言模型。
+    - 同时以视觉、音频等非文本模态为核心输入的工作归入多模态人工智能。
+  relatedDomains: [large-language-models, multimodal-ai, speech-audio, graph-learning]
 period: { start: 2013-01-01, end: 2026-12-31 }
 tracks:
   - id: representation
@@ -12,7 +21,7 @@ tracks:
     evolution:
       - { id: representation-01, label: 分布式词表示 }
       - { id: representation-02, label: 上下文化表示与预训练 }
-      - { id: representation-03, label: 通用生成式语言表示 }
+      - { id: representation-03, label: 任务迁移与领域适配表示 }
   - id: understanding
     index: "02"
     name: 结构化理解与信息抽取
@@ -24,15 +33,24 @@ tracks:
       - { id: understanding-03, label: 指令化开放信息抽取 }
   - id: generation
     index: "03"
-    name: 条件生成与人机交互
+    name: 语言生成与事实忠实性
     color: "#6a63a8"
-    problem: 如何生成忠实、连贯、可控且能维持多轮上下文的自然语言输出。
+    problem: 如何生成连贯、可控且有来源依据的文本，并减少事实错误、遗漏和输入不一致。
     evolution:
       - { id: generation-01, label: 神经序列到序列生成 }
       - { id: generation-02, label: 预训练生成与可控解码 }
-      - { id: generation-03, label: 对话对齐与事实约束 }
-  - id: multilingual
+      - { id: generation-03, label: 检索约束与事实一致性 }
+  - id: dialogue
     index: "04"
+    name: 对话与交互式语言处理
+    color: "#ab7a27"
+    problem: 如何在多轮交互中追踪意图、上下文和用户状态，并产生一致、可控和适应用户的响应。
+    evolution:
+      - { id: dialogue-01, label: 任务型对话状态追踪 }
+      - { id: dialogue-02, label: 开放域神经对话 }
+      - { id: dialogue-03, label: 知识增强与个性化交互 }
+  - id: multilingual
+    index: "05"
     name: 多语言、跨语言与低资源学习
     color: "#3473a0"
     problem: 如何缓解语言资源不均衡，让模型跨语言迁移并覆盖形态和书写系统差异。

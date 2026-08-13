@@ -52,3 +52,24 @@ test('empty domains inherit shared institutions for first-paper contributions', 
   assert.equal(computerVision.papers.length, 0);
   assert.ok(computerVision.institutions.some((institution) => institution.id === 'nvidia'));
 });
+
+test('every full domain declares a reviewable category and boundary', async () => {
+  const roadmaps = await listRoadmaps();
+  const categories = new Set(roadmaps.map((item) => item.category));
+  assert.deepEqual(categories, new Set(['task-domain', 'method-system', 'cross-cutting']));
+  for (const item of roadmaps) {
+    assert.ok(item.scope.include.length > 0, `${item.id} has no inclusion boundary`);
+    assert.ok(item.scope.exclude.length > 0, `${item.id} has no exclusion boundary`);
+    assert.ok(item.scope.relatedDomains.every((id) => roadmaps.some((candidate) => candidate.id === id)), `${item.id} has an unknown related domain`);
+  }
+});
+
+test('revised empty domains separate previously mixed research problems', async () => {
+  const largeLanguageModels = await loadRoadmap('large-language-models');
+  assert.ok(largeLanguageModels.tracks.some((track) => track.id === 'knowledge'));
+  assert.ok(largeLanguageModels.tracks.some((track) => track.id === 'adaptation'));
+  const reinforcementLearning = await loadRoadmap('reinforcement-learning');
+  assert.ok(reinforcementLearning.tracks.some((track) => track.id === 'offline'));
+  assert.ok(reinforcementLearning.tracks.some((track) => track.id === 'imitation'));
+  assert.ok(reinforcementLearning.tracks.some((track) => track.id === 'exploration'));
+});

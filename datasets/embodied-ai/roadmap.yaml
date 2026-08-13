@@ -2,6 +2,15 @@ id: embodied-ai
 name: 具身智能论文发展路线图
 description: 沿时间轴梳理具身智能的数据、策略、世界模型、控制、仿真迁移、智能体与开放世界研究线路。
 kind: full
+category: cross-cutting
+scope:
+  include:
+    - 面向物理环境的通用感知—语言—动作学习、具身世界模型与开放任务智能体。
+    - 以数据驱动方式提升跨任务、跨本体、长时交互和真实部署泛化的机器人学习工作。
+  exclude:
+    - 以几何定位、经典运动规划、反馈控制或接触力学为主要贡献的工作归入机器人学。
+    - 不涉及物理环境交互闭环的通用语言智能体工作归入 AI 智能体。
+  relatedDomains: [robotics, reinforcement-learning, multimodal-ai, ai-agents]
 period:
   start: 2022-01-01
   end: 2026-08-01

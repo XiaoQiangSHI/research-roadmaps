@@ -2,6 +2,15 @@ id: multimodal-ai
 name: 多模态人工智能研究路线图
 description: 梳理跨模态表征、视觉语言理解、统一生成和多模态推理的研究发展线路。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 两种及以上模态之间的表征对齐、联合理解、交互推理和统一内容生成。
+    - 主要贡献依赖跨模态信息互补或模态间转换，无法由单一模态完整定义的工作。
+  exclude:
+    - 只改进单一视觉、文本或音频任务的工作归入对应单模态领域。
+    - 主要贡献是新的通用生成建模机制、且跨模态仅作为实验场景时归入生成模型。
+  relatedDomains: [computer-vision, natural-language-processing, speech-audio, generative-models, embodied-ai]
 period: { start: 2015-01-01, end: 2026-12-31 }
 tracks:
   - id: alignment

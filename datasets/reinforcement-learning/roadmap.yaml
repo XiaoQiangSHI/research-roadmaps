@@ -1,7 +1,16 @@
 id: reinforcement-learning
 name: 强化学习研究路线图
-description: 梳理价值与策略学习、模型式方法、离线强化学习和多智能体决策的核心发展线路。
+description: 梳理策略优化、模型式方法、探索、离线与模仿学习以及多智能体决策的发展线路。
 kind: full
+category: method-system
+scope:
+  include:
+    - 通用序贯决策中的价值估计、策略优化、探索、模型学习、离线学习、模仿学习和多智能体学习算法。
+    - 主要贡献可跨任务或环境复用，并以回报、样本效率、稳定性或决策泛化衡量的工作。
+  exclude:
+    - 主要贡献是语言工具智能体、机器人系统或具身任务设计的工作归入相应应用领域。
+    - 不涉及行动和反馈闭环的纯预测或生成建模工作归入对应方法领域。
+  relatedDomains: [ai-agents, embodied-ai, robotics, ai-for-science]
 period: { start: 2013-01-01, end: 2026-12-31 }
 tracks:
   - id: value-policy
@@ -22,24 +31,42 @@ tracks:
       - { id: model-based-01, label: 学习动力学与短视规划 }
       - { id: model-based-02, label: 潜空间世界模型 }
       - { id: model-based-03, label: 生成式规划与大规模预训练 }
-  - id: offline
+  - id: exploration
     index: "03"
-    name: 离线、模仿与数据驱动决策
+    name: 探索与长期信用分配
     color: "#6a63a8"
-    problem: 如何仅从固定数据学习策略，并处理分布外动作、次优示范和数据覆盖不足。
+    problem: 如何在稀疏奖励和长时任务中有效探索，并把延迟回报分配给真正关键的状态与行动。
     evolution:
-      - { id: offline-01, label: 模仿学习与逆强化学习 }
-      - { id: offline-02, label: 保守离线价值学习 }
-      - { id: offline-03, label: 序列建模与离线到在线适应 }
-  - id: multi-agent
+      - { id: exploration-01, label: 内在奖励与计数探索 }
+      - { id: exploration-02, label: 分层强化学习与技能发现 }
+      - { id: exploration-03, label: 长时记忆与目标条件探索 }
+  - id: offline
     index: "04"
-    name: 多智能体与通用决策
+    name: 离线强化学习
     color: "#3473a0"
+    problem: 如何仅从固定数据学习优于行为策略的决策，并控制分布外动作造成的价值高估和部署风险。
+    evolution:
+      - { id: offline-01, label: 批量强化学习与分布约束 }
+      - { id: offline-02, label: 保守价值估计与优势加权 }
+      - { id: offline-03, label: 序列决策建模与离线到在线适应 }
+  - id: imitation
+    index: "05"
+    name: 模仿学习与偏好学习
+    color: "#ab7a27"
+    problem: 如何从示范、比较或偏好中恢复有效行为，并处理示范不足、分布偏移和奖励难以手工定义的问题。
+    evolution:
+      - { id: imitation-01, label: 行为克隆与逆强化学习 }
+      - { id: imitation-02, label: 对抗模仿与偏好奖励 }
+      - { id: imitation-03, label: 大规模示范预训练与交互修正 }
+  - id: multi-agent
+    index: "06"
+    name: 多智能体强化学习
+    color: "#526b3d"
     problem: 如何在合作或竞争环境中处理非平稳性、信用分配、通信和跨任务泛化。
     evolution:
       - { id: multi-agent-01, label: 集中训练分散执行 }
       - { id: multi-agent-02, label: 通信与群体博弈 }
-      - { id: multi-agent-03, label: 通用智能体与跨环境迁移 }
+      - { id: multi-agent-03, label: 群体泛化与开放式交互 }
 editorial:
   note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
   maintainers: [XiaoQiangSHI]

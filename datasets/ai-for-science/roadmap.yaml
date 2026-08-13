@@ -2,6 +2,15 @@ id: ai-for-science
 name: AI for Science 研究路线图
 description: 梳理人工智能在科学表征、结构预测、仿真加速和闭环发现中的发展线路。
 kind: full
+category: cross-cutting
+scope:
+  include:
+    - 以科学预测、结构设计、物理仿真、实验选择或闭环发现为主要目标的人工智能工作。
+    - 核心价值需通过科学有效性、物理一致性、实验结果或发现效率而非仅通用机器学习指标体现。
+  exclude:
+    - 只提出通用图学习或生成算法、科学数据仅作为基准的工作归入对应方法领域。
+    - 一般工业推荐、商业预测或不涉及科学知识与实验验证的应用不纳入本领域。
+  relatedDomains: [graph-learning, generative-models, reinforcement-learning, robotics]
 period: { start: 2015-01-01, end: 2026-12-31 }
 tracks:
   - id: scientific-representation

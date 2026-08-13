@@ -2,6 +2,13 @@ id: example-domain
 name: 示例研究领域
 description: 用一句话说明该领域的研究对象、路线边界与时间范围。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 明确说明本领域主要收录的研究问题。
+  exclude:
+    - 明确说明容易混淆但应归入相邻领域的问题。
+  relatedDomains: []
 period:
   start: 2020-01-01
   end: 2026-12-31

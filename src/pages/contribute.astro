@@ -6,6 +6,8 @@ const roadmaps = (await listRoadmaps()).filter((roadmap) => roadmap.kind === 'fu
 const contributionDomains = roadmaps.map((roadmap) => ({
   id: roadmap.id,
   name: roadmap.name,
+  category: roadmap.category,
+  scope: roadmap.scope,
   tracks: roadmap.tracks,
   institutions: roadmap.institutions,
   papers: roadmap.papers.map((paper) => ({ id: paper.id, title: paper.title, arxiv: paper.arxiv }))
@@ -31,6 +33,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
       <section class="form-section domain-section">
         <div class="section-heading"><span>00</span><div><h2>选择研究领域</h2><p>从领域页面进入时会自动选中；你也可以在这里切换。</p></div></div>
         <label><span>论文所属领域 <em>必填</em></span><select id="domain" name="domain" required>{roadmaps.map((roadmap) => <option value={roadmap.id}>{roadmap.name} · {roadmap.papers.length ? `${roadmap.papers.length} 篇` : '等待首篇论文'}</option>)}</select></label>
+        <div id="domain-guidance" class="domain-guidance"></div>
       </section>
 
       <section class="form-section">
@@ -126,6 +129,11 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   let existingPaperIds = new Set();
   let existingPaperTitles = new Set();
   let existingArxivIds = new Set();
+  const categoryLabels = { 'task-domain': '任务与研究对象', 'method-system': '方法与系统', 'cross-cutting': '横向与应用领域' };
+  const paperOwners = new Map();
+  for (const domain of contributionDomains) {
+    for (const paper of domain.papers) paperOwners.set(paper.arxiv, domain);
+  }
   const selectedInstitutions = { primary: [], collaborators: [] };
   const touchedFields = new Set();
   const touchedInstitutionGroups = new Set();
@@ -181,6 +189,8 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     if (existingPaperIds.has(value('paper-id')) && (!visibleOnly || touchedFields.has(document.getElementById('paper-id')))) errors.push('数据 ID 已存在，请确认是否重复收录');
     if (existingPaperTitles.has(value('title').toLowerCase()) && (!visibleOnly || touchedFields.has(document.getElementById('title')))) errors.push('论文标题已存在，请确认是否重复收录');
     if (existingArxivIds.has(value('arxiv')) && (!visibleOnly || touchedFields.has(document.getElementById('arxiv')))) errors.push('arXiv 编号已存在，请确认是否重复收录');
+    const owningDomain = paperOwners.get(value('arxiv'));
+    if (owningDomain && owningDomain.id !== activeDomain.id && (!visibleOnly || touchedFields.has(document.getElementById('arxiv')))) errors.push(`该论文已收录在“${owningDomain.name}”，请不要跨领域重复提交`);
     const overlaps = selectedInstitutions.primary.filter((id) => selectedInstitutions.collaborators.includes(id));
     if (overlaps.length && (!visibleOnly || touchedInstitutionGroups.size > 0)) errors.push('同一机构不能同时作为主导和合作机构');
     if (checkedValues('relatedTracks').includes(value('track')) && (!visibleOnly || touchedFields.has(document.getElementById('track')))) errors.push('主线路不需要重复加入相关线路');
@@ -222,6 +232,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     activeDomain = contributionDomains.find((domain) => domain.id === domainId) || contributionDomains[0];
     domainSelect.value = activeDomain.id;
     document.getElementById('active-domain-name').textContent = activeDomain.name;
+    document.getElementById('domain-guidance').innerHTML = `<strong>${escapeHtml(categoryLabels[activeDomain.category] || '')}</strong><div><span>适合：</span>${activeDomain.scope.include.map((item) => `<p>${escapeHtml(item)}</p>`).join('')}</div><div><span>不适合：</span>${activeDomain.scope.exclude.map((item) => `<p>${escapeHtml(item)}</p>`).join('')}</div>`;
     existingPaperIds = new Set(activeDomain.papers.map((paper) => paper.id));
     existingPaperTitles = new Set(activeDomain.papers.map((paper) => paper.title.toLowerCase()));
     existingArxivIds = new Set(activeDomain.papers.map((paper) => paper.arxiv));
@@ -314,6 +325,11 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   .form-section, .submission-panel { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 88%, transparent); }
   .form-section { padding: 25px; }
   .domain-section { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); background: color-mix(in srgb, var(--accent) 5%, var(--surface)); }
+  .domain-guidance { display: grid; gap: 10px; margin-top: 14px; padding: 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+  :global(.domain-guidance > strong) { color: var(--accent); font-size: 10px; letter-spacing: .08em; }
+  :global(.domain-guidance > div) { display: grid; grid-template-columns: 55px 1fr; gap: 3px 8px; }
+  :global(.domain-guidance span) { grid-row: 1 / span 8; color: var(--muted); font-size: 10px; font-weight: 800; }
+  :global(.domain-guidance p) { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
   .section-heading { display: grid; grid-template-columns: 28px 1fr; gap: 11px; margin-bottom: 22px; }
   .section-heading > span { padding-top: 3px; color: var(--accent); font-family: Georgia, serif; font-size: 12px; }
   .section-heading h2 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: 24px; font-weight: 500; }

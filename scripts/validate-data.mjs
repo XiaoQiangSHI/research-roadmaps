@@ -125,6 +125,23 @@ for (const view of viewDatasets) {
   for (const track of view.includeTracks) if (!trackIds.has(track)) errors.push(`${view.id}: source ${view.source} has no track ${track}`);
 }
 
+for (const [datasetId, dataset] of fullDatasets) {
+  for (const relatedDomain of dataset.roadmap.scope.relatedDomains) {
+    if (relatedDomain === datasetId) errors.push(`${datasetId}: scope.relatedDomains cannot reference itself`);
+    if (!fullDatasets.has(relatedDomain)) errors.push(`${datasetId}: unknown related domain ${relatedDomain}`);
+    else if (!fullDatasets.get(relatedDomain).roadmap.scope.relatedDomains.includes(datasetId)) errors.push(`${datasetId}: related domain ${relatedDomain} must link back to ${datasetId}`);
+  }
+}
+
+const papersByArxiv = new Map();
+for (const [datasetId, dataset] of fullDatasets) {
+  for (const paper of dataset.papers) {
+    const existingDomain = papersByArxiv.get(paper.arxiv);
+    if (existingDomain) errors.push(`${datasetId}/${paper.id}: arXiv ${paper.arxiv} already belongs to primary domain ${existingDomain}`);
+    else papersByArxiv.set(paper.arxiv, datasetId);
+  }
+}
+
 if (errors.length) {
   console.error(`Data validation failed with ${errors.length} error(s):`);
   errors.forEach((error) => console.error(`- ${error}`));

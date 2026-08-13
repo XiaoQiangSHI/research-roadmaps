@@ -2,6 +2,15 @@ id: computer-vision
 name: 计算机视觉研究路线图
 description: 梳理视觉识别、检测分割、三维视觉和视频理解的核心问题与方法演进。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 视觉识别、检测分割、三维重建和视频理解等视觉内部任务与通用视觉表征。
+    - 主要贡献可以仅依靠图像、视频或三维视觉数据定义和评价的工作。
+  exclude:
+    - 以视觉和语言之间的对齐、指令交互或跨模态推理为核心的工作归入多模态人工智能。
+    - 以机器人行动决策或物理交互闭环为核心的工作归入机器人学或具身智能。
+  relatedDomains: [multimodal-ai, robotics, generative-models]
 period: { start: 2012-01-01, end: 2026-12-31 }
 tracks:
   - id: recognition

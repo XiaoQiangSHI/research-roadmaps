@@ -2,6 +2,15 @@ id: ai-agents
 name: AI 智能体研究路线图
 description: 梳理自主智能体在规划、工具使用、记忆、自我改进和多智能体协作上的发展线路。
 kind: full
+category: method-system
+scope:
+  include:
+    - 面向数字环境的自主任务规划、工具调用、记忆、自我改进和多智能体协作系统。
+    - 核心贡献涉及模型与外部环境之间持续的观察、行动、反馈和状态管理闭环。
+  exclude:
+    - 只提升语言模型静态推理或函数调用能力、未形成长期执行闭环的工作归入大语言模型。
+    - 以物理机器人交互为核心的智能体工作归入具身智能。
+  relatedDomains: [large-language-models, embodied-ai, reinforcement-learning, trustworthy-ai]
 period: { start: 2022-01-01, end: 2026-12-31 }
 tracks:
   - id: planning
@@ -33,7 +42,7 @@ tracks:
       - { id: memory-03, label: 持续学习与可验证自我改进 }
   - id: multi-agent
     index: "04"
-    name: 多智能体协作与社会模拟
+    name: 多智能体协作与协调
     color: "#3473a0"
     problem: 如何让多个智能体有效分工、通信、达成共识并控制协作成本与级联错误。
     evolution:

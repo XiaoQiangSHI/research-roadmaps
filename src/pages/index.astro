@@ -4,37 +4,54 @@ import { listRoadmaps } from '@/lib/data';
 
 const roadmaps = await listRoadmaps();
 const base = import.meta.env.BASE_URL;
+const groups = [
+  { id: 'task-domain', name: '任务与研究对象', description: '按主要数据形态、任务对象或物理系统组织。' },
+  { id: 'method-system', name: '方法与系统', description: '按可跨任务复用的学习范式、模型机制和基础设施组织。' },
+  { id: 'cross-cutting', name: '横向与应用领域', description: '跨越多种任务与方法，以风险、真实交互或科学目标组织。' }
+];
 ---
 
 <BaseLayout title="Open Research Roadmaps" description="开放、可审查、数据驱动的研究发展路线图库。">
   <main class="shell">
-    <section class="roadmap-grid" aria-label="路线图列表">
-      {roadmaps.map((roadmap) => (
-        <a class="roadmap-card" href={`${base}roadmaps/${roadmap.id}/`}>
-          <span>{roadmap.kind === 'view' ? '专题视图' : roadmap.papers.length ? '持续维护' : '待社区共建'}</span>
-          <h2>{roadmap.name}</h2>
-          <p>{roadmap.description}</p>
-          <dl>
-            <div><dt>论文</dt><dd>{roadmap.papers.length}</dd></div>
-            <div><dt>线路</dt><dd>{roadmap.tracks.length}</dd></div>
-            <div><dt>时期</dt><dd>{roadmap.period.start.slice(0, 4)}—{roadmap.period.end.slice(0, 4)}</dd></div>
-          </dl>
-        </a>
+    <div class="catalogue" aria-label="路线图列表">
+      {groups.map((group) => (
+        <section class="domain-group">
+          <header><span>{String(groups.indexOf(group) + 1).padStart(2, '0')}</span><div><h2>{group.name}</h2><p>{group.description}</p></div></header>
+          <div class="roadmap-grid">
+            {roadmaps.filter((roadmap) => roadmap.category === group.id).map((roadmap) => (
+              <a class="roadmap-card" href={`${base}roadmaps/${roadmap.id}/`}>
+                <span>{roadmap.papers.length ? '持续维护' : '待社区共建'}</span>
+                <h3>{roadmap.name}</h3>
+                <p>{roadmap.description}</p>
+                <dl>
+                  <div><dt>论文</dt><dd>{roadmap.papers.length}</dd></div>
+                  <div><dt>线路</dt><dd>{roadmap.tracks.length}</dd></div>
+                  <div><dt>时期</dt><dd>{roadmap.period.start.slice(0, 4)}—{roadmap.period.end.slice(0, 4)}</dd></div>
+                </dl>
+              </a>
+            ))}
+          </div>
+        </section>
       ))}
-    </section>
+    </div>
   </main>
 </BaseLayout>
 
 <style>
-  .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 48px 0 80px; }
+  .catalogue { display: grid; gap: 52px; padding: 48px 0 80px; }
+  .domain-group > header { display: grid; grid-template-columns: 34px 1fr; gap: 12px; margin-bottom: 17px; }
+  .domain-group > header > span { padding-top: 5px; color: var(--accent); font-family: Georgia, serif; font-size: 12px; }
+  .domain-group > header h2 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: 31px; font-weight: 500; }
+  .domain-group > header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+  .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .roadmap-card { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 78%, transparent); color: inherit; text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
   .roadmap-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(31, 39, 35, .09); }
   .roadmap-card > span { color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .12em; }
-  h2 { margin: 12px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 30px; font-weight: 500; }
+  h3 { margin: 12px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 30px; font-weight: 500; }
   .roadmap-card > p { min-height: 54px; margin: 12px 0 0; color: var(--muted); line-height: 1.65; }
   dl { display: flex; gap: 26px; margin: 24px 0 0; }
   dl div { display: flex; gap: 6px; }
   dt { color: var(--muted); }
   dd { margin: 0; font-weight: 800; }
-  @media (max-width: 760px) { .roadmap-grid { grid-template-columns: 1fr; padding-top: 32px; } }
+  @media (max-width: 760px) { .catalogue { gap: 38px; padding-top: 32px; } .roadmap-grid { grid-template-columns: 1fr; } }
 </style>

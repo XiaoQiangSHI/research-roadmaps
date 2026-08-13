@@ -1,7 +1,17 @@
 id: large-language-models
 name: 大语言模型研究路线图
-description: 梳理语言模型在规模化预训练、对齐与推理、知识增强和高效部署上的主要发展线路。
+description: 梳理大语言模型在规模化预训练、对齐、推理、外部知识接入和高效适配上的主要发展线路。
 kind: full
+category: method-system
+scope:
+  include:
+    - 大规模基础语言模型的架构、预训练、对齐、通用推理、知识接入与参数高效适配。
+    - 主要贡献针对跨任务语言基础模型能力，而非某一个 NLP 任务或智能体应用的工作。
+  exclude:
+    - 以信息抽取、多语言、对话等具体语言任务为核心的工作归入自然语言处理。
+    - 面向生产服务的调度、缓存、编译和系统吞吐优化归入机器学习系统。
+    - 以环境交互、长期任务执行和外部工具闭环为核心的系统归入 AI 智能体。
+  relatedDomains: [natural-language-processing, ai-agents, machine-learning-systems, trustworthy-ai]
 period: { start: 2017-01-01, end: 2026-12-31 }
 tracks:
   - id: scaling
@@ -24,22 +34,31 @@ tracks:
       - { id: alignment-03, label: 可扩展监督与安全对齐 }
   - id: reasoning
     index: "03"
-    name: 推理、规划与工具使用
+    name: 推理与推理时计算
     color: "#6a63a8"
-    problem: 如何使语言模型完成可验证的多步推理、调用外部工具，并在长任务中保持计划一致性。
+    problem: 如何使语言模型完成可验证的多步推理，并通过过程监督、搜索和推理时计算提升复杂问题求解能力。
     evolution:
       - { id: reasoning-01, label: 提示诱导的逐步推理 }
-      - { id: reasoning-02, label: 工具调用与过程监督 }
+      - { id: reasoning-02, label: 过程监督、搜索与验证器 }
       - { id: reasoning-03, label: 推理时计算与可验证反馈 }
-  - id: knowledge-efficiency
+  - id: knowledge
     index: "04"
-    name: 知识增强与高效部署
+    name: 外部知识与事实依据
     color: "#3473a0"
-    problem: 如何更新和引用外部知识，同时降低训练、推理、微调和长上下文处理成本。
+    problem: 如何让模型检索、更新和引用外部知识，并降低参数知识过时、来源不明和事实幻觉。
     evolution:
-      - { id: knowledge-efficiency-01, label: 检索增强与参数高效微调 }
-      - { id: knowledge-efficiency-02, label: 量化、蒸馏与长上下文 }
-      - { id: knowledge-efficiency-03, label: 动态检索与端侧部署 }
+      - { id: knowledge-01, label: 稠密检索与生成结合 }
+      - { id: knowledge-02, label: 长上下文与引用式回答 }
+      - { id: knowledge-03, label: 动态检索、工具查询与知识更新 }
+  - id: adaptation
+    index: "05"
+    name: 高效适配与模型压缩
+    color: "#526b3d"
+    problem: 如何以较低训练和存储成本将基础模型适配到新任务与设备，同时尽量保持通用能力。
+    evolution:
+      - { id: adaptation-01, label: 蒸馏与低精度量化 }
+      - { id: adaptation-02, label: 参数高效微调 }
+      - { id: adaptation-03, label: 合并、稀疏化与端侧适配 }
 editorial:
   note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
   maintainers: [XiaoQiangSHI]

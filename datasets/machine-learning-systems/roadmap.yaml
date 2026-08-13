@@ -1,7 +1,16 @@
 id: machine-learning-systems
 name: 机器学习系统研究路线图
-description: 梳理分布式训练、推理服务、编译优化和数据系统对现代机器学习的基础支撑。
+description: 梳理分布式训练、推理服务、编译优化、训练数据系统和模型生命周期基础设施。
 kind: full
+category: method-system
+scope:
+  include:
+    - 机器学习训练、推理、编译、数据供给和模型生命周期管理所需的系统与基础设施。
+    - 主要贡献由吞吐、延迟、资源利用、可扩展性、可靠性或可复现性等系统指标衡量的工作。
+  exclude:
+    - 只提出新模型架构、训练目标或推理算法而缺少系统贡献的工作归入对应模型领域。
+    - 模型行为安全、公平和可解释性评测归入可信人工智能。
+  relatedDomains: [large-language-models, trustworthy-ai]
 period: { start: 2012-01-01, end: 2026-12-31 }
 tracks:
   - id: distributed-training
@@ -19,7 +28,7 @@ tracks:
     color: "#3e796d"
     problem: 如何在吞吐、延迟、成本、上下文长度和服务质量之间动态权衡。
     evolution:
-      - { id: inference-01, label: 算子融合与模型压缩 }
+      - { id: inference-01, label: 算子融合与运行时优化 }
       - { id: inference-02, label: 动态批处理与 KV 缓存管理 }
       - { id: inference-03, label: 推测解码与分布式推理编排 }
   - id: compiler
@@ -31,15 +40,24 @@ tracks:
       - { id: compiler-01, label: 计算图优化与自动微分 }
       - { id: compiler-02, label: 张量编译和自动调优 }
       - { id: compiler-03, label: 模型硬件协同与生成式内核优化 }
-  - id: data-mlops
+  - id: data-systems
     index: "04"
-    name: 数据系统、评测与 MLOps
+    name: 训练数据系统
     color: "#3473a0"
-    problem: 如何追踪数据与模型版本、持续评测、发现漂移，并让训练和部署结果可复现。
+    problem: 如何高效采集、清洗、去重、版本化和供给训练数据，并保证大规模数据流水线可追踪和可复现。
     evolution:
-      - { id: data-mlops-01, label: 数据流水线与实验追踪 }
-      - { id: data-mlops-02, label: 特征平台与持续部署 }
-      - { id: data-mlops-03, label: 大模型数据治理与在线评测 }
+      - { id: data-systems-01, label: 分布式数据流水线与特征平台 }
+      - { id: data-systems-02, label: 数据版本、质量与血缘追踪 }
+      - { id: data-systems-03, label: 大模型数据去重、筛选与持续供给 }
+  - id: lifecycle
+    index: "05"
+    name: 模型生命周期、观测与评测平台
+    color: "#526b3d"
+    problem: 如何管理实验到部署的模型版本，持续监测性能和漂移，并让线上行为、回退和评测过程可复现。
+    evolution:
+      - { id: lifecycle-01, label: 实验追踪与模型注册 }
+      - { id: lifecycle-02, label: 持续部署、监控与回退 }
+      - { id: lifecycle-03, label: 在线评测与大模型可观测性 }
 editorial:
   note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
   maintainers: [XiaoQiangSHI]

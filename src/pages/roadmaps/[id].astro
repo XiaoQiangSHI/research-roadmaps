@@ -10,11 +10,13 @@ export async function getStaticPaths() {
 const { roadmap } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const usedInstitutionIds = new Set(roadmap.papers.flatMap((paper) => [...paper.institutions.primary, ...(paper.institutions.collaborators || [])]));
+const categoryLabels = { 'task-domain': '任务与研究对象', 'method-system': '方法与系统', 'cross-cutting': '横向与应用领域' };
+const roadmaps = await Promise.all((roadmap.scope?.relatedDomains || []).map(loadRoadmap));
 ---
 
 <BaseLayout title={`${roadmap.name} · Open Research Roadmaps`} description={roadmap.description}>
   <header class="hero shell">
-    <p>{roadmap.kind === 'view' ? 'CURATED VIEW' : 'RESEARCH DOMAIN'} · {roadmap.period.start.slice(0, 4)}—{roadmap.period.end.slice(0, 4)}</p>
+    <p>{roadmap.category ? categoryLabels[roadmap.category] : '专题视图'} · {roadmap.period.start.slice(0, 4)}—{roadmap.period.end.slice(0, 4)}</p>
     <h1>{roadmap.name}</h1>
     <div>{roadmap.description}</div>
     <a class="contribute-button" href={`${base}contribute/?domain=${roadmap.id}`}>贡献论文 <span aria-hidden="true">↗</span></a>
@@ -31,6 +33,16 @@ const usedInstitutionIds = new Set(roadmap.papers.flatMap((paper) => [...paper.i
         <h2>路线骨架已经建立，等待第一篇论文</h2>
         <p>下面的线路用于启动社区讨论，并非已经定稿。你可以贡献代表论文，也可以在 Pull Request 中建议调整问题定义和演进阶段。</p>
         <a href={`${base}contribute/?domain=${roadmap.id}`}>贡献第一篇论文</a>
+      </section>
+    )}
+    {roadmap.scope && (
+      <section class="scope-card" aria-labelledby="scope-title">
+        <header><span>DOMAIN BOUNDARY</span><h2 id="scope-title">这个领域收录什么</h2><p>领域之间允许交叉，但每篇论文应按核心问题选择一个主领域，避免重复维护事实。</p></header>
+        <div class="scope-columns">
+          <section><h3>收录</h3><ul>{roadmap.scope.include.map((item) => <li>{item}</li>)}</ul></section>
+          <section><h3>不收录</h3><ul>{roadmap.scope.exclude.map((item) => <li>{item}</li>)}</ul></section>
+        </div>
+        {roadmaps.length > 0 && <nav aria-label="相邻领域"><span>相邻领域</span>{roadmaps.map((related) => <a href={`${base}roadmaps/${related.id}/`}>{related.name}</a>)}</nav>}
       </section>
     )}
     <RoadmapTimeline roadmap={roadmap} />
@@ -56,5 +68,16 @@ const usedInstitutionIds = new Set(roadmap.papers.flatMap((paper) => [...paper.i
   .empty-state h2 { margin: 10px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 28px; font-weight: 500; }
   .empty-state p { max-width: 800px; margin: 10px 0 0; color: var(--muted); line-height: 1.7; }
   .empty-state a { margin-top: 16px; color: var(--accent); font-size: 13px; font-weight: 800; }
-  @media (max-width: 620px) { .hero { padding-top: 48px; } dl { display: grid; grid-template-columns: repeat(3, 1fr); } dl div { min-width: 0; padding: 13px; } dd { font-size: 22px; } }
+  .scope-card { margin: 12px 0 24px; padding: 27px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 82%, transparent); }
+  .scope-card > header > span { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+  .scope-card > header h2 { margin: 8px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 28px; font-weight: 500; }
+  .scope-card > header p { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+  .scope-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+  .scope-columns section { padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--bg) 42%, var(--surface)); }
+  .scope-columns h3 { margin: 0; font-size: 12px; }
+  .scope-columns ul { display: grid; gap: 8px; margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+  .scope-card nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+  .scope-card nav span { margin-right: 3px; color: var(--muted); font-size: 11px; }
+  .scope-card nav a { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--accent); font-size: 10px; text-decoration: none; }
+  @media (max-width: 620px) { .hero { padding-top: 48px; } dl { display: grid; grid-template-columns: repeat(3, 1fr); } dl div { min-width: 0; padding: 13px; } dd { font-size: 22px; } .scope-card { padding: 22px 17px; } .scope-columns { grid-template-columns: 1fr; } }
 </style>

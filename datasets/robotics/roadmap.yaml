@@ -2,6 +2,15 @@ id: robotics
 name: 机器人学研究路线图
 description: 梳理机器人在感知定位、规划控制、操作和多机器人系统中的基础研究线路，与具身智能领域互补。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 机器人感知定位、建图、运动规划、反馈控制、接触操作和多机器人系统的基础方法。
+    - 主要贡献可由几何、动力学、控制、机构或机器人系统指标评价的工作。
+  exclude:
+    - 以通用视觉—语言—动作策略、具身世界模型或跨任务数据规模化为核心的工作归入具身智能。
+    - 不以机器人问题为主要验证对象的通用强化学习算法归入强化学习。
+  relatedDomains: [embodied-ai, reinforcement-learning, computer-vision, ai-for-science]
 period: { start: 2010-01-01, end: 2026-12-31 }
 tracks:
   - id: perception-localization

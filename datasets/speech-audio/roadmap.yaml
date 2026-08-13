@@ -2,6 +2,15 @@ id: speech-audio
 name: 语音与音频智能研究路线图
 description: 梳理语音识别、语音生成、音频理解和通用音频建模的关键技术演进。
 kind: full
+category: task-domain
+scope:
+  include:
+    - 语音识别、语音合成、声音生成、声学场景理解和原生音频交互。
+    - 主要贡献涉及声学信号、说话人特征、韵律、音乐或环境声音建模的工作。
+  exclude:
+    - 以文本语言现象和纯文本任务为核心的工作归入自然语言处理。
+    - 音频仅作为统一跨模态系统的一种输入输出、且核心在模态对齐时归入多模态人工智能。
+  relatedDomains: [natural-language-processing, multimodal-ai, generative-models]
 period: { start: 2012-01-01, end: 2026-12-31 }
 tracks:
   - id: recognition

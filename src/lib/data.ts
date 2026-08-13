@@ -3,6 +3,8 @@ import path from 'node:path';
 import YAML from 'yaml';
 
 export type EvolutionStage = { id: string; label: string };
+export type DomainCategory = 'task-domain' | 'method-system' | 'cross-cutting';
+export type DomainScope = { include: string[]; exclude: string[]; relatedDomains: string[] };
 export type Track = {
   id: string;
   index: string;
@@ -43,6 +45,8 @@ type FullRoadmapFile = {
   name: string;
   description: string;
   kind: 'full';
+  category: DomainCategory;
+  scope: DomainScope;
   period: { start: string; end: string };
   tracks: Track[];
   editorial?: { note?: string; maintainers?: string[] };
@@ -55,6 +59,8 @@ type ViewRoadmapFile = {
   kind: 'view';
   source: string;
   includeTracks: string[];
+  category?: DomainCategory;
+  scope?: DomainScope;
   editorial?: { note?: string; maintainers?: string[] };
 };
 
@@ -65,6 +71,8 @@ export type ResolvedRoadmap = {
   name: string;
   description: string;
   kind: 'full' | 'view';
+  category?: DomainCategory;
+  scope?: DomainScope;
   source?: string;
   period: { start: string; end: string };
   tracks: Track[];
@@ -134,6 +142,8 @@ export async function loadRoadmap(id: string): Promise<ResolvedRoadmap> {
     ]));
     return {
       ...definition,
+      category: definition.category || source.category,
+      scope: definition.scope || source.scope,
       period: source.period,
       tracks,
       papers,

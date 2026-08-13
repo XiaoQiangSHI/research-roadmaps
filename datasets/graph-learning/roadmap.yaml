@@ -2,6 +2,15 @@ id: graph-learning
 name: 图机器学习研究路线图
 description: 梳理图表示学习、图神经网络、知识图谱和图生成与科学应用的发展线路。
 kind: full
+category: method-system
+scope:
+  include:
+    - 面向关系结构数据的图表示、消息传递、知识图谱、时序异质图和通用图生成方法。
+    - 主要贡献针对图结构归纳偏置、表达能力、可扩展性或关系推理，可跨应用复用的工作。
+  exclude:
+    - 以分子、蛋白质或材料发现指标为主要贡献的图模型应用归入 AI for Science。
+    - 只把图作为数据组织形式、而核心贡献不涉及图学习方法的工作归入对应任务领域。
+  relatedDomains: [ai-for-science, natural-language-processing]
 period: { start: 2013-01-01, end: 2026-12-31 }
 tracks:
   - id: representation
