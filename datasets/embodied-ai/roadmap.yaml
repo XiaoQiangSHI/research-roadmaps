@@ -1,0 +1,142 @@
+id: embodied-ai
+name: 具身智能论文发展路线图
+description: 沿时间轴梳理具身智能的数据、策略、世界模型、控制、仿真迁移、智能体与开放世界研究线路。
+kind: full
+period:
+  start: 2022-01-01
+  end: 2026-08-01
+tracks:
+  - id: data
+    index: "01"
+    name: 数据与环境规模化
+    color: "#be6246"
+    problem: 真实示范昂贵、覆盖不足；扩大规模后还要解决数据质量、跨形态迁移，以及可交互训练世界的自动构建与验证。
+    evolution:
+      - id: data-01
+        label: 人类视频学习高层计划
+      - id: data-02
+        label: 物体中心轨迹扩增
+      - id: data-03
+        label: 家庭任务仿真规模化
+      - id: data-04
+        label: 数据质量筛选
+      - id: data-05
+        label: 人类视频动作化
+      - id: data-06
+        label: 软体与人形全身迁移
+      - id: data-07
+        label: 3D/视频驱动的交互训练世界构建
+  - id: policy
+    index: "02"
+    name: 通用视觉—语言—动作策略
+    color: "#3e796d"
+    problem: 机器人策略需要统一任务、本体、三维观测和多频传感器，同时兼顾语义泛化、连续动作质量、部署效率与接触反馈。
+    evolution:
+      - id: policy-01
+        label: 多模态提示策略
+      - id: policy-02
+        label: 3D 表征与开源 VLA
+      - id: policy-03
+        label: VLM + Flow Matching 动作专家
+      - id: policy-04
+        label: 通用人形、隐式未来与轻量部署
+      - id: policy-05
+        label: 触觉和跨本体适配
+      - id: policy-06
+        label: 异步多频融合、动作中心表征与大规模全身 VLA
+  - id: world
+    index: "03"
+    name: 世界模型与生成式物理先验
+    color: "#6a63a8"
+    problem: 直接从观察预测动作缺少环境动力学理解；生成式世界模型还要解决物理一致性、动作可控性、长时漂移和与策略的有效结合。
+    evolution:
+      - id: world-01
+        label: 三维目标状态想象
+      - id: world-02
+        label: 视频世界模型生成训练轨迹
+      - id: world-03
+        label: 紧凑未来知识与可控视频物理先验
+      - id: world-04
+        label: VLA 与世界模型联合训练
+      - id: world-05
+        label: 世界动作模型闭环控制与人类视频预训练
+      - id: world-06
+        label: 潜在动力学、全模态与长时交互世界模型
+  - id: control
+    index: "04"
+    name: 人形全身与灵巧控制
+    color: "#ab7a27"
+    problem: 人形与灵巧机器人需要在高自由度下同时处理平衡、运动自然性、接触力学、柔顺性和多种上层控制接口。
+    evolution:
+      - id: control-01
+        label: 多控制模式统一
+      - id: control-02
+        label: 第一视角视觉全身 RL
+      - id: control-03
+        label: 通用运动 token
+      - id: control-04
+        label: 可调柔顺控制
+      - id: control-05
+        label: 模块化生成式动作
+      - id: control-06
+        label: 基于接触力学效果的跨形态迁移
+  - id: simreal
+    index: "05"
+    name: 仿真学习基础设施与 Sim-to-Real
+    color: "#3473a0"
+    problem: 真实机器人试错昂贵，仿真虽然可规模化，却存在物理与视觉域差；同时还需要标准化、高并行的训练基础设施。
+    evolution:
+      - id: simreal-01
+        label: LLM 自动设计奖励与域随机化
+      - id: simreal-02
+        label: 真机数据学习动力学残差
+      - id: simreal-03
+        label: 特权专家蒸馏视觉策略
+      - id: simreal-04
+        label: Sim/Real 混合训练
+      - id: simreal-05
+        label: GPU 并行仿真基础设施
+      - id: simreal-06
+        label: 教师—学生式长时视觉迁移
+      - id: simreal-07
+        label: 混合训练机制与表征对齐分析
+  - id: agent
+    index: "06"
+    name: 具身智能体与自我改进
+    color: "#8e4d73"
+    problem: 具身智能体需要在执行失败后定位原因、修正策略、积累可复用技能，并在真实机器人上安全、持续地验证改进。
+    evolution:
+      - id: agent-01
+        label: 自动课程与代码技能库
+      - id: agent-02
+        label: LLM 奖励程序搜索
+      - id: agent-03
+        label: 恢复数据自举
+      - id: agent-04
+        label: 代码控制与执行反馈闭环
+      - id: agent-05
+        label: 真实机器人自动实验
+      - id: agent-06
+        label: 基于逐步证据的技能发现与复用
+  - id: open
+    index: "07"
+    name: 开放世界、记忆与具身推理
+    color: "#526b3d"
+    problem: 开放任务缺少精确奖励和固定任务边界，长时行为还需要可靠记忆、通用感知知识、环境适应与高层推理。
+    evolution:
+      - id: open-01
+        label: 互联网视频学习语义奖励
+      - id: open-02
+        label: 视觉专家提供显式知识
+      - id: open-03
+        label: 长上下文强化学习
+      - id: open-04
+        label: 关键经验检索式记忆
+      - id: open-05
+        label: 跨游戏视觉动作基础模型
+      - id: open-06
+        label: 统一的具身感知、记忆与高层规划
+editorial:
+  note: 每篇论文只指定一条主线路；路线归属是便于理解技术演进的编辑判断。
+  maintainers:
+    - Open Research Roadmaps maintainers

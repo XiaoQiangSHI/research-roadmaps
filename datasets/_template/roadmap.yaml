@@ -1,0 +1,22 @@
+id: example-domain
+name: 示例研究领域
+description: 用一句话说明该领域的研究对象、路线边界与时间范围。
+kind: full
+period:
+  start: 2020-01-01
+  end: 2026-12-31
+tracks:
+  - id: example-track
+    index: "01"
+    name: 示例发展线路
+    color: "#3e796d"
+    problem: 描述这条线路长期持续、尚未被一次性解决的核心问题。
+    evolution:
+      - id: example-track-01
+        label: 第一阶段
+      - id: example-track-02
+        label: 第二阶段
+editorial:
+  note: 路线归属属于编辑判断，需要在每篇论文中提供理由。
+  maintainers:
+    - your-github-id

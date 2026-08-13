@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://research-roadmaps.dev/schemas/papers.schema.json",
+  "title": "Research papers",
+  "type": "object",
+  "required": ["papers"],
+  "properties": {
+    "papers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/paper" }
+    }
+  },
+  "$defs": {
+    "paper": {
+      "type": "object",
+      "required": ["id", "title", "date", "arxiv", "track", "summary", "problem", "solution", "institutions", "links", "classification", "sources"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "title": { "type": "string", "minLength": 2 },
+        "date": { "type": "string", "format": "date" },
+        "arxiv": { "type": "string", "pattern": "^[0-9]{4}\\.[0-9]{5}$" },
+        "track": { "type": "string" },
+        "relatedTracks": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "stage": { "type": "string" },
+        "summary": { "type": "string", "minLength": 10 },
+        "problem": { "type": "string", "minLength": 10 },
+        "solution": { "type": "string", "minLength": 10 },
+        "institutions": {
+          "type": "object",
+          "required": ["primary"],
+          "properties": {
+            "primary": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+            "collaborators": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+          },
+          "additionalProperties": false
+        },
+        "links": {
+          "type": "object",
+          "required": ["paper"],
+          "properties": {
+            "paper": { "type": "string", "format": "uri" },
+            "project": { "type": "string", "format": "uri" },
+            "code": { "type": "string", "format": "uri" },
+            "blog": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": false
+        },
+        "classification": {
+          "type": "object",
+          "required": ["confidence", "rationale"],
+          "properties": {
+            "confidence": { "enum": ["high", "medium", "low", "editorial"] },
+            "rationale": { "type": "string", "minLength": 8 }
+          },
+          "additionalProperties": false
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["type", "url"],
+            "properties": {
+              "type": { "enum": ["paper", "project", "code", "blog", "other"] },
+              "url": { "type": "string", "format": "uri" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

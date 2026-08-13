@@ -1,0 +1,20 @@
+papers:
+  - id: example-paper
+    title: Example Paper
+    date: 2024-01-01
+    arxiv: "2401.00001"
+    track: example-track
+    summary: 用自己的语言概括论文的主要工作，不直接复制大段摘要。
+    problem: 说明论文要解决的具体问题，以及它为什么重要。
+    solution: 说明论文提出的核心机制，而不只是列出模型名称。
+    institutions:
+      primary:
+        - example-university
+    links:
+      paper: https://arxiv.org/abs/2401.00001
+    classification:
+      confidence: editorial
+      rationale: 解释为什么这篇论文的主要贡献属于该发展线路。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2401.00001

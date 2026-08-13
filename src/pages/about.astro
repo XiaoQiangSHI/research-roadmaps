@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="方法与规范 · Open Research Roadmaps" description="路线图的数据规范、审核原则与贡献流程。">
+  <main class="shell prose">
+    <p class="eyebrow">METHODOLOGY</p>
+    <h1>路线图如何被构建与审查</h1>
+    <section><h2>事实层</h2><p>论文日期、链接、作者机构和项目仓库必须附来源。机构使用论文作者单位或官方项目维护方，不把高校工作统称为公司项目。</p></section>
+    <section><h2>编辑层</h2><p>主线路、阶段和问题演进属于编辑判断。每篇论文必须填写归类理由和置信度，允许通过 Pull Request 讨论与修订。</p></section>
+    <section><h2>贡献流程</h2><ol><li>复制 <code>datasets/_template</code>。</li><li>填写领域、论文与机构 YAML。</li><li>运行 <code>npm run validate</code> 和 <code>npm test</code>。</li><li>提交 Pull Request，并在描述中解释路线边界。</li></ol></section>
+    <section><h2>版权</h2><p>代码使用 Apache-2.0；路线数据使用 CC BY 4.0。论文摘要采用原创概括，Logo 仅用于机构识别并遵循各品牌规范。</p></section>
+  </main>
+</BaseLayout>
+
+<style>
+  .prose { max-width: 860px; padding-top: 72px; padding-bottom: 80px; }
+  .eyebrow { color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+  h1 { margin: 10px 0 50px; font-family: Georgia, "Songti SC", serif; font-size: clamp(42px, 6vw, 70px); font-weight: 500; line-height: 1.05; }
+  section { padding: 24px 0; border-top: 1px solid var(--line); }
+  h2 { margin: 0; font-size: 24px; }
+  p, li { color: var(--muted); font-size: 16px; line-height: 1.8; }
+  code { padding: 2px 5px; border-radius: 5px; background: var(--surface); color: var(--ink); }
+</style>

@@ -1,0 +1,1404 @@
+papers:
+  - id: minedojo
+    title: MineDojo
+    date: 2022-06-17
+    arxiv: "2206.08853"
+    track: open
+    summary: 从互联网规模的 Minecraft 视频和知识中学习开放任务的语义，再训练能够真正操作环境的智能体。
+    problem: 许多开放式任务很难手写精确奖励，互联网视频又缺少键鼠动作标签。
+    solution: 先用视频—字幕训练 MineCLIP 判断行为和文字任务是否匹配，把匹配分数变成奖励，再用 PPO 与自模仿训练 MineAgent。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - caltech
+        - stanford
+    links:
+      paper: https://arxiv.org/abs/2206.08853
+      blog: https://www.cnblogs.com/sxq-blog/p/22258585
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2206.08853
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22258585
+  - id: vima
+    title: VIMA
+    date: 2022-10-06
+    arxiv: "2210.03094"
+    track: policy
+    summary: 提出用图文交错的多模态提示统一描述机器人操作任务，并根据提示和历史预测高层动作。
+    problem: 不同操作任务往往需要不同任务接口，模型难以根据新物体、新关系或示例快速改变行为。
+    solution: 把文字与物体图片编码成提示 token，用对象级视觉 token 表示场景，再由因果 Transformer 让动作历史持续查询任务提示。
+    institutions:
+      primary:
+        - stanford
+    links:
+      paper: https://arxiv.org/abs/2210.03094
+      blog: https://www.cnblogs.com/sxq-blog/p/22258535
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2210.03094
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22258535
+  - id: mimicplay
+    title: MimicPlay
+    date: 2023-02-24
+    arxiv: "2302.12422"
+    track: data
+    summary: 把长程模仿学习拆成高层计划和低层控制，让便宜的人类玩耍视频承担规划学习。
+    problem: 长任务既需要规划又需要精确控制，如果全部依赖机器人遥操作数据，采集成本会随任务长度迅速增加。
+    solution: 用人类视频训练高层规划器产生共享 latent plan，再用少量机器人示范训练低层控制器把计划变成机械臂动作。
+    institutions:
+      primary:
+        - stanford
+      collaborators:
+        - nvidia
+        - georgia-tech
+    links:
+      paper: https://arxiv.org/abs/2302.12422
+      blog: https://www.cnblogs.com/sxq-blog/p/22279957
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2302.12422
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22279957
+  - id: prismer
+    title: Prismer
+    date: 2023-03-04
+    arxiv: "2303.02506"
+    track: open
+    summary: 让视觉语言模型复用深度、边缘、检测、分割、OCR 等冻结视觉专家的知识。
+    problem: 普通 VLM 仅靠 RGB，需要用大量数据重新学会已有视觉能力，训练成本高且数据效率低。
+    solution: 把六类专家输出经专属 Stem 与 Resampler 压成专家 token，同 RGB token 一起进入视觉编码器，再由语言解码器生成答案。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - imperial
+    links:
+      paper: https://arxiv.org/abs/2303.02506
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2303.02506
+  - id: voyager
+    title: Voyager
+    date: 2023-05-25
+    arxiv: "2305.16291"
+    track: agent
+    summary: 构建能够在 Minecraft 中自主选任务、写程序、修复失败并持续积累技能的终身学习智能体。
+    problem: 开放世界没有固定任务列表，技能容易遗忘，单次 LLM 输出的程序也经常因环境反馈而失败。
+    solution: 以自动课程选择合适任务，将成功 JavaScript 保存到可检索技能库，并利用执行错误、环境反馈和自验证反复修改程序。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - caltech
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2305.16291
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2305.16291
+  - id: amago
+    title: AMAGO
+    date: 2023-10-15
+    arxiv: "2310.09971"
+    track: open
+    summary: 把长历史、元强化学习、目标条件 RL 和长期记忆统一到可扩展的上下文强化学习框架中。
+    problem: 部分可观测、稀疏奖励和大折扣因子叠加时，长序列 actor-critic 很难稳定训练。
+    solution: 用因果 Transformer 编码完整交互历史，共享 Actor/Critic 表征，并结合 Multi-Gamma、PopArt、梯度隔离与多步目标重标记。
+    institutions:
+      primary:
+        - ut-austin
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2310.09971
+      blog: https://www.cnblogs.com/sxq-blog/p/22284438
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2310.09971
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22284438
+  - id: eureka
+    title: Eureka
+    date: 2023-10-19
+    arxiv: "2310.12931"
+    track: agent
+    summary: 让大语言模型自动编写和迭代机器人强化学习的奖励函数。
+    problem: 奖励工程高度依赖专家，复杂灵巧任务的手工奖励难设计、难调权重。
+    solution: LLM 生成多个奖励代码候选，分别运行真实 RL 训练，以任务指标和训练曲线做 Reward Reflection，再进行无梯度进化搜索。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - caltech
+        - ut-austin
+        - upenn
+    links:
+      paper: https://arxiv.org/abs/2310.12931
+      blog: https://www.cnblogs.com/sxq-blog/p/22281943
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2310.12931
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22281943
+  - id: mimicgen
+    title: MimicGen
+    date: 2023-10-26
+    arxiv: "2310.17596"
+    track: data
+    summary: 用少量人工示范自动合成大规模、多布局的机器人成功轨迹。
+    problem: 模仿学习需要大量成功演示，而逐条遥操耗时昂贵。
+    solution: 把示范切成相对操作物体定义的子任务片段，将轨迹变换到新物体位姿后真实执行，只保存成功结果用于策略训练。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2310.17596
+      blog: https://www.cnblogs.com/sxq-blog/p/22282779
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2310.17596
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22282779
+  - id: dreureka
+    title: DrEureka
+    date: 2024-06-04
+    arxiv: "2406.01967"
+    track: simreal
+    summary: 把 Eureka 的奖励搜索扩展到域随机化设计，自动形成可迁移的 Sim-to-Real 训练配方。
+    problem: Sim-to-Real 不仅要设计奖励，还要人工选择物理随机化参数和范围，调试成本很高。
+    solution: 先由 LLM 搜索奖励，用 RAPP 测量策略对物理变化的承受范围，再让 LLM 选择合适的域随机化分布训练最终 PPO 策略。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2406.01967
+      blog: https://www.cnblogs.com/sxq-blog/p/22286730
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2406.01967
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22286730
+  - id: robocasa
+    title: RoboCasa
+    date: 2024-06-04
+    arxiv: "2406.02523"
+    track: data
+    summary: 建立大规模、真实、多样、可交互的厨房仿真环境和日常任务数据体系。
+    problem: 真实家庭场景搭建和机器人数据采集难以扩展，已有仿真环境在场景、资产和任务多样性上不足。
+    solution: 构建程序化厨房、丰富资产和 100 类任务，以少量人类示范为种子，再集成 MimicGen 自动扩大成功轨迹。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2406.02523
+      blog: https://www.cnblogs.com/sxq-blog/p/22289412
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2406.02523
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22289412
+  - id: hover
+    title: HOVER
+    date: 2024-10-28
+    arxiv: "2410.21229"
+    track: control
+    summary: 把导航、VR、动作捕捉和关节目标等多种控制模式整合进一个人形全身控制器。
+    problem: 不同设备给出的命令空间不同，传统方案常为每种模式训练独立策略，难以切换和复用。
+    solution: 先以全身运动模仿形成通用能力，再把身体点、关节角和移动命令统一表示，通过多模式策略蒸馏得到单一闭环策略。
+    institutions:
+      primary:
+        - cmu
+    links:
+      paper: https://arxiv.org/abs/2410.21229
+      blog: https://www.cnblogs.com/sxq-blog/p/22289669
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2410.21229
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22289669
+  - id: asap
+    title: ASAP
+    date: 2025-02-03
+    arxiv: "2502.01143"
+    track: simreal
+    summary: 利用真机数据学习动作残差，把真实动力学缺陷反向注入仿真，以获得敏捷人形技能。
+    problem: 高动态动作对电机、延迟、柔性等动力学偏差很敏感；参数辨识繁琐，过强随机化又会让动作保守。
+    solution: 先在仿真训练跟踪策略，再由真机轨迹学习 Delta Action；冻结 Delta 让仿真复现真实缺陷，并重新优化主策略，部署时只保留主策略。
+    institutions:
+      primary:
+        - cmu
+      collaborators:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2502.01143
+      blog: https://www.cnblogs.com/sxq-blog/p/22290433
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2502.01143
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22290433
+  - id: sim-to-real-rl
+    title: Sim-to-Real RL
+    date: 2025-02-27
+    arxiv: "2502.20396"
+    track: simreal
+    summary: 给出视觉双手灵巧操作的可扩展 Sim-to-Real 强化学习配方。
+    problem: 真实随机试错危险昂贵，而复杂双手、接触丰富、视觉驱动的策略很难直接从仿真迁移。
+    solution: 自动标定并随机化仿真，在特权状态下训练多个 PPO 专家，只收集成功轨迹，再蒸馏成依赖真实视觉的 Diffusion Policy。
+    institutions:
+      primary:
+        - uc-berkeley
+      collaborators:
+        - nvidia
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2502.20396
+      blog: https://www.cnblogs.com/sxq-blog/p/22290785
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2502.20396
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22290785
+  - id: gr00t-n1
+    title: GR00T N1
+    date: 2025-03-18
+    arxiv: "2503.14734"
+    track: policy
+    summary: 提出面向通用人形机器人的开放 VLA 基础模型，统一多源数据和多种机器人本体。
+    problem: 单任务策略难以泛化到新环境、新指令和不同本体，机器人真实轨迹规模又有限。
+    solution: System 2 VLM 负责视觉语言理解，System 1 Diffusion Transformer 实时生成动作；联合训练真实轨迹、人类视频与合成数据。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2503.14734
+      blog: https://www.cnblogs.com/sxq-blog/p/22305143
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2503.14734
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22305143
+  - id: sim-and-real-co-training
+    title: Sim-and-Real Co-Training
+    date: 2025-03-31
+    arxiv: "2503.24361"
+    track: simreal
+    summary: 系统验证真实数据与仿真数据混合训练视觉策略的有效配方。
+    problem: 纯真实数据覆盖不足；纯仿真有现实差距；先仿真后微调又可能遗忘仿真带来的泛化。
+    solution: 按概率在同一训练过程中混合 Real、任务相关数字近亲和仿真先验，用真实数据校准部署域、仿真数据扩展任务覆盖。
+    institutions:
+      primary:
+        - ut-austin
+      collaborators:
+        - nvidia
+        - uc-berkeley
+        - nyu
+    links:
+      paper: https://arxiv.org/abs/2503.24361
+      blog: https://www.cnblogs.com/sxq-blog/p/22309256
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2503.24361
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22309256
+  - id: pdc
+    title: PDC
+    date: 2025-05-18
+    arxiv: "2505.12278"
+    track: control
+    summary: 研究仅靠第一视角视觉的灵巧人形全身控制，并让主动搜索行为从强化学习中涌现。
+    problem: 使用特权 3D 目标会削弱视觉闭环；目标遮挡时，机器人还必须主动移动视角并记住搜索历史。
+    solution: 把目标与任务提示画进机器人图像，用 CNN+GRU 读取视觉历史，输出低维意图给运动先验控制器，再由 PPO 联合学习搜索和操作。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+        - cmu
+    links:
+      paper: https://arxiv.org/abs/2505.12278
+      blog: https://www.cnblogs.com/sxq-blog/p/22311107
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2505.12278
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22311107
+  - id: dreamgen
+    title: DreamGen
+    date: 2025-05-19
+    arxiv: "2505.12705"
+    track: world
+    summary: 用视频世界模型生成可用于训练机器人策略的“神经轨迹”。
+    problem: 机器人图像和指令容易获得，昂贵的是与视频同步的真实动作标注。
+    solution: 适配视频世界模型生成多任务机器人视频，再用 IDM 或 LAM 恢复伪动作，以合成视频—动作轨迹训练最终 GR00T 策略。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2505.12705
+      blog: https://www.cnblogs.com/sxq-blog/p/22318897
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2505.12705
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22318897
+  - id: flare
+    title: FLARE
+    date: 2025-05-21
+    arxiv: "2505.15659"
+    track: policy
+    summary: 在动作生成模型内部加入轻量的隐式世界建模监督。
+    problem: 普通策略只拟合“现在该怎么动”，没有被迫理解动作执行后的状态变化，因此泛化与目标感知不足。
+    solution: 在 DiT 主序列加入未来 token，使其对齐真实未来观察的 EMA 表征；推理时只生成动作，不需要额外视频生成器。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2505.15659
+      blog: https://www.cnblogs.com/sxq-blog/p/22333821
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2505.15659
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22333821
+  - id: scizor
+    title: SCIZOR
+    date: 2025-05-28
+    arxiv: "2505.22626"
+    track: data
+    summary: 用自监督方法清理大规模模仿学习数据中的次优片段和过度重复。
+    problem: 真实示范会混入失败、停顿、碰撞与大量相似片段，数据变多不一定让策略更好。
+    solution: 用时间差作为进度标签学习局部次优分数，再联合视觉状态与动作序列相似度做去重，两类删除掩码取并集。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2505.22626
+      blog: https://www.cnblogs.com/sxq-blog/p/22341110
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2505.22626
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22341110
+  - id: cosmos-predict-transfer-2-5
+    title: Cosmos Predict / Transfer 2.5
+    date: 2025-10-28
+    arxiv: "2511.00062"
+    track: world
+    summary: 构建服务 Physical AI 的通用、可控视频世界模拟基础模型。
+    problem: 物理智能需要低成本预测未来和生成训练环境，但通用视频模型往往缺物理一致性与精确控制。
+    solution: 用视频 VAE 与 DiT 学习从噪声恢复视频的 Flow Matching；Transfer 分支在冻结主干上加入深度、边缘等结构控制，并配合 SFT、RL 和蒸馏。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2511.00062
+      blog: https://www.cnblogs.com/sxq-blog/p/22341517
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.00062
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22341517
+  - id: pld
+    title: PLD
+    date: 2025-10-30
+    arxiv: "2511.00091"
+    track: agent
+    summary: 让已有 VLA 主动暴露失败状态、生成恢复数据，再把恢复能力蒸馏回自身。
+    problem: 普通 SFT 数据多是顺利示范，模型部署时一旦偏离轨迹，就没有见过相应的恢复动作。
+    solution: 冻结基座，训练残差 RL 专家探索修复；让基座先运行到真实错误状态，再由专家接管成功，并用这些恢复轨迹继续 SFT 基座。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2511.00091
+      blog: https://www.cnblogs.com/sxq-blog/p/22341809
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.00091
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22341809
+  - id: isaac-lab
+    title: Isaac Lab
+    date: 2025-11-06
+    arxiv: "2511.04831"
+    track: simreal
+    summary: 提供 GPU 加速、模块化的多模态机器人学习仿真框架。
+    problem: 场景、传感器、观测、动作映射、奖励和学习算法常分散在不同工程中，难并行扩展和复现。
+    solution: 以 Scene 和一组 Manager 标准化观测、动作、奖励、终止与课程接口，在 GPU 上并行维护大量 PhysX 环境并接入 PPO、BC 等算法。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2511.04831
+      blog: https://www.cnblogs.com/sxq-blog/p/22343660
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.04831
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22343660
+  - id: sonic
+    title: SONIC
+    date: 2025-11-11
+    arxiv: "2511.07820"
+    track: control
+    summary: 把大规模多源参考动作统一为一种运动语言，训练通用人形动作执行器。
+    problem: 每增加跑、跳、舞蹈或爬行能力就重做任务与控制器，能力无法随运动数据持续扩展。
+    solution: 动作编码器把不同格式转成统一运动 token；控制解码器结合实时本体状态输出关节目标，并用 PPO、重建、对齐和循环一致性共同训练。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2511.07820
+      blog: https://www.cnblogs.com/sxq-blog/p/22350643
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.07820
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22350643
+  - id: viral
+    title: VIRAL
+    date: 2025-11-19
+    arxiv: "2511.15200"
+    track: simreal
+    summary: 解决仅靠机载 RGB 的长时人形移动操作及直接真机迁移。
+    problem: 端到端网络同时学习看、走、抓、平衡和任务进度，搜索空间过大且后半程很难探索。
+    solution: 特权 Teacher 用 PPO 与 RSI 学会任务，Student 以 BC+DAgger 在自身轨迹上模仿，再由 HOMIE 将低维意图变成稳定全身动作。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+        - cmu
+    links:
+      paper: https://arxiv.org/abs/2511.15200
+      blog: https://www.cnblogs.com/sxq-blog/p/22376925
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.15200
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22376925
+  - id: doorman
+    title: DoorMan
+    date: 2025-11-30
+    arxiv: "2512.01061"
+    track: simreal
+    summary: 让人形机器人把像素直接转成高层动作，完成长时开门任务。
+    problem: 视觉遮挡和部分可观测会造成动作偏差，长任务后段探索不足，仿真到真机还存在外观与控制差异。
+    solution: 先训练特权教师，使用 staged reset 覆盖全流程；以 DAgger 训练 ResNet+LSTM 学生，再用 GRPO 根据成败自举，底层由 HOMIE 稳定控制。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+        - cmu
+    links:
+      paper: https://arxiv.org/abs/2512.01061
+      blog: https://www.cnblogs.com/sxq-blog/p/22380326
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2512.01061
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22380326
+  - id: chip
+    title: CHIP
+    date: 2025-12-16
+    arxiv: "2512.14689"
+    track: control
+    summary: 让单个人形控制策略通过连续参数调节不同身体部位的刚柔程度。
+    problem: 运动跟踪策略通常过硬，接触时会与环境对抗；单纯柔顺又会损失搬重物和动态动作能力。
+    solution: 训练时施加外力并将策略看到的目标沿外力反方向偏移，奖励仍对应原动作，使策略学会由柔顺系数控制允许位移。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - georgia-tech
+    links:
+      paper: https://arxiv.org/abs/2512.14689
+      blog: https://www.cnblogs.com/sxq-blog/p/22380666
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2512.14689
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22380666
+  - id: nitrogen
+    title: NitroGen
+    date: 2026-01-04
+    arxiv: "2601.02427"
+    track: open
+    summary: 从公开视频构建跨游戏的通用视觉—手柄动作基础模型。
+    problem: 不同游戏动作接口与数据分散，人工记录海量同步动作昂贵，纯 RL 又需要巨量交互。
+    solution: 从视频中的手柄 overlay 自动恢复动作标签，遮住 overlay 后输入画面，用 Flow Matching 一次生成连续按钮和摇杆动作块。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - allen-ai
+    links:
+      paper: https://arxiv.org/abs/2601.02427
+      blog: https://www.cnblogs.com/sxq-blog/p/22392650
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2601.02427
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22392650
+  - id: dreamdojo
+    title: DreamDojo
+    date: 2026-02-06
+    arxiv: "2602.06949"
+    track: world
+    summary: 从大规模人类第一视角视频训练可长时、实时交互的通用机器人世界模型。
+    problem: 机器人世界模型通常受限于机器人数据规模，跨对象和环境泛化弱，长时自回归生成还容易漂移。
+    solution: 在 4.4 万小时人类视频上预训练，使用 latent action 建模与机器人数据后训练，再蒸馏到可持续一分钟以上、10 FPS 交互的模型。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2602.06949
+      blog: https://www.cnblogs.com/sxq-blog/p/22380866
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2602.06949
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22380866
+  - id: dream-zero
+    title: Dream-Zero
+    date: 2026-02-17
+    arxiv: "2602.15922"
+    track: world
+    summary: 把未来视频与机器人动作放进同一个世界动作模型中联合生成，实现零样本策略。
+    problem: 传统 VLA 直接从观察到动作，动作语义与物理未来割裂；独立世界模型再接策略又会产生接口误差。
+    solution: 以联合 Flow Matching 同时预测未来视觉与动作；视频按 chunk 自回归保持长程一致性，动作与视觉未来在共享模型中互相约束。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2602.15922
+      blog: https://www.cnblogs.com/sxq-blog/p/21822254
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2602.15922
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21822254
+  - id: egoscale
+    title: EgoScale
+    date: 2026-02-18
+    arxiv: "2602.16710"
+    track: data
+    summary: 从两万小时级人类第一视角视频扩展灵巧操作，并以少量数据对齐机器人本体。
+    problem: 机器人灵巧数据最昂贵；人类视频虽多，却没有直接可执行的机器人动作且手型不同。
+    solution: 恢复相对手腕运动并把人手重定向成机器人手指关节，以人类数据大规模预训练，再用人机对齐数据中训练、目标示范后训练。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - georgia-tech
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2602.16710
+      blog: https://www.cnblogs.com/sxq-blog/p/22395942
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2602.16710
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22395942
+  - id: cap-x
+    title: CaP-X
+    date: 2026-03-23
+    arxiv: "2603.22435"
+    track: agent
+    summary: 建立代码智能体控制机器人的执行环境、基准、推理增强与训练方法。
+    problem: 代码模型能写程序但缺少持久环境、分步反馈和统一难度评测，代码可运行也不等于任务成功。
+    solution: CaP-Gym 将 Python API 绑定机器人环境并保留状态；Agent0 加视觉差分、技能库与并行候选；CaP-RL 再以执行奖励训练代码模型。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - stanford
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2603.22435
+      blog: https://www.cnblogs.com/sxq-blog/p/22396206
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2603.22435
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22396206
+  - id: softmimicgen
+    title: SoftMimicGen
+    date: 2026-03-26
+    arxiv: "2603.25725"
+    track: data
+    summary: 把 MimicGen 扩展到绳子、布料等可形变物体操作。
+    problem: 软体局部形变无法用一个刚体 SE(3) 变换搬运旧轨迹，不同形状下抓取和移动路径都会变化。
+    solution: 以关键节点描述软体形状，用 TPS 非刚性配准得到连续空间变形场，选择最合适的源片段并同步弯曲位置与朝向轨迹。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - university-of-toronto
+    links:
+      paper: https://arxiv.org/abs/2603.25725
+      blog: https://www.cnblogs.com/sxq-blog/p/22397636
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2603.25725
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22397636
+  - id: mechanistic-co-training
+    title: Mechanistic Co-Training
+    date: 2026-04-15
+    arxiv: "2604.13645"
+    track: simreal
+    summary: 从机制层面解释生成式机器人策略为何能从 Sim-and-Real 混合训练中获益。
+    problem: 已有工作证明混合数据有效，但混合比例如何改变扩散损失、怎样对齐又保留域差异仍不清楚。
+    solution: 分析不同噪声区间中的样本重要性重加权与结构化表征；以 CFG 显式保留域标签，以 ADDA 只消除无关域差异。
+    institutions:
+      primary:
+        - ut-austin
+    links:
+      paper: https://arxiv.org/abs/2604.13645
+      blog: https://www.cnblogs.com/sxq-blog/p/22398828
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“仿真学习基础设施与 Sim-to-Real”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2604.13645
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22398828
+  - id: motionbricks
+    title: MotionBricks
+    date: 2026-04-27
+    arxiv: "2604.24833"
+    track: control
+    summary: 实时生成既自然又能接受稀疏位置、朝向、接触与风格约束的全身动作。
+    problem: 端到端长动作生成计算重、控制不灵活，关键帧约束又可能互相冲突或产生不自然过渡。
+    solution: 把连续运动压成离散动作积木，先估计时长与身体根轨迹，再生成全身姿态；执行一部分后滚动重规划。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2604.24833
+      blog: https://www.cnblogs.com/sxq-blog/p/22402369
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2604.24833
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22402369
+  - id: humanoidmimicgen
+    title: HumanoidMimicGen
+    date: 2026-05-26
+    arxiv: "2605.27724"
+    track: data
+    summary: 把少量人类示范自动转换成大量人形机器人移动操作轨迹。
+    problem: 固定底座机械臂只需考虑手可达，人形还要同时走路、平衡、避碰和协调双手。
+    solution: 将示范拆成物体中心技能和部分序技能图，在新布局中用全身 IK、碰撞检查与运动规划重新求解，只保留成功轨迹训练视觉策略。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2605.27724
+      blog: https://www.cnblogs.com/sxq-blog/p/22404619
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2605.27724
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22404619
+  - id: grail
+    title: GRAIL
+    date: 2026-06-03
+    arxiv: "2606.05160"
+    track: data
+    summary: 从 3D 资产和视频先验自动生成可靠的人形移动操作数据。
+    problem: 普通单目视频缺真实尺度、相机参数和接触真值，直接恢复的 3D 动作常漂浮或穿透。
+    solution: 先建立几何、尺度和相机均已知的 3D 世界，让视频模型只负责想象行为，再利用已知几何恢复运动并在物理仿真中训练执行。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - upenn
+    links:
+      paper: https://arxiv.org/abs/2606.05160
+      blog: https://www.cnblogs.com/sxq-blog/p/22405733
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.05160
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22405733
+  - id: t-rex
+    title: T-Rex
+    date: 2026-06-15
+    arxiv: "2606.17055"
+    track: policy
+    summary: 让视觉语言的全局规划与高频触觉接触反馈在同一个动作生成过程中协作。
+    problem: 完整 VLA 计算重，无法随每次触觉变化高频重跑；只在动作块开始看图又会错过滑动和接触变化。
+    solution: 动作专家先沿 Flow 生成动作半成品并缓存全局上下文；轻量触觉专家读取最新触觉，沿同一生成轨迹高频完成动作。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - stanford
+        - georgia-tech
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2606.17055
+      blog: https://www.cnblogs.com/sxq-blog/p/22405788
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.17055
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22405788
+  - id: caip
+    title: CAIP
+    date: 2026-06-15
+    arxiv: "2606.17256"
+    track: policy
+    summary: 用未来人手动作监督视觉表征，使其理解操作相关状态和任务进度。
+    problem: 通用视觉模型擅长识别“这是什么”，却未必知道接触是否正确、任务到哪一步以及下一步应怎样操作。
+    solution: 对比学习当前第一视角图像与指令表示、真实未来手部动作表示；正配对拉近、错误动作拉远，再把视觉编码器迁移到机器人策略。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - georgia-tech
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2606.17256
+      blog: https://www.cnblogs.com/sxq-blog/p/22406148
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.17256
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22406148
+  - id: enpire
+    title: ENPIRE
+    date: 2026-06-18
+    arxiv: "2606.19980"
+    track: agent
+    summary: 搭建可以在真实机器人上安全、连续、自动验证策略改进的智能体研究系统。
+    problem: 真实实验需要人工重置和判分，策略改动很难公平复现，编程智能体也不能无约束地在硬件上试错。
+    solution: 先封装安全约束、自动成功判定和自动重置，再让编程智能体提出改动、运行多次真实实验、分析视频日志并保留有效版本。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+    links:
+      paper: https://arxiv.org/abs/2606.19980
+      blog: https://www.cnblogs.com/sxq-blog/p/22406402
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.19980
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22406402
+  - id: vesta
+    title: Vesta
+    date: 2026-06-18
+    arxiv: "2606.20905"
+    track: open
+    summary: 用一个视觉语言模型统一定位、导航、具身问答、空间推理和长程高层规划。
+    problem: 传统具身系统为每项能力部署独立专家，历史信息也容易无限膨胀或在长任务中丢失。
+    solution: 统一多类具身数据进行 SFT，用历史图像与已完成子任务构造混合记忆，并以观察—进度—推理—动作格式输出下一子任务给低层 Actor。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2606.20905
+      blog: https://www.cnblogs.com/sxq-blog/p/22406894
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.20905
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22406894
+  - id: chord
+    title: CHORD
+    date: 2026-06-22
+    arxiv: "2607.00033"
+    track: control
+    summary: 把人类示范中的接触力学效果迁移到不同形态的机器人手。
+    problem: 人手和机器人手的手指结构不同，复制接触点或关节姿态不一定产生正确的物体力与力矩。
+    solution: 从人类手—物接触恢复 contact wrench 能力，将等效力/力矩作为强化学习奖励，使机器人自行寻找适合自身形态的接触方式。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - georgia-tech
+    links:
+      paper: https://arxiv.org/abs/2607.00033
+      blog: https://www.cnblogs.com/sxq-blog/p/22419054
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“人形全身与灵巧控制”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2607.00033
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22419054
+  - id: simfoundry
+    title: SimFoundry
+    date: 2026-06-26
+    arxiv: "2606.28276"
+    track: data
+    summary: 把真实视频自动变成可交互仿真，再产生结构化数字近亲用于训练和评测。
+    problem: 真实机器人数据慢、贵且覆盖有限；只“看起来像”的重建又缺碰撞、关节和物理属性。
+    solution: 从视频重建可交互数字孪生并恢复物理资产，再生成对象、场景和任务三类数字近亲，结合 MimicGen 产生演示。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - stanford
+        - georgia-tech
+    links:
+      paper: https://arxiv.org/abs/2606.28276
+      blog: https://www.cnblogs.com/sxq-blog/p/22258030
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.28276
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22258030
+  - id: aspire
+    title: ASPIRE
+    date: 2026-06-30
+    arxiv: "2607.00272"
+    track: agent
+    summary: 让机器人编程智能体从逐步失败证据中发现、验证并积累可复用技能。
+    problem: 只得到最终失败信号时，模型无法判断问题出在感知、抓取、规划还是动作顺序，容易盲目改代码。
+    solution: 执行引擎记录每一步证据，进化式程序搜索保留并组合有效修复，成功后把经过真实执行验证的局部能力写入持续增长的技能库。
+    institutions:
+      primary:
+        - nvidia
+      collaborators:
+        - uc-berkeley
+        - umich
+    links:
+      paper: https://arxiv.org/abs/2607.00272
+      blog: https://www.cnblogs.com/sxq-blog/p/22414840
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“具身智能体与自我改进”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2607.00272
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22414840
+  - id: embodiedgen-v2
+    title: EmbodiedGen V2
+    date: 2026-07-08
+    arxiv: "2607.07459"
+    track: data
+    summary: 构建能够从任务描述生成 simulation-ready 3D 资产和完整可交互世界的智能体引擎。
+    problem: 普通 3D 生成只关注外观，缺真实尺寸、碰撞、关节、物理属性、可供性和稳定布局，不能直接训练机器人。
+    solution: LLM 分解任务，以 Sim-ready 资产和 Scene Graph 表示世界，组合生成/检索、几何求解、BFS 布局、物理验证与失败重试闭环。
+    institutions:
+      primary:
+        - horizon-robotics
+      collaborators:
+        - wuwen-ai
+    links:
+      paper: https://arxiv.org/abs/2607.07459
+      blog: https://www.cnblogs.com/sxq-blog/p/22257972
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“数据与环境规模化”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2607.07459
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/22257972
+  - id: dp3
+    title: DP3
+    date: 2024-03-06
+    arxiv: "2403.03954"
+    track: policy
+    summary: 用紧凑的稀疏点云表示替代纯 2D 图像，为扩散策略提供直接的三维几何条件。
+    problem: 少量示范下，2D 策略容易受视角、外观和实例变化影响，难以稳定泛化到精细空间操作。
+    solution: 以高效 PointNet 编码稀疏点云并融合机器人状态，再由条件一维扩散 U-Net 生成动作轨迹，使策略显式利用三维结构。
+    institutions:
+      primary:
+        - qizhi
+      collaborators:
+        - sjtu
+        - tsinghua
+    links:
+      paper: https://arxiv.org/abs/2403.03954
+      blog: https://www.cnblogs.com/sxq-blog/p/21157343
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2403.03954
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21157343
+  - id: 3d-vla
+    title: 3D-VLA
+    date: 2024-03-14
+    arxiv: "2403.09631"
+    track: world
+    summary: 把三维感知、语言推理、目标场景想象和机器人动作统一进生成式具身基础模型。
+    problem: 二维 VLA 缺少对真实三维世界的显式理解，直接从观察映射到动作也忽略了动作与环境变化之间的关系。
+    solution: 在 3D LLM 中加入交互 token，并对齐目标图像、目标点云等具身扩散模型，让模型先生成三维目标状态，再规划可执行动作。
+    institutions:
+      primary:
+        - umass-amherst
+      collaborators:
+        - sjtu
+    links:
+      paper: https://arxiv.org/abs/2403.09631
+      blog: https://www.cnblogs.com/sxq-blog/p/21326505
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2403.09631
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21326505
+  - id: openvla
+    title: OpenVLA
+    date: 2024-06-13
+    arxiv: "2406.09246"
+    track: policy
+    summary: 发布可训练、可微调、可部署的 7B 开源视觉—语言—动作基础模型。
+    problem: 早期通用 VLA 多为闭源，研究者难以复现，也缺少面向新机器人和新任务的高效微调方法。
+    solution: 融合 DINOv2 与 SigLIP 视觉特征到 Llama 2，把连续动作离散成语言 token，在 97 万条真实机器人示范上训练，并支持 LoRA 与量化部署。
+    institutions:
+      primary:
+        - stanford
+      collaborators:
+        - uc-berkeley
+        - toyota-research
+    links:
+      paper: https://arxiv.org/abs/2406.09246
+      blog: https://www.cnblogs.com/sxq-blog/p/21221714
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2406.09246
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21221714
+  - id: pi0-pi0-5-pi0-fast
+    title: π0 / π0.5 / π0-FAST
+    date: 2024-10-31
+    arxiv: "2410.24164"
+    track: policy
+    summary: 建立以预训练 VLM 为语义主干、以动作专家生成连续动作块的通用机器人策略家族。
+    problem: 通用机器人需要跨本体学习复杂灵巧任务，同时保留互联网语义知识并输出高频、连续、多峰动作。
+    solution: π0 用 Flow Matching 动作专家生成连续动作；π0.5 扩展异构数据与高层语义能力；FAST 再将动作压缩为高效离散序列。
+    institutions:
+      primary:
+        - physical-intelligence
+    links:
+      paper: https://arxiv.org/abs/2410.24164
+      blog: https://www.cnblogs.com/sxq-blog/p/21265638
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2410.24164
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21265638
+  - id: smolvla
+    title: SmolVLA
+    date: 2025-06-02
+    arxiv: "2506.01844"
+    track: policy
+    summary: 以小模型和社区数据构建可在单 GPU 训练、消费级设备部署的通用 VLA。
+    problem: 主流 VLA 参数量和算力成本过高，难进入低成本机器人与社区开发环境。
+    solution: 采用轻量视觉语言主干与 Flow Matching 动作专家，并用异步推理将感知/动作预测和真实动作执行解耦，在小体量下保持竞争力。
+    institutions:
+      primary:
+        - hugging-face
+    links:
+      paper: https://arxiv.org/abs/2506.01844
+      blog: https://www.cnblogs.com/sxq-blog/p/21304696
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2506.01844
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21304696
+  - id: dreamvla
+    title: DreamVLA
+    date: 2025-07-06
+    arxiv: "2507.04447"
+    track: world
+    summary: 让 VLA 同时预测动态、空间与语义三类未来世界知识，用预测结果指导动作生成。
+    problem: 直接生成未来 RGB 信息冗余、难度高，而且不足以同时表达物体运动、空间结构和任务语义。
+    solution: 以动态区域、深度/轨迹和语义特征构造紧凑的多类未来监督，用分块注意力避免信息泄漏，再以扩散 Transformer 生成动作。
+    institutions:
+      primary:
+        - sjtu
+      collaborators:
+        - galbot
+    links:
+      paper: https://arxiv.org/abs/2507.04447
+      blog: https://www.cnblogs.com/sxq-blog/p/21468069
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2507.04447
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21468069
+  - id: vla-touch
+    title: VLA-Touch
+    date: 2025-07-23
+    arxiv: "2507.17294"
+    track: policy
+    summary: 在不微调基础 VLA 的情况下，同时向高层规划和低层执行加入触觉反馈。
+    problem: 视觉无法判断软硬、摩擦和内部接触状态，现有 VLA 在接触密集任务中规划不准、执行也不够精细。
+    solution: 预训练触觉语言模型把触觉变成高层语义反馈；扩散式触觉控制器再将 VLA 动作逐步修正为接触专家动作。
+    institutions:
+      primary:
+        - nus
+    links:
+      paper: https://arxiv.org/abs/2507.17294
+      blog: https://www.cnblogs.com/sxq-blog/p/21447825
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2507.17294
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21447825
+  - id: x-vla
+    title: X-VLA
+    date: 2025-10-11
+    arxiv: "2510.10274"
+    track: policy
+    summary: 用每个数据源专属的 Soft Prompt 统一多机器人、多相机、多频率与多动作空间数据。
+    problem: 跨本体数据具有系统性差异，直接混合会让模型混淆机器人接口，而为每台机器人建独立模型又无法共享知识。
+    solution: 共享标准 Transformer 和 Flow Matching 动作头，仅为不同数据源学习少量 embodiment soft prompt，从而同时保留公共能力与本体差异。
+    institutions:
+      primary:
+        - bytedance
+    links:
+      paper: https://arxiv.org/abs/2510.10274
+      blog: https://www.cnblogs.com/sxq-blog/p/21535664
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2510.10274
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21535664
+  - id: memer
+    title: MemER
+    date: 2025-10-23
+    arxiv: "2510.20328"
+    track: open
+    summary: 为长时机器人任务学习一种可扩展的经验检索式视觉记忆。
+    problem: 把全部历史帧塞入模型计算昂贵且脆弱，均匀抽样又会遗漏关键状态、保留大量无关画面。
+    solution: 高层 VLM 从近期窗口中选择未来仍有用的关键帧并预测当前子任务，再把关键视觉记忆和文字子任务交给低层 π0.5 执行。
+    institutions:
+      primary:
+        - stanford
+    links:
+      paper: https://arxiv.org/abs/2510.20328
+      blog: https://www.cnblogs.com/sxq-blog/p/21487580
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“开放世界、记忆与具身推理”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2510.20328
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21487580
+  - id: rynnvla-002
+    title: RynnVLA-002
+    date: 2025-11-21
+    arxiv: "2511.17502"
+    track: world
+    summary: 以共享骨干联合训练 VLA 动作预测和世界模型未来图像生成，使两项能力互相增强。
+    problem: 独立 VLA 不显式理解动作后的环境变化，独立世界模型也缺少来自策略学习的动作语义。
+    solution: 把同一机器人轨迹构造成 VLA 与世界模型两类样本，共享多模态 token 骨干，同时保留离散动作出口和连续 Action Transformer。
+    institutions:
+      primary:
+        - alibaba
+    links:
+      paper: https://arxiv.org/abs/2511.17502
+      blog: https://www.cnblogs.com/sxq-blog/p/21304152
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2511.17502
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21304152
+  - id: lingbot-va
+    title: LingBot-VA
+    date: 2026-01-29
+    arxiv: "2601.21998"
+    track: world
+    summary: 提出同时生成未来视频和动作的自回归扩散世界动作模型，并以真实观测持续纠正想象。
+    problem: 普通 VLA 不显式建模因果视觉变化，纯视频世界模型又难直接形成高效、长时的机器人闭环控制。
+    solution: 用 Mixture-of-Transformers 在共享 latent 中联合建模视频与动作，按 chunk 自回归；执行后删除预测历史、写入真实反馈，并以异步流水线并行预测与控制。
+    institutions:
+      primary:
+        - robbyant
+    links:
+      paper: https://arxiv.org/abs/2601.21998
+      blog: https://www.cnblogs.com/sxq-blog/p/21822222
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2601.21998
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21822222
+  - id: vla-jepa
+    title: VLA-JEPA
+    date: 2026-02-10
+    arxiv: "2602.10098"
+    track: world
+    summary: 以 JEPA 式潜在状态预测从互联网视频学习与动作相关、对外观变化鲁棒的动力学表征。
+    problem: 传统 latent action 预训练容易追逐像素变化、相机运动和背景噪声，甚至通过未来输入发生信息泄漏。
+    solution: 目标编码器只将未来帧变成监督表示，学生仅看当前观察并在 latent 空间预测未来状态；预训练后再微调 Flow Matching 动作头。
+    institutions:
+      primary:
+        - ustc
+    links:
+      paper: https://arxiv.org/abs/2602.10098
+      blog: https://www.cnblogs.com/sxq-blog/p/21782402
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2602.10098
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21782402
+  - id: cosmos-3
+    title: Cosmos 3
+    date: 2026-06-01
+    arxiv: "2606.02800"
+    track: world
+    summary: 用统一 Mixture-of-Transformers 同时理解和生成语言、图像、视频、音频与动作。
+    problem: Physical AI 的理解模型、视频生成器、世界模拟器和机器人策略彼此割裂，连续模态也难共享统一接口。
+    solution: 用 AR 区处理离散理解 token、Diffusion 区生成连续模态，通过 clean/noisy mask 切换任务，并以多阶段训练得到全模态世界模型与策略。
+    institutions:
+      primary:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2606.02800
+      blog: https://www.cnblogs.com/sxq-blog/p/21751319
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.02800
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21751319
+  - id: dam-vla
+    title: DAM-VLA
+    date: 2026-06-10
+    arxiv: "2606.12105"
+    track: policy
+    summary: 让视觉、语言、触觉/力觉、本体状态与动作各自按真实传感器频率异步更新。
+    problem: 同步 VLA 被迫用一只时钟处理所有模态，会重复计算慢模态、丢失快模态并限制控制频率。
+    solution: 为每种模态维护按自身频率刷新的 latent buffer，以 gated cross-attention 接入预训练骨干，动作头连续读取缓存实现平滑的 100 Hz 反应。
+    institutions:
+      primary:
+        - kit
+      collaborators:
+        - nvidia
+    links:
+      paper: https://arxiv.org/abs/2606.12105
+      blog: https://www.cnblogs.com/sxq-blog/p/21505021
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.12105
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21505021
+  - id: dreamx-world-1-0
+    title: DreamX-World 1.0
+    date: 2026-06-15
+    arxiv: "2606.16993"
+    track: world
+    summary: 构建支持相机导航、场景重访和可提示事件的长时交互式通用世界模型。
+    problem: 分块自回归视频容易累计颜色、风格和几何漂移，对相机轨迹、旧场景记忆与长程事件控制也不足。
+    solution: 以精确相机数据和 E-PRoPE 建模相机几何，用 causal forcing 与蒸馏转为少步自回归模型，再以场景记忆检索、长 rollout 训练和事件指令调优抑制漂移。
+    institutions:
+      primary:
+        - bytedance
+    links:
+      paper: https://arxiv.org/abs/2606.16993
+      blog: https://www.cnblogs.com/sxq-blog/p/21725379
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“世界模型与生成式物理先验”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2606.16993
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21725379
+  - id: lingbot-vla-2-0
+    title: LingBot-VLA 2.0
+    date: 2026-07-07
+    arxiv: "2607.06403"
+    track: policy
+    summary: 从数据、动作空间和预测动力学三方面提升 VLA 在真实多本体长程任务中的可用性。
+    problem: 实验室 VLA 难覆盖多机器人全身动作，原始数据质量与时序对齐不足，策略也缺少未来变化监督。
+    solution: 清洗并预训练约 6 万小时机器人/人类数据，统一 55 维全身接口，以理解专家和稀疏 MoE 动作专家协作，并加入视频语义与深度几何的未来预测任务。
+    institutions:
+      primary:
+        - robbyant
+    links:
+      paper: https://arxiv.org/abs/2607.06403
+      blog: https://www.cnblogs.com/sxq-blog/p/21814155
+    classification:
+      confidence: editorial
+      rationale: 该工作的主要贡献与“通用视觉—语言—动作策略”线路最直接相关。
+    sources:
+      - type: paper
+        url: https://arxiv.org/abs/2607.06403
+      - type: blog
+        url: https://www.cnblogs.com/sxq-blog/p/21814155

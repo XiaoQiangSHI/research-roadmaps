@@ -1,0 +1,43 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import RoadmapTimeline from '@/components/RoadmapTimeline.astro';
+import { listRoadmapIds, loadRoadmap } from '@/lib/data';
+
+export async function getStaticPaths() {
+  return Promise.all((await listRoadmapIds()).map(async (id) => ({ params: { id }, props: { roadmap: await loadRoadmap(id) } })));
+}
+
+const { roadmap } = Astro.props;
+---
+
+<BaseLayout title={`${roadmap.name} · Open Research Roadmaps`} description={roadmap.description}>
+  <header class="hero shell">
+    <p>{roadmap.kind === 'view' ? 'CURATED VIEW' : 'RESEARCH DOMAIN'} · {roadmap.period.start.slice(0, 4)}—{roadmap.period.end.slice(0, 4)}</p>
+    <h1>{roadmap.name}</h1>
+    <div>{roadmap.description}</div>
+    <dl>
+      <div><dt>论文 / 技术文章</dt><dd>{roadmap.papers.length}</dd></div>
+      <div><dt>发展线路</dt><dd>{roadmap.tracks.length}</dd></div>
+      <div><dt>机构</dt><dd>{roadmap.institutions.length}</dd></div>
+    </dl>
+  </header>
+  <main class="shell">
+    <RoadmapTimeline roadmap={roadmap} />
+  </main>
+  <footer class="shell">
+    {roadmap.editorial?.note || '路线归属用于解释技术演进，不代表唯一学术分类。'} 数据、机构与归类依据均可通过 Pull Request 审查和修订。
+  </footer>
+</BaseLayout>
+
+<style>
+  .hero { padding: 70px 0 24px; }
+  .hero > p { margin: 0 0 12px; color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+  h1 { max-width: 1050px; margin: 0; font-family: Georgia, "Songti SC", serif; font-size: clamp(42px, 6vw, 76px); font-weight: 500; line-height: 1.05; letter-spacing: -.035em; }
+  .hero > div { max-width: 880px; margin-top: 20px; color: var(--muted); font-size: 17px; line-height: 1.8; }
+  dl { display: flex; gap: 12px; margin: 30px 0 0; }
+  dl div { min-width: 180px; padding: 17px 19px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--surface) 72%, transparent); }
+  dt { color: var(--muted); font-size: 12px; }
+  dd { margin: 5px 0 0; font-family: Georgia, serif; font-size: 28px; }
+  footer { margin-top: 28px; padding: 24px 0 50px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.7; }
+  @media (max-width: 620px) { .hero { padding-top: 48px; } dl { display: grid; grid-template-columns: repeat(3, 1fr); } dl div { min-width: 0; padding: 13px; } dd { font-size: 22px; } }
+</style>

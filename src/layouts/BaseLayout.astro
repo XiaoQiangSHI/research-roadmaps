@@ -1,0 +1,53 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <a class="brand" href={base}>Open Research Roadmaps</a>
+      <div>
+        <a href={`${base}about/`}>方法与规范</a>
+        {repositoryUrl && <a href={repositoryUrl} target="_blank" rel="noreferrer">GitHub</a>}
+      </div>
+    </nav>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light;
+    --bg: #f4f1ea;
+    --surface: #fffdf8;
+    --ink: #1e2724;
+    --muted: #64706b;
+    --line: #d9d6cc;
+    --line-strong: #bbb7ab;
+    --accent: #bc5a3c;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; min-width: 320px; background: radial-gradient(circle at 10% 0%, rgba(190, 115, 77, .13), transparent 28rem), radial-gradient(circle at 100% 12%, rgba(62, 121, 109, .11), transparent 30rem), var(--bg); color: var(--ink); font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+  a { color: inherit; }
+  .shell { width: min(1500px, calc(100% - 40px)); margin: 0 auto; }
+  .site-nav { display: flex; justify-content: space-between; align-items: center; width: min(1500px, calc(100% - 40px)); margin: 0 auto; padding: 20px 0; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+  .site-nav a { text-decoration: none; }
+  .site-nav .brand { font-weight: 800; letter-spacing: -.02em; }
+  .site-nav div { display: flex; gap: 20px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 620px) { .shell, .site-nav { width: min(100% - 24px, 1500px); } .site-nav div { gap: 12px; } }
+</style>

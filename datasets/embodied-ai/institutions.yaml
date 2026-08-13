@@ -1,0 +1,218 @@
+institutions:
+  - id: nvidia
+    name: NVIDIA
+    shortName: NVIDIA
+    type: company
+    logo:
+      kind: brand
+      value: nvidia
+  - id: stanford
+    name: Stanford University
+    shortName: Stanford
+    type: university
+    logo:
+      kind: text
+      value: SU
+  - id: caltech
+    name: California Institute of Technology
+    shortName: Caltech
+    type: university
+    logo:
+      kind: text
+      value: CIT
+  - id: ut-austin
+    name: The University of Texas at Austin
+    shortName: UT Austin
+    type: university
+    logo:
+      kind: text
+      value: UT
+  - id: imperial
+    name: Imperial College London
+    shortName: Imperial
+    type: university
+    logo:
+      kind: text
+      value: ICL
+  - id: georgia-tech
+    name: Georgia Institute of Technology
+    shortName: Georgia Tech
+    type: university
+    logo:
+      kind: text
+      value: GT
+  - id: uc-berkeley
+    name: University of California, Berkeley
+    shortName: UC Berkeley
+    type: university
+    logo:
+      kind: text
+      value: UCB
+  - id: cmu
+    name: Carnegie Mellon University
+    shortName: CMU
+    type: university
+    logo:
+      kind: text
+      value: CMU
+  - id: nyu
+    name: New York University
+    shortName: NYU
+    type: university
+    logo:
+      kind: text
+      value: NYU
+  - id: upenn
+    name: University of Pennsylvania
+    shortName: UPenn
+    type: university
+    logo:
+      kind: text
+      value: Penn
+  - id: umich
+    name: University of Michigan
+    shortName: Michigan
+    type: university
+    logo:
+      kind: text
+      value: UM
+  - id: umass-amherst
+    name: University of Massachusetts Amherst
+    shortName: UMass
+    type: university
+    logo:
+      kind: text
+      value: UM
+  - id: uw-madison
+    name: University of Wisconsin–Madison
+    shortName: UW–Madison
+    type: university
+    logo:
+      kind: text
+      value: UW
+  - id: columbia
+    name: Columbia University
+    shortName: Columbia
+    type: university
+    logo:
+      kind: text
+      value: CU
+  - id: sjtu
+    name: Shanghai Jiao Tong University
+    shortName: SJTU
+    type: university
+    logo:
+      kind: text
+      value: SJTU
+  - id: tsinghua
+    name: Tsinghua University
+    shortName: Tsinghua
+    type: university
+    logo:
+      kind: text
+      value: THU
+  - id: ustc
+    name: University of Science and Technology of China
+    shortName: USTC
+    type: university
+    logo:
+      kind: text
+      value: USTC
+  - id: nus
+    name: National University of Singapore
+    shortName: NUS
+    type: university
+    logo:
+      kind: text
+      value: NUS
+  - id: university-of-toronto
+    name: University of Toronto
+    shortName: U of T
+    type: university
+    logo:
+      kind: text
+      value: UofT
+  - id: qizhi
+    name: Shanghai Qi Zhi Institute
+    shortName: Qi Zhi
+    type: research-institute
+    logo:
+      kind: text
+      value: 期智
+  - id: kit
+    name: Karlsruhe Institute of Technology
+    shortName: KIT
+    type: research-institute
+    logo:
+      kind: text
+      value: KIT
+  - id: physical-intelligence
+    name: Physical Intelligence
+    shortName: Physical Intelligence
+    type: company
+    logo:
+      kind: text
+      value: π
+  - id: hugging-face
+    name: Hugging Face
+    shortName: Hugging Face
+    type: company
+    logo:
+      kind: brand
+      value: huggingface
+  - id: bytedance
+    name: ByteDance
+    shortName: ByteDance
+    type: company
+    logo:
+      kind: brand
+      value: bytedance
+  - id: alibaba
+    name: Alibaba Tongyi Lab
+    shortName: Alibaba Tongyi
+    type: company
+    logo:
+      kind: brand
+      value: alibabacloud
+  - id: robbyant
+    name: Robbyant / Ant Group
+    shortName: Robbyant
+    type: company
+    logo:
+      kind: text
+      value: 灵波
+  - id: horizon-robotics
+    name: Horizon Robotics
+    shortName: Horizon
+    type: company
+    logo:
+      kind: text
+      value: 地平线
+  - id: wuwen-ai
+    name: WuwenAI
+    shortName: WuwenAI
+    type: company
+    logo:
+      kind: text
+      value: 无问
+  - id: galbot
+    name: Galbot
+    shortName: Galbot
+    type: company
+    logo:
+      kind: text
+      value: Galbot
+  - id: allen-ai
+    name: Allen Institute for AI
+    shortName: Ai2
+    type: research-institute
+    logo:
+      kind: text
+      value: Ai2
+  - id: toyota-research
+    name: Toyota Research Institute
+    shortName: TRI
+    type: research-institute
+    logo:
+      kind: text
+      value: TRI

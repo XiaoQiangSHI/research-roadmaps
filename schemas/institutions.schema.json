@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://research-roadmaps.dev/schemas/institutions.schema.json",
+  "title": "Research institutions",
+  "type": "object",
+  "required": ["institutions"],
+  "properties": {
+    "institutions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "shortName", "type", "logo"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "name": { "type": "string", "minLength": 2 },
+          "shortName": { "type": "string", "minLength": 1 },
+          "type": { "enum": ["company", "university", "research-institute", "community"] },
+          "website": { "type": "string", "format": "uri" },
+          "logo": {
+            "type": "object",
+            "required": ["kind", "value"],
+            "properties": {
+              "kind": { "enum": ["brand", "text"] },
+              "value": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

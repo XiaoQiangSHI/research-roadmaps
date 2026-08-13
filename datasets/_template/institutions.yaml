@@ -1,0 +1,9 @@
+institutions:
+  - id: example-university
+    name: Example University
+    shortName: Example U
+    type: university
+    website: https://example.edu/
+    logo:
+      kind: text
+      value: EU
