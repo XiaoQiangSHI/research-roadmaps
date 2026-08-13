@@ -30,14 +30,14 @@
 - **方法与系统**：大语言模型、生成模型、强化学习、图机器学习、AI 智能体、机器学习系统；
 - **横向与应用领域**：可信人工智能、具身智能、AI for Science。
 
-每个领域明确记录收录范围、不收录范围和相邻领域。同一篇论文只选择一个主领域保存事实记录，跨领域关系写入归类依据，CI 会阻止相同 arXiv 在不同领域重复收录。
+同一篇论文只选择一个主领域保存事实记录，跨领域关系写入归类依据，CI 会阻止相同 arXiv 在不同领域重复收录。
 
 | 状态 | 领域 |
 | --- | --- |
 | 持续维护 | [具身智能](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/embodied-ai/)（60 篇论文、7 条发展线路） |
 | 待社区共建 | 大语言模型、自然语言处理、计算机视觉、多模态人工智能、生成模型、强化学习、AI 智能体、语音与音频智能、图机器学习、机器学习系统、可信人工智能、AI for Science、机器人学 |
 
-每个领域页面都提供“贡献论文”按钮，并自动把领域、路线和提交文件路径带入网页向导。
+每个领域页面都提供“贡献论文”按钮，并自动预选当前领域；贡献者选择合适的路线后，网页向导会生成对应的提交文件和路径。
 
 ## 这个项目与普通论文列表的区别
 
@@ -46,34 +46,36 @@
 - **数据驱动**：路线图存为 YAML，同一套页面可以渲染不同研究领域。
 - **可审查**：每一篇论文、每一次归类和每一个机构都能通过 Pull Request 讨论修订。
 - **可复用**：专题视图引用已有领域数据，不重复维护论文事实。
-- **面向阅读**：支持搜索、路线筛选、机构标识、论文详情和中文博客入口。
+- **面向阅读**：支持搜索、路线筛选、机构标识、论文详情和多条社区讲解链接。
 
 ## 如何参与
 
-不需要会写代码也可以参与。
+不需要会写代码也可以参与。先根据你想做的事情选择入口：
 
-### 1. 推荐论文或纠正信息
+| 你想做什么 | 推荐入口 |
+| --- | --- |
+| 新增一篇论文 | 从对应领域页面点击“贡献论文”，或打开[论文贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/) |
+| 为已有论文补充讲解 | 从论文详情点击“贡献讲解”，或打开[讲解贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/explanation/) |
+| 纠正日期、机构、链接或文字 | 创建[数据纠错 Issue](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new?template=correction.yml) |
+| 不确定论文属于哪个领域或路线 | 创建[论文推荐 Issue](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new?template=paper.yml) |
+| 提议一个新研究领域 | 创建[新领域提案](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new?template=domain.yml) |
+| 修改页面、数据或工具代码 | Fork 仓库并提交 Pull Request，具体要求见[贡献指南](CONTRIBUTING.md) |
 
-优先使用在线的 [论文贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/)：填写表单后会实时校验、生成 YAML，并跳转到 GitHub 创建 Pull Request，不需要本地安装环境或手写数据文件。
+### 使用网页向导提交
 
-也可以在 [Issues](https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/choose) 中选择对应模板：
+论文和讲解向导会实时校验内容并生成 YAML，不需要本地安装环境，也不需要手写数据文件。填写完成后：
 
-- **推荐论文**：提供论文链接，并说明它解决了什么问题。
-- **数据纠错**：报告日期、机构、链接、摘要或路线归属问题。
-- **提议新领域**：说明领域边界、建议线路和可持续维护的数据来源。
+1. 点击“在 GitHub 提交”，登录 GitHub 后进入新文件页面；
+2. 点击 **Propose changes** 保存到自己的分支或 Fork；
+3. 按 GitHub 提示点击 **Create pull request**，等待 CI 与维护者审核。
 
-### 2. 直接修改数据
+如果只想推荐一篇论文、暂时无法填写完整资料，使用 Issue 即可，不必创建 Pull Request。
 
-小修改可以直接编辑 `datasets/` 中对应的 YAML；新增完整领域时复制 `datasets/_template/`。每篇论文至少需要：
+### 直接修改数据或代码
 
-- 可靠的论文来源；
-- 原创的主要工作、问题和解决方案概括；
-- 主导机构及必要的合作机构；
-- 一条主线路、归类理由和置信度。
+先 Fork 仓库，再修改 `datasets/`、页面或工具代码，最后向本仓库的 `main` 分支发起 Pull Request。论文内容至少需要可靠来源、原创概括、机构信息、主线路和归类理由。提交前请阅读[贡献指南](CONTRIBUTING.md)；CI 会自动检查数据格式、引用完整性、测试和生产构建。
 
-提交前请阅读 [贡献指南](CONTRIBUTING.md)，并发起 Pull Request。CI 会自动检查 Schema、引用完整性、测试和生产构建。
-
-### 3. 成为领域维护者
+### 成为领域维护者
 
 如果你长期关注某个领域，可以在新领域提案中申请成为维护者。领域维护者负责核对事实来源、审查路线边界、处理归类争议并持续更新数据，具体职责见 [治理规则](GOVERNANCE.md)。
 

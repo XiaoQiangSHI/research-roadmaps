@@ -7,7 +7,7 @@
 | 你想做什么 | 推荐方式 |
 | --- | --- |
 | 推荐一篇论文 | 从对应领域页点击“贡献论文”，或使用[网页贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/) |
-| 为已有论文补充讲解 | 从论文详情点击“贡献讲解”，只提交讲解标题与链接 |
+| 为已有论文补充讲解 | 从论文详情点击“贡献讲解”，或使用[讲解贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/explanation/) |
 | 修正机构、日期、链接或文字 | 使用“数据纠错”Issue，或直接提交 PR |
 | 调整论文路线归属 | 提交 Issue 讨论，或在 PR 中给出明确理由 |
 | 新建一个研究领域 | 先使用“新领域提案”Issue 对齐范围，再提交数据 |
@@ -17,7 +17,11 @@ Issue 入口：<https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/cho
 
 网页贡献向导：<https://xiaoqiangshi.github.io/research-roadmaps/contribute/>
 
+讲解贡献向导：<https://xiaoqiangshi.github.io/research-roadmaps/contribute/explanation/>
+
 网页向导会根据当前选择的领域，把每篇新论文保存为 `datasets/<domain>/papers/<paper-id>.yaml`。这种独立文件与领域原有的 `papers.yaml` 同时加载，减少合并冲突，也方便单独审核和回退。每个领域页面都有带领域参数的入口，优先从那里开始贡献。
+
+网页向导完成后会打开 GitHub 新建文件页面。登录后点击 **Propose changes**，再按提示点击 **Create pull request**。如果 GitHub 自动创建 Fork 或分支，使用默认选项即可。
 
 ## 开始之前
 
@@ -58,7 +62,7 @@ npm install
 2. 论文最核心、最可复用的新贡献是什么；
 3. 主要实验和结论由哪类指标验证。
 
-每个领域页面都列出“收录”“不收录”和“相邻领域”。如果论文同时涉及多个方向，选择最能解释核心贡献的主领域，并在归类理由中记录交叉关系。CI 会检查跨领域重复 arXiv 编号。
+如果论文同时涉及多个方向，选择最能解释核心贡献的主领域，并在归类理由中记录交叉关系。无法判断时，请先提交“推荐论文”Issue，由维护者一起确认。CI 会检查跨领域重复 arXiv 编号。
 
 ### 收录判断
 
@@ -68,39 +72,39 @@ npm install
 2. 它相对已有工作改变了什么？
 3. 它为什么属于当前主线路？
 
-新增论文写入对应领域的 `papers.yaml`。格式参考 `datasets/_template/papers.yaml`。
+新增论文优先保存为 `datasets/<domain>/papers/<paper-id>.yaml`，网页向导会自动生成该文件。手动编辑时可参考 `datasets/_template/papers.yaml` 中的字段格式。
 
 ```yaml
-- id: example-paper
-  title: Example Paper
-  date: 2024-01-01
-  arxiv: "2401.00001"
-  track: example-track
-  relatedTracks:
-    - another-track
-  summary: 用自己的语言概括论文主要工作。
-  problem: 说明具体问题及其重要性。
-  solution: 说明核心机制，而不是只列模型名称。
-  institutions:
-    primary:
-      - example-university
-    collaborators:
-      - example-company
-  links:
-    paper: https://arxiv.org/abs/2401.00001
-    project: https://example.org/project
-    code: https://github.com/example/project
-    explanations:
-      - title: Example Author · 论文深入讲解
-        url: https://example.org/explanation
-  classification:
-    confidence: high
-    rationale: 解释这篇论文的主要贡献为什么属于该线路。
-  sources:
-    - type: paper
-      url: https://arxiv.org/abs/2401.00001
-    - type: explanation
+id: example-paper
+title: Example Paper
+date: 2024-01-01
+arxiv: "2401.00001"
+track: example-track
+relatedTracks:
+  - another-track
+summary: 用自己的语言概括论文主要工作。
+problem: 说明具体问题及其重要性。
+solution: 说明核心机制，而不是只列模型名称。
+institutions:
+  primary:
+    - example-university
+  collaborators:
+    - example-company
+links:
+  paper: https://arxiv.org/abs/2401.00001
+  project: https://example.org/project
+  code: https://github.com/example/project
+  explanations:
+    - title: Example Author · 论文深入讲解
       url: https://example.org/explanation
+classification:
+  confidence: high
+  rationale: 解释这篇论文的主要贡献为什么属于该线路。
+sources:
+  - type: paper
+    url: https://arxiv.org/abs/2401.00001
+  - type: explanation
+    url: https://example.org/explanation
 ```
 
 ### 字段要求
@@ -217,7 +221,7 @@ npm run check:links
 - `validate`：Schema、重复 ID、路线和机构引用检查。
 - `test`：数据回归测试。
 - `build`：生产构建。
-- `test:e2e`：桌面交互、专题视图和移动端布局测试。
+- `test:e2e`：桌面交互、贡献向导和移动端布局测试。
 - `check:links`：外部来源可访问性检查；网络不稳定时可在 PR 中说明。
 
 ## Pull Request 要求

@@ -24,15 +24,27 @@ body:
   - type: input
     id: project_url
     attributes:
-      label: 项目、代码或中文详解链接
+      label: 项目、代码或论文讲解链接
       description: 可选，多个链接可以用空格分隔
   - type: dropdown
     id: domain
     attributes:
       label: 建议加入的路线图
       options:
+        - 自然语言处理
+        - 计算机视觉
+        - 语音与音频智能
+        - 多模态人工智能
+        - 机器人学
+        - 大语言模型
+        - 生成模型
+        - 强化学习
+        - 图机器学习
+        - AI 智能体
+        - 机器学习系统
+        - 可信人工智能
         - 具身智能
-        - 尚未建立的新领域
+        - AI for Science
         - 不确定
     validations:
       required: true
