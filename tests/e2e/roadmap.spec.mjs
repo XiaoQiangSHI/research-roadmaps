@@ -11,7 +11,7 @@ test('renders, filters, and opens paper details', async ({ page }) => {
   await visible.getByRole('button').click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('NVIDIA');
-  await expect(page.getByRole('dialog').getByRole('link', { name: '打开论文 ↗' })).toHaveAttribute('href', 'https://arxiv.org/abs/2303.02506');
+  await expect(page.getByRole('dialog').getByRole('link', { name: '阅读论文' })).toHaveAttribute('href', 'https://arxiv.org/abs/2303.02506');
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {
@@ -19,4 +19,10 @@ test('mobile layout has no horizontal overflow', async ({ page }) => {
   await page.goto('/roadmaps/embodied-ai/');
   const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+
+  await page.getByPlaceholder('例如：触觉、NVIDIA、世界模型').fill('GRAIL');
+  await page.locator('[data-paper-node]:not([hidden])').getByRole('button').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  const dialogDimensions = await page.getByRole('dialog').evaluate((dialog) => ({ scrollWidth: dialog.scrollWidth, clientWidth: dialog.clientWidth }));
+  expect(dialogDimensions.scrollWidth).toBeLessThanOrEqual(dialogDimensions.clientWidth);
 });

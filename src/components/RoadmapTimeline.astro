@@ -1,6 +1,7 @@
 ---
 import InstitutionMark from './InstitutionMark.astro';
 import type { ResolvedRoadmap } from '@/lib/data';
+import { brandPaths } from '@/lib/brand-icons';
 
 interface Props { roadmap: ResolvedRoadmap }
 const { roadmap } = Astro.props;
@@ -70,22 +71,36 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     <div class="dialog-band"></div>
     <button id="dialog-close" class="dialog-close" type="button" aria-label="关闭论文详情">×</button>
     <div class="dialog-content">
-      <p id="dialog-meta" class="dialog-meta"></p>
-      <h2 id="dialog-title"></h2>
-      <div class="dialog-tags"><span id="dialog-track"></span><span id="dialog-confidence"></span></div>
-      <div id="dialog-orgs" class="dialog-orgs"></div>
-      <div class="detail-grid">
-        <section><h3>主要工作</h3><p id="dialog-summary"></p></section>
-        <section><h3>要解决的问题</h3><p id="dialog-problem"></p></section>
-        <section><h3>核心解决方案</h3><p id="dialog-solution"></p></section>
-        <section><h3>路线归属依据</h3><p id="dialog-rationale"></p></section>
+      <header class="dialog-header">
+        <div class="dialog-meta"><time id="dialog-date"></time><span id="dialog-arxiv"></span></div>
+        <h2 id="dialog-title"></h2>
+        <div class="dialog-tags"><span id="dialog-track"></span><span id="dialog-confidence"></span></div>
+      </header>
+      <section class="dialog-institutions" aria-labelledby="dialog-institutions-title">
+        <h3 id="dialog-institutions-title">研究机构</h3>
+        <div id="dialog-orgs" class="dialog-orgs"></div>
+      </section>
+      <section class="detail-card detail-summary">
+        <span class="detail-number">01</span>
+        <div><h3>主要工作</h3><p id="dialog-summary"></p></div>
+      </section>
+      <div class="detail-columns">
+        <section class="detail-card">
+          <span class="detail-number">02</span>
+          <div><h3>要解决的问题</h3><p id="dialog-problem"></p></div>
+        </section>
+        <section class="detail-card">
+          <span class="detail-number">03</span>
+          <div><h3>核心解决方案</h3><p id="dialog-solution"></p></div>
+        </section>
       </div>
+      <section class="classification-note"><span>归类说明</span><p id="dialog-rationale"></p></section>
       <nav id="dialog-links" class="dialog-links" aria-label="论文链接"></nav>
     </div>
   </article>
 </dialog>
 
-<script is:inline define:vars={{ papers: roadmap.papers, tracks: roadmap.tracks, orgs: roadmap.institutions }}>
+<script is:inline define:vars={{ papers: roadmap.papers, tracks: roadmap.tracks, orgs: roadmap.institutions, brandIcons: brandPaths }}>
   const paperMap = new Map(papers.map((paper) => [paper.id, paper]));
   const trackMap = new Map(tracks.map((track) => [track.id, track]));
   const institutionMap = new Map(orgs.map((institution) => [institution.id, institution]));
@@ -97,7 +112,11 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
   const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 
   function renderMark(institution) {
-    return `<span class="dialog-mark">${escapeHtml(institution?.logo.value || 'R')}</span>`;
+    const brandPath = institution?.logo.kind === 'brand' ? brandIcons[institution.logo.value] : undefined;
+    const content = brandPath
+      ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${escapeHtml(brandPath)}"></path></svg>`
+      : escapeHtml(institution?.logo.value || 'R');
+    return `<span class="dialog-mark">${content}</span>`;
   }
 
   function openPaper(id) {
@@ -106,18 +125,24 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     const track = trackMap.get(paper.track);
     const orgIds = [...paper.institutions.primary, ...(paper.institutions.collaborators || [])];
     const orgs = orgIds.map((orgId) => institutionMap.get(orgId)).filter(Boolean);
+    const confidenceLabels = { high: '高置信度', medium: '中等置信度', low: '低置信度', editorial: '编辑判断' };
     document.getElementById('dialog-panel').style.setProperty('--route', track.color);
-    document.getElementById('dialog-meta').textContent = `${paper.date} · arXiv:${paper.arxiv}`;
+    document.getElementById('dialog-date').textContent = paper.date;
+    document.getElementById('dialog-date').dateTime = paper.date;
+    document.getElementById('dialog-arxiv').textContent = `arXiv ${paper.arxiv}`;
     document.getElementById('dialog-title').textContent = paper.title;
     document.getElementById('dialog-track').textContent = `${track.index} · ${track.name}`;
-    document.getElementById('dialog-confidence').textContent = `归类置信度：${paper.classification.confidence}`;
-    document.getElementById('dialog-orgs').innerHTML = orgs.map((org, index) => `<span>${renderMark(org)}<span><strong>${escapeHtml(org.name)}</strong><small>${index < paper.institutions.primary.length ? '主导机构' : '合作机构'}</small></span></span>`).join('');
+    document.getElementById('dialog-confidence').textContent = confidenceLabels[paper.classification.confidence] || paper.classification.confidence;
+    document.getElementById('dialog-orgs').innerHTML = orgs.map((org, index) => {
+      const role = index < paper.institutions.primary.length ? '主导机构' : '合作机构';
+      return `<div class="dialog-org">${renderMark(org)}<span class="dialog-org-name"><strong>${escapeHtml(org.name)}</strong><small>${escapeHtml(org.shortName)}</small></span><span class="dialog-org-role">${role}</span></div>`;
+    }).join('');
     document.getElementById('dialog-summary').textContent = paper.summary;
     document.getElementById('dialog-problem').textContent = paper.problem;
     document.getElementById('dialog-solution').textContent = paper.solution;
     document.getElementById('dialog-rationale').textContent = paper.classification.rationale;
-    const labels = { paper: '打开论文 ↗', project: '项目主页 ↗', code: '代码仓库 ↗', blog: '中文详解 ↗' };
-    document.getElementById('dialog-links').innerHTML = Object.entries(paper.links).map(([key, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${labels[key] || key}</a>`).join('');
+    const labels = { paper: '阅读论文', project: '项目主页', code: '查看代码', blog: '中文详解' };
+    document.getElementById('dialog-links').innerHTML = Object.entries(paper.links).map(([key, url], index) => `<a class="dialog-link${index === 0 ? ' primary' : ''}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer"><span>${labels[key] || key}</span><span aria-hidden="true">↗</span></a>`).join('');
     dialog.showModal();
     history.replaceState(null, '', `#paper-${paper.id}`);
   }
@@ -237,27 +262,44 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
   .paper-node[data-align-right='true'] .paper-heading { flex-direction: row-reverse; }
   .paper-heading > span:last-child { min-width: 0; overflow-wrap: anywhere; }
   .paper-heading small, .paper-button time { display: block; margin-top: 2px; color: var(--muted); font-size: 9px; }
-  dialog { width: min(760px, calc(100% - 24px)); max-height: calc(100% - 32px); padding: 0; border: 0; border-radius: 22px; background: var(--surface); box-shadow: 0 24px 70px rgba(20, 27, 25, .25); color: var(--ink); }
-  dialog::backdrop { background: rgba(20, 27, 25, .58); backdrop-filter: blur(7px); }
-  #dialog-panel { position: relative; }
-  .dialog-band { height: 9px; background: var(--route); }
-  .dialog-content { padding: 32px; }
-  .dialog-meta { margin: 0 44px 10px 0; color: var(--muted); font-size: 13px; }
-  .dialog-content > h2 { margin: 0; font-size: clamp(30px, 4vw, 42px); }
-  .dialog-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 13px; }
-  .dialog-tags span { padding: 5px 9px; border-radius: 999px; background: color-mix(in srgb, var(--route) 14%, var(--surface)); color: color-mix(in srgb, var(--route) 82%, var(--ink)); font-size: 12px; font-weight: 700; }
-  .dialog-close { position: absolute; top: 22px; right: 22px; width: 38px; min-height: 38px; padding: 0; border-radius: 50%; font-size: 22px; }
-  .dialog-orgs { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .dialog-orgs > span { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
-  .dialog-orgs strong, .dialog-orgs small { display: block; }
-  .dialog-orgs strong { color: var(--ink); font-size: 13px; }
-  :global(.dialog-mark) { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg); font-size: 9px; font-weight: 800; }
-  .detail-grid { display: grid; gap: 18px; margin-top: 26px; }
-  .detail-grid section { padding-top: 17px; border-top: 1px solid var(--line); }
-  .detail-grid h3 { margin: 0 0 7px; color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-  .detail-grid p { margin: 0; font-size: 16px; line-height: 1.75; }
-  .dialog-links { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 22px; }
-  .dialog-links a { color: var(--route); font-weight: 700; text-decoration: none; }
+  dialog { width: min(900px, calc(100% - 32px)); max-height: calc(100% - 36px); padding: 0; overflow: auto; border: 1px solid color-mix(in srgb, var(--route) 28%, var(--line)); border-radius: 24px; background: var(--surface); box-shadow: 0 32px 100px rgba(20, 27, 25, .32); color: var(--ink); }
+  dialog::backdrop { background: rgba(18, 24, 22, .62); backdrop-filter: blur(9px); }
+  #dialog-panel { position: relative; overflow: hidden; }
+  .dialog-band { height: 6px; background: linear-gradient(90deg, var(--route), color-mix(in srgb, var(--route) 45%, var(--surface))); }
+  .dialog-content { padding: 42px 44px 38px; }
+  .dialog-header { padding-right: 52px; }
+  .dialog-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 13px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .dialog-meta span::before { content: ''; display: inline-block; width: 3px; height: 3px; margin: 0 10px 3px 0; border-radius: 50%; background: var(--route); }
+  .dialog-header > h2 { max-width: 720px; margin: 0; font-size: clamp(36px, 5vw, 54px); line-height: 1.02; letter-spacing: -.035em; overflow-wrap: anywhere; }
+  .dialog-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 17px; }
+  .dialog-tags span { padding: 6px 10px; border: 1px solid color-mix(in srgb, var(--route) 20%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--route) 8%, var(--surface)); color: color-mix(in srgb, var(--route) 82%, var(--ink)); font-size: 11px; font-weight: 800; letter-spacing: .02em; }
+  .dialog-close { position: absolute; z-index: 2; top: 21px; right: 22px; display: grid; place-items: center; width: 42px; min-height: 42px; padding: 0 0 2px; border-color: color-mix(in srgb, var(--route) 16%, var(--line)); border-radius: 50%; background: color-mix(in srgb, var(--surface) 92%, transparent); color: var(--muted); font-size: 25px; line-height: 1; transition: transform .18s ease, border-color .18s ease, color .18s ease; }
+  .dialog-close:hover { transform: rotate(6deg); border-color: var(--route); color: var(--ink); }
+  .dialog-institutions { margin-top: 30px; }
+  .dialog-institutions > h3 { margin: 0 0 10px; color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .dialog-orgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  :global(.dialog-org) { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 11px; align-items: center; min-height: 64px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--bg) 46%, var(--surface)); }
+  :global(.dialog-mark) { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid color-mix(in srgb, var(--route) 25%, var(--line)); border-radius: 11px; background: var(--surface); color: color-mix(in srgb, var(--route) 80%, var(--ink)); font-size: 9px; font-weight: 800; }
+  :global(.dialog-mark svg) { width: 24px; height: 24px; fill: currentColor; }
+  :global(.dialog-org-name) { min-width: 0; }
+  :global(.dialog-org-name strong), :global(.dialog-org-name small) { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  :global(.dialog-org-name strong) { font-size: 13px; }
+  :global(.dialog-org-name small) { margin-top: 3px; color: var(--muted); font-size: 10px; }
+  :global(.dialog-org-role) { align-self: start; padding: 4px 7px; border-radius: 999px; background: color-mix(in srgb, var(--route) 10%, var(--surface)); color: color-mix(in srgb, var(--route) 72%, var(--ink)); font-size: 9px; font-weight: 800; white-space: nowrap; }
+  .detail-card { display: grid; grid-template-columns: 30px 1fr; gap: 14px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: color-mix(in srgb, var(--surface) 86%, var(--bg)); }
+  .detail-summary { margin-top: 26px; border-color: color-mix(in srgb, var(--route) 34%, var(--line)); background: linear-gradient(135deg, color-mix(in srgb, var(--route) 8%, var(--surface)), var(--surface) 58%); }
+  .detail-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+  .detail-number { color: var(--route); font-family: Georgia, serif; font-size: 13px; font-weight: 700; }
+  .detail-card h3 { margin: 0 0 8px; color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  .detail-card p { margin: 0; font-size: 15px; line-height: 1.75; }
+  .detail-summary p { font-size: 17px; line-height: 1.7; }
+  .classification-note { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; margin-top: 12px; padding: 16px 18px; border-left: 3px solid var(--route); border-radius: 0 12px 12px 0; background: color-mix(in srgb, var(--route) 6%, var(--surface)); }
+  .classification-note > span { color: var(--route); font-size: 11px; font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+  .classification-note p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+  .dialog-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+  :global(.dialog-link) { display: inline-flex; gap: 22px; justify-content: space-between; align-items: center; min-width: 138px; padding: 11px 14px; border: 1px solid color-mix(in srgb, var(--route) 25%, var(--line)); border-radius: 11px; color: var(--ink); font-size: 13px; font-weight: 750; text-decoration: none; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+  :global(.dialog-link:hover) { transform: translateY(-2px); border-color: var(--route); background: color-mix(in srgb, var(--route) 7%, var(--surface)); }
+  :global(.dialog-link.primary) { border-color: var(--route); background: var(--route); color: var(--surface); }
   @media (max-width: 980px) {
     .axis { display: none; }
     .track-section { grid-template-columns: 1fr; padding: 24px 0 28px; }
@@ -271,6 +313,15 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     .paper-node { position: static; display: block; width: auto; height: auto; margin: 7px 0; transform: none; }
     .paper-button, .paper-node[data-side='below'] .paper-button { position: static; display: flex; justify-content: space-between; gap: 12px; width: 100%; max-width: none; padding: 11px 12px; }
     .paper-node[data-align-right='true'] .paper-heading { flex-direction: row; }
-    .dialog-content { padding: 26px 20px; }
+    dialog { width: calc(100% - 16px); max-height: calc(100% - 16px); border-radius: 18px; }
+    .dialog-content { padding: 30px 18px 22px; }
+    .dialog-header { padding-right: 40px; }
+    .dialog-header > h2 { font-size: clamp(32px, 12vw, 44px); }
+    .dialog-close { top: 16px; right: 14px; width: 38px; min-height: 38px; }
+    .dialog-orgs, .detail-columns { grid-template-columns: 1fr; }
+    .detail-card { padding: 18px 16px; }
+    .detail-summary p { font-size: 16px; }
+    .classification-note { grid-template-columns: 1fr; gap: 6px; }
+    :global(.dialog-link) { flex: 1 1 140px; }
   }
 </style>
