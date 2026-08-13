@@ -3,7 +3,7 @@
 [![CI](https://github.com/XiaoQiangSHI/research-roadmaps/actions/workflows/ci.yml/badge.svg)](https://github.com/XiaoQiangSHI/research-roadmaps/actions/workflows/ci.yml)
 [![Deploy](https://github.com/XiaoQiangSHI/research-roadmaps/actions/workflows/deploy.yml/badge.svg)](https://github.com/XiaoQiangSHI/research-roadmaps/actions/workflows/deploy.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-blue.svg)](LICENSE)
-[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](LICENSE-DATA)
+[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](datasets/LICENSE)
 
 把一个研究领域中分散的论文，整理成可以追踪“时间、问题与解决方案演进”的交互式路线图。
 
@@ -131,7 +131,7 @@ Astro、TypeScript、YAML、JSON Schema、Ajv、Node Test、Playwright 和 GitHu
 ## 许可证与引用
 
 - 源代码使用 [Apache License 2.0](LICENSE)。
-- `datasets/` 中的原创路线数据与编辑内容使用 [CC BY 4.0](LICENSE-DATA)。
+- `datasets/` 中的原创路线数据与编辑内容使用 [CC BY 4.0](datasets/LICENSE)。
 - 论文、商标和 Logo 的权利归原始权利人所有，本项目仅作引用和机构识别。
 - 使用或改编路线数据时，请注明项目名称、仓库链接，并标记你的修改。
 
