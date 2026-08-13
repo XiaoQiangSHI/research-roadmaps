@@ -4,11 +4,12 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import YAML from 'yaml';
-import { readStandalonePapers } from '../src/lib/data.ts';
+import { listRoadmaps, loadRoadmap, readStandalonePapers } from '../src/lib/data.ts';
 
 const roadmap = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/roadmap.yaml', import.meta.url), 'utf8'));
 const { papers } = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/papers.yaml', import.meta.url), 'utf8'));
-const { institutions } = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/institutions.yaml', import.meta.url), 'utf8'));
+const embodiedRoadmap = await loadRoadmap('embodied-ai');
+const institutions = embodiedRoadmap.institutions;
 
 test('embodied AI migration preserves the source coverage', () => {
   assert.equal(roadmap.tracks.length, 7);
@@ -37,4 +38,17 @@ test('standalone paper files can be loaded without editing the aggregate file', 
   await fs.writeFile(path.join(directory, 'papers', 'example-paper.yaml'), YAML.stringify({ id: 'example-paper', title: 'Example Paper' }));
 
   assert.deepEqual(await readStandalonePapers(directory), [{ id: 'example-paper', title: 'Example Paper' }]);
+});
+
+test('the catalogue includes active and empty research domains', async () => {
+  const roadmaps = await listRoadmaps();
+  assert.equal(roadmaps.length, 14);
+  assert.equal(roadmaps[0].id, 'embodied-ai');
+  assert.ok(roadmaps.some((item) => item.id === 'computer-vision' && item.papers.length === 0));
+});
+
+test('empty domains inherit shared institutions for first-paper contributions', async () => {
+  const computerVision = await loadRoadmap('computer-vision');
+  assert.equal(computerVision.papers.length, 0);
+  assert.ok(computerVision.institutions.some((institution) => institution.id === 'nvidia'));
 });

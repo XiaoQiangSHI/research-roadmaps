@@ -1,0 +1,45 @@
+id: generative-models
+name: 生成模型研究路线图
+description: 梳理概率生成建模、对抗学习、扩散模型以及可控生成与编辑的技术演进。
+kind: full
+period: { start: 2013-01-01, end: 2026-12-31 }
+tracks:
+  - id: likelihood
+    index: "01"
+    name: 显式似然与潜变量模型
+    color: "#be6246"
+    problem: 如何以可训练、可评估的概率模型表示复杂数据分布，并学习可解释和可操控的潜变量。
+    evolution:
+      - { id: likelihood-01, label: 自回归与变分生成 }
+      - { id: likelihood-02, label: 归一化流与离散潜变量 }
+      - { id: likelihood-03, label: 大规模统一序列生成 }
+  - id: adversarial
+    index: "02"
+    name: 对抗生成与高保真合成
+    color: "#3e796d"
+    problem: 如何通过对抗训练生成逼真样本，同时缓解训练不稳定、模式坍塌和覆盖不足。
+    evolution:
+      - { id: adversarial-01, label: 生成对抗学习 }
+      - { id: adversarial-02, label: 稳定训练与渐进式高分辨率生成 }
+      - { id: adversarial-03, label: 可编辑潜空间与数据高效生成 }
+  - id: diffusion
+    index: "03"
+    name: 扩散、流与得分生成
+    color: "#6a63a8"
+    problem: 如何在样本质量、生成速度、训练稳定性和多模态扩展之间取得平衡。
+    evolution:
+      - { id: diffusion-01, label: 去噪得分建模 }
+      - { id: diffusion-02, label: 潜空间扩散与条件控制 }
+      - { id: diffusion-03, label: 流匹配与少步采样 }
+  - id: controllability
+    index: "04"
+    name: 可控生成、编辑与一致性
+    color: "#3473a0"
+    problem: 如何精确控制内容、结构、身份和风格，并维持多视角或长序列的一致性。
+    evolution:
+      - { id: controllability-01, label: 条件输入与属性控制 }
+      - { id: controllability-02, label: 指令编辑与结构约束 }
+      - { id: controllability-03, label: 个性化与时空一致生成 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

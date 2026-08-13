@@ -1,0 +1,45 @@
+id: natural-language-processing
+name: 自然语言处理研究路线图
+description: 梳理语言表示、结构化理解、生成与交互、多语言和知识密集型 NLP 的技术演进。
+kind: full
+period: { start: 2013-01-01, end: 2026-12-31 }
+tracks:
+  - id: representation
+    index: "01"
+    name: 语言表示与预训练
+    color: "#be6246"
+    problem: 如何学习能跨任务迁移、保留语义与结构信息，并适应领域变化的语言表示。
+    evolution:
+      - { id: representation-01, label: 分布式词表示 }
+      - { id: representation-02, label: 上下文化表示与预训练 }
+      - { id: representation-03, label: 通用生成式语言表示 }
+  - id: understanding
+    index: "02"
+    name: 结构化理解与信息抽取
+    color: "#3e796d"
+    problem: 如何从开放文本中可靠识别实体、关系、事件、篇章结构和可验证事实。
+    evolution:
+      - { id: understanding-01, label: 序列标注与句法语义建模 }
+      - { id: understanding-02, label: 端到端联合抽取 }
+      - { id: understanding-03, label: 指令化开放信息抽取 }
+  - id: generation
+    index: "03"
+    name: 条件生成与人机交互
+    color: "#6a63a8"
+    problem: 如何生成忠实、连贯、可控且能维持多轮上下文的自然语言输出。
+    evolution:
+      - { id: generation-01, label: 神经序列到序列生成 }
+      - { id: generation-02, label: 预训练生成与可控解码 }
+      - { id: generation-03, label: 对话对齐与事实约束 }
+  - id: multilingual
+    index: "04"
+    name: 多语言、跨语言与低资源学习
+    color: "#3473a0"
+    problem: 如何缓解语言资源不均衡，让模型跨语言迁移并覆盖形态和书写系统差异。
+    evolution:
+      - { id: multilingual-01, label: 跨语言表示对齐 }
+      - { id: multilingual-02, label: 多语言预训练与零样本迁移 }
+      - { id: multilingual-03, label: 低资源数据与文化适配 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

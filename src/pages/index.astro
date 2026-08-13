@@ -11,7 +11,7 @@ const base = import.meta.env.BASE_URL;
     <section class="roadmap-grid" aria-label="路线图列表">
       {roadmaps.map((roadmap) => (
         <a class="roadmap-card" href={`${base}roadmaps/${roadmap.id}/`}>
-          <span>{roadmap.kind === 'view' ? '专题视图' : '完整领域'}</span>
+          <span>{roadmap.kind === 'view' ? '专题视图' : roadmap.papers.length ? '持续维护' : '待社区共建'}</span>
           <h2>{roadmap.name}</h2>
           <p>{roadmap.description}</p>
           <dl>
@@ -23,8 +23,8 @@ const base = import.meta.env.BASE_URL;
       ))}
       <a class="roadmap-card contribute" href={`${base}contribute/`}>
         <span>CONTRIBUTE</span>
-        <h2>贡献一篇论文</h2>
-        <p>使用网页向导填写信息、生成 YAML，并直接在 GitHub 发起贡献。</p>
+        <h2>选择领域并贡献论文</h2>
+        <p>每个领域都接受论文贡献。使用网页向导填写信息、生成 YAML，并直接在 GitHub 发起贡献。</p>
       </a>
     </section>
   </main>

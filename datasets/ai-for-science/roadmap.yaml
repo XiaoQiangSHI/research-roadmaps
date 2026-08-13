@@ -1,0 +1,45 @@
+id: ai-for-science
+name: AI for Science 研究路线图
+description: 梳理人工智能在科学表征、结构预测、仿真加速和闭环发现中的发展线路。
+kind: full
+period: { start: 2015-01-01, end: 2026-12-31 }
+tracks:
+  - id: scientific-representation
+    index: "01"
+    name: 科学数据表征与基础模型
+    color: "#be6246"
+    problem: 如何统一建模分子、蛋白质、材料、气候等异质科学数据，并注入对称性和守恒规律。
+    evolution:
+      - { id: scientific-representation-01, label: 领域特征与监督预测 }
+      - { id: scientific-representation-02, label: 几何深度学习与自监督 }
+      - { id: scientific-representation-03, label: 多尺度科学基础模型 }
+  - id: structure-design
+    index: "02"
+    name: 结构预测与生成设计
+    color: "#3e796d"
+    problem: 如何从序列或条件预测三维结构，并生成满足功能、稳定性和可合成约束的候选物。
+    evolution:
+      - { id: structure-design-01, label: 学习式结构与性质预测 }
+      - { id: structure-design-02, label: 端到端三维结构建模 }
+      - { id: structure-design-03, label: 生成式逆向设计与多目标优化 }
+  - id: simulation
+    index: "03"
+    name: 物理仿真与代理模型
+    color: "#6a63a8"
+    problem: 如何以机器学习近似昂贵数值仿真，同时保持稳定性、泛化性和物理一致性。
+    evolution:
+      - { id: simulation-01, label: 数据驱动偏微分方程代理 }
+      - { id: simulation-02, label: 神经算子与可微仿真 }
+      - { id: simulation-03, label: 多尺度生成式仿真与混合求解 }
+  - id: discovery
+    index: "04"
+    name: 自动实验与闭环科学发现
+    color: "#3473a0"
+    problem: 如何让模型提出可检验假设、选择实验、整合仪器反馈，并在真实实验成本下可靠迭代。
+    evolution:
+      - { id: discovery-01, label: 贝叶斯优化与主动学习 }
+      - { id: discovery-02, label: 机器人实验室与自动合成 }
+      - { id: discovery-03, label: 科学智能体与端到端闭环发现 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

@@ -26,11 +26,23 @@ const validators = {
   institutions: ajv.compile(institutionsSchema)
 };
 
+async function readOptionalYaml(file, fallback) {
+  try {
+    return await readYaml(file);
+  } catch (error) {
+    if (error.code === 'ENOENT') return fallback;
+    throw error;
+  }
+}
+
 const entries = await fs.readdir(datasetsDir, { withFileTypes: true });
 const datasetIds = entries.filter((entry) => entry.isDirectory() && !entry.name.startsWith('_')).map((entry) => entry.name);
 const errors = [];
 const fullDatasets = new Map();
 const viewDatasets = [];
+const sharedInstitutions = await readOptionalYaml(path.join(datasetsDir, '_shared', 'institutions.yaml'), { institutions: [] });
+validateDocument('_shared', 'institutions', sharedInstitutions);
+for (const duplicate of duplicates((sharedInstitutions.institutions || []).map((institution) => institution.id))) errors.push(`_shared: duplicate institution id ${duplicate}`);
 
 function validateDocument(datasetId, kind, data, label = kind) {
   const valid = validators[kind](data);
@@ -74,14 +86,16 @@ for (const datasetId of datasetIds) {
   }
 
   const [papers, standalonePapers, institutions] = await Promise.all([
-    readYaml(path.join(directory, 'papers.yaml')),
+    readOptionalYaml(path.join(directory, 'papers.yaml'), { papers: [] }),
     readStandalonePapers(directory, datasetId),
-    readYaml(path.join(directory, 'institutions.yaml'))
+    readOptionalYaml(path.join(directory, 'institutions.yaml'), { institutions: [] })
   ]);
   validateDocument(datasetId, 'papers', papers);
   validateDocument(datasetId, 'institutions', institutions);
   const allPapers = [...(papers.papers || []), ...standalonePapers];
-  fullDatasets.set(datasetId, { roadmap, papers: allPapers, institutions: institutions.institutions || [] });
+  const mergedInstitutions = new Map((sharedInstitutions.institutions || []).map((institution) => [institution.id, institution]));
+  for (const institution of institutions.institutions || []) mergedInstitutions.set(institution.id, institution);
+  fullDatasets.set(datasetId, { roadmap, papers: allPapers, institutions: [...mergedInstitutions.values()] });
 
   for (const duplicate of duplicates(allPapers.map((paper) => paper.id))) errors.push(`${datasetId}: duplicate paper id ${duplicate}`);
   for (const duplicate of duplicates(allPapers.map((paper) => paper.arxiv))) errors.push(`${datasetId}: duplicate arXiv id ${duplicate}`);
@@ -89,7 +103,7 @@ for (const datasetId of datasetIds) {
   for (const duplicate of duplicates((institutions.institutions || []).map((institution) => institution.id))) errors.push(`${datasetId}: duplicate institution id ${duplicate}`);
 
   const trackIds = new Set((roadmap.tracks || []).map((track) => track.id));
-  const institutionIds = new Set((institutions.institutions || []).map((institution) => institution.id));
+  const institutionIds = new Set(mergedInstitutions.keys());
   for (const paper of allPapers) {
     if (!trackIds.has(paper.track)) errors.push(`${datasetId}/${paper.id}: unknown track ${paper.track}`);
     for (const related of paper.relatedTracks || []) if (!trackIds.has(related)) errors.push(`${datasetId}/${paper.id}: unknown related track ${related}`);

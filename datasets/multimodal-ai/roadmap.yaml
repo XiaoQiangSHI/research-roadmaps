@@ -1,0 +1,45 @@
+id: multimodal-ai
+name: 多模态人工智能研究路线图
+description: 梳理跨模态表征、视觉语言理解、统一生成和多模态推理的研究发展线路。
+kind: full
+period: { start: 2015-01-01, end: 2026-12-31 }
+tracks:
+  - id: alignment
+    index: "01"
+    name: 跨模态表征与对齐
+    color: "#be6246"
+    problem: 如何将不同模态映射到可比较的语义空间，同时保留各模态特有的细粒度信息。
+    evolution:
+      - { id: alignment-01, label: 配对数据联合嵌入 }
+      - { id: alignment-02, label: 大规模对比预训练 }
+      - { id: alignment-03, label: 细粒度与多模态统一表征 }
+  - id: understanding
+    index: "02"
+    name: 视觉语言理解与交互
+    color: "#3e796d"
+    problem: 如何将感知内容接入语言模型，使其可靠描述、问答、定位并遵循多模态指令。
+    evolution:
+      - { id: understanding-01, label: 任务专用视觉语言模型 }
+      - { id: understanding-02, label: 视觉语言预训练与提示学习 }
+      - { id: understanding-03, label: 多模态大模型与交互式理解 }
+  - id: generation
+    index: "03"
+    name: 跨模态与统一内容生成
+    color: "#6a63a8"
+    problem: 如何在文本、图像、音频和视频之间进行高保真、可控、一致的条件生成与编辑。
+    evolution:
+      - { id: generation-01, label: 模态间条件生成 }
+      - { id: generation-02, label: 扩散式跨模态生成 }
+      - { id: generation-03, label: 统一 token 与任意模态生成 }
+  - id: reasoning
+    index: "04"
+    name: 多模态推理与世界知识
+    color: "#3473a0"
+    problem: 如何结合多个模态完成空间、时间、数学和因果推理，并减少语言先验造成的幻觉。
+    evolution:
+      - { id: reasoning-01, label: 组合式视觉问答 }
+      - { id: reasoning-02, label: 思维链与工具增强推理 }
+      - { id: reasoning-03, label: 原生多模态推理与可验证过程 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

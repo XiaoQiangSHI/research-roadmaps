@@ -22,9 +22,14 @@
 
 ## 当前路线图
 
-| 路线图 | 类型 | 内容 |
-| --- | --- | --- |
-| [具身智能论文发展路线图](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/embodied-ai/) | 完整领域 | 60 篇论文、7 条发展线路、31 家机构 |
+项目当前包含 14 个研究领域。具身智能已经持续维护，其余领域先开放路线骨架并接受社区贡献；“0 篇论文”是明确支持的共建状态，不表示该领域没有研究工作。
+
+| 状态 | 领域 |
+| --- | --- |
+| 持续维护 | [具身智能](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/embodied-ai/)（60 篇论文、7 条发展线路） |
+| 待社区共建 | 大语言模型、自然语言处理、计算机视觉、多模态人工智能、生成模型、强化学习、AI 智能体、语音与音频智能、图机器学习、机器学习系统、可信人工智能、AI for Science、机器人学 |
+
+每个领域页面都提供“贡献论文”按钮，并自动把领域、路线和提交文件路径带入网页向导。
 
 ## 这个项目与普通论文列表的区别
 
@@ -83,10 +88,12 @@
 ```text
 datasets/<domain>/
 ├─ roadmap.yaml       # 领域边界、路线、持续问题与演进阶段
-├─ papers.yaml        # 论文事实、原创概括、链接与归类依据
+├─ papers.yaml        # 可选；聚合的论文事实、原创概括、链接与归类依据
 ├─ papers/*.yaml      # 贡献向导生成的单篇论文文件
-├─ institutions.yaml  # 机构名称、类型、网站与离线徽标
+├─ institutions.yaml  # 可选；领域专属机构，会覆盖同 ID 的共享机构
 └─ references.yaml    # 领域级来源、筛选规则与排除标准
+
+datasets/_shared/institutions.yaml  # 各领域共用的机构名称与徽标
 ```
 
 `schemas/` 定义 JSON Schema，`scripts/validate-data.mjs` 继续检查重复论文、无效路线、无效机构和来源完整性。

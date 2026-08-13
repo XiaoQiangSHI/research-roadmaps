@@ -5,7 +5,7 @@ test('renders, filters, and opens paper details', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '具身智能论文发展路线图' })).toBeVisible();
   await expect(page.locator('[data-paper-node]')).toHaveCount(60);
 
-  await page.getByPlaceholder('例如：触觉、NVIDIA、世界模型').fill('Prismer');
+  await page.getByPlaceholder('例如：论文标题、问题或机构').fill('Prismer');
   const visible = page.locator('[data-paper-node]:not([hidden])');
   await expect(visible).toHaveCount(1);
   await visible.getByRole('button').click();
@@ -20,7 +20,7 @@ test('mobile layout has no horizontal overflow', async ({ page }) => {
   const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
 
-  await page.getByPlaceholder('例如：触觉、NVIDIA、世界模型').fill('GRAIL');
+  await page.getByPlaceholder('例如：论文标题、问题或机构').fill('GRAIL');
   await page.locator('[data-paper-node]:not([hidden])').getByRole('button').click();
   await expect(page.getByRole('dialog')).toBeVisible();
   const dialogDimensions = await page.getByRole('dialog').evaluate((dialog) => ({ scrollWidth: dialog.scrollWidth, clientWidth: dialog.clientWidth }));
@@ -29,7 +29,9 @@ test('mobile layout has no horizontal overflow', async ({ page }) => {
 
 test('contribution wizard validates and prepares a standalone paper file', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 900 });
-  await page.goto('/contribute/');
+  await page.goto('/contribute/?domain=computer-vision');
+  await expect(page.locator('#domain')).toHaveValue('computer-vision');
+  await expect(page.locator('#active-domain-name')).toHaveText('计算机视觉研究路线图');
   await expect(page.locator('#validation-errors')).toBeEmpty();
   await page.locator('#title').fill('Example Contribution Paper');
   await page.locator('#arxiv').fill('2608.01234');
@@ -37,8 +39,8 @@ test('contribution wizard validates and prepares a standalone paper file', async
   await page.locator('#summary').fill('提出一个用于验证论文贡献向导的完整示例方法。');
   await page.locator('#problem').fill('现有贡献流程需要手写较长的 YAML，容易出现格式和引用错误。');
   await page.locator('#solution').fill('使用网页表单实时校验字段，并自动生成独立的论文 YAML 文件。');
-  await page.locator('#track').selectOption('data');
-  await page.locator('#rationale').fill('主要贡献直接改善数据与环境规模化线路的资料维护流程。');
+  await page.locator('#track').selectOption('recognition');
+  await page.locator('#rationale').fill('主要贡献直接改善视觉表征与识别线路的资料维护流程。');
   await page.locator('#primary-select').selectOption('nvidia');
   await page.getByRole('button', { name: '添加' }).first().click();
 
@@ -46,8 +48,17 @@ test('contribution wizard validates and prepares a standalone paper file', async
   await expect(page.locator('#yaml-preview')).toContainText('id: "example-contribution-paper"');
   await expect(page.locator('#yaml-preview')).toContainText('primary:\n    - "nvidia"');
   const submitUrl = await page.locator('#github-submit').getAttribute('href');
-  expect(submitUrl).toContain('/new/main?filename=datasets%2Fembodied-ai%2Fpapers%2Fexample-contribution-paper.yaml');
+  expect(submitUrl).toContain('/new/main?filename=datasets%2Fcomputer-vision%2Fpapers%2Fexample-contribution-paper.yaml');
   expect(submitUrl).toContain('value=');
   const dimensions = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+});
+
+test('homepage and empty domains expose first-paper contribution entry points', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.roadmap-card').filter({ hasText: '待社区共建' })).toHaveCount(13);
+  await page.getByRole('link', { name: /计算机视觉研究路线图/ }).click();
+  await expect(page.getByText('路线骨架已经建立，等待第一篇论文')).toBeVisible();
+  await expect(page.locator('.contribute-button')).toHaveAttribute('href', '/contribute/?domain=computer-vision');
+  await expect(page.getByRole('link', { name: '贡献第一篇论文' })).toHaveAttribute('href', '/contribute/?domain=computer-vision');
 });

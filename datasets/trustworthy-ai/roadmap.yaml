@@ -1,0 +1,45 @@
+id: trustworthy-ai
+name: 可信人工智能研究路线图
+description: 梳理鲁棒性、安全对齐、可解释性、公平隐私与模型评测的关键研究线路。
+kind: full
+period: { start: 2014-01-01, end: 2026-12-31 }
+tracks:
+  - id: robustness
+    index: "01"
+    name: 鲁棒性与分布外泛化
+    color: "#be6246"
+    problem: 如何让模型面对扰动、域偏移、长尾和未知输入时保持可靠，并能识别自身不确定性。
+    evolution:
+      - { id: robustness-01, label: 对抗样本与鲁棒训练 }
+      - { id: robustness-02, label: 域泛化与不确定性估计 }
+      - { id: robustness-03, label: 基础模型红队与系统级韧性 }
+  - id: safety
+    index: "02"
+    name: 对齐、可控性与安全保障
+    color: "#3e796d"
+    problem: 如何使通用模型遵守意图和约束，抵御越狱与滥用，并为高风险行为提供保障。
+    evolution:
+      - { id: safety-01, label: 价值学习与人类偏好对齐 }
+      - { id: safety-02, label: 宪法式监督与红队测试 }
+      - { id: safety-03, label: 可扩展监督、监控与安全证明 }
+  - id: interpretability
+    index: "03"
+    name: 可解释性与机制分析
+    color: "#6a63a8"
+    problem: 如何理解模型内部表征和决策因果机制，并让解释忠实、稳定且可用于干预。
+    evolution:
+      - { id: interpretability-01, label: 特征归因与局部解释 }
+      - { id: interpretability-02, label: 表征探针与因果干预 }
+      - { id: interpretability-03, label: 机制可解释性与自动化分析 }
+  - id: fairness-privacy
+    index: "04"
+    name: 公平、隐私与责任评测
+    color: "#3473a0"
+    problem: 如何度量和缓解群体伤害、数据泄露与责任风险，并建立覆盖真实使用情境的评测。
+    evolution:
+      - { id: fairness-privacy-01, label: 公平指标与差分隐私 }
+      - { id: fairness-privacy-02, label: 隐私攻击与偏见审计 }
+      - { id: fairness-privacy-03, label: 社会技术评测与模型治理 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

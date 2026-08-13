@@ -79,6 +79,21 @@ async function readYaml<T>(filePath: string): Promise<T> {
   return YAML.parse(await fs.readFile(filePath, 'utf8')) as T;
 }
 
+async function readOptionalYaml<T>(filePath: string, fallback: T): Promise<T> {
+  try {
+    return await readYaml<T>(filePath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return fallback;
+    throw error;
+  }
+}
+
+function mergeInstitutions(shared: Institution[], local: Institution[]): Institution[] {
+  const institutions = new Map(shared.map((institution) => [institution.id, institution]));
+  for (const institution of local) institutions.set(institution.id, institution);
+  return [...institutions.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export async function readStandalonePapers(datasetDir: string): Promise<Paper[]> {
   const papersDir = path.join(datasetDir, 'papers');
   let entries;
@@ -127,14 +142,20 @@ export async function loadRoadmap(id: string): Promise<ResolvedRoadmap> {
   }
 
   const datasetDir = path.join(datasetsDir, id);
-  const [{ papers }, standalonePapers, { institutions }] = await Promise.all([
-    readYaml<{ papers: Paper[] }>(path.join(datasetDir, 'papers.yaml')),
+  const [{ papers }, standalonePapers, sharedInstitutions, localInstitutions] = await Promise.all([
+    readOptionalYaml<{ papers: Paper[] }>(path.join(datasetDir, 'papers.yaml'), { papers: [] }),
     readStandalonePapers(datasetDir),
-    readYaml<{ institutions: Institution[] }>(path.join(datasetDir, 'institutions.yaml'))
+    readOptionalYaml<{ institutions: Institution[] }>(path.join(datasetsDir, '_shared', 'institutions.yaml'), { institutions: [] }),
+    readOptionalYaml<{ institutions: Institution[] }>(path.join(datasetDir, 'institutions.yaml'), { institutions: [] })
   ]);
-  return { ...definition, papers: [...papers, ...standalonePapers], institutions };
+  return {
+    ...definition,
+    papers: [...papers, ...standalonePapers].sort((a, b) => a.date.localeCompare(b.date)),
+    institutions: mergeInstitutions(sharedInstitutions.institutions, localInstitutions.institutions)
+  };
 }
 
 export async function listRoadmaps(): Promise<ResolvedRoadmap[]> {
-  return Promise.all((await listRoadmapIds()).map(loadRoadmap));
+  const roadmaps = await Promise.all((await listRoadmapIds()).map(loadRoadmap));
+  return roadmaps.sort((a, b) => b.papers.length - a.papers.length || a.name.localeCompare(b.name, 'zh-CN'));
 }

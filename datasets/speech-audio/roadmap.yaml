@@ -1,0 +1,45 @@
+id: speech-audio
+name: 语音与音频智能研究路线图
+description: 梳理语音识别、语音生成、音频理解和通用音频建模的关键技术演进。
+kind: full
+period: { start: 2012-01-01, end: 2026-12-31 }
+tracks:
+  - id: recognition
+    index: "01"
+    name: 自动语音识别
+    color: "#be6246"
+    problem: 如何在噪声、口音、远场、多语言和专业领域中准确高效地将语音转写为文本。
+    evolution:
+      - { id: recognition-01, label: 深度声学模型与混合系统 }
+      - { id: recognition-02, label: 端到端序列转写 }
+      - { id: recognition-03, label: 大规模自监督与多语言识别 }
+  - id: synthesis
+    index: "02"
+    name: 语音合成与声音生成
+    color: "#3e796d"
+    problem: 如何生成自然、可控、保留说话人特征且安全可追溯的语音和声音内容。
+    evolution:
+      - { id: synthesis-01, label: 神经声学模型与神经声码器 }
+      - { id: synthesis-02, label: 端到端与零样本声音克隆 }
+      - { id: synthesis-03, label: 离散音频 token 与可控生成 }
+  - id: understanding
+    index: "03"
+    name: 音频理解与声学场景分析
+    color: "#6a63a8"
+    problem: 如何识别复杂声景中的事件、来源、空间关系、音乐结构和情感语义。
+    evolution:
+      - { id: understanding-01, label: 声学事件分类与分离 }
+      - { id: understanding-02, label: 自监督通用音频表征 }
+      - { id: understanding-03, label: 音频语言对齐与开放词汇理解 }
+  - id: universal
+    index: "04"
+    name: 通用语音音频模型与交互
+    color: "#3473a0"
+    problem: 如何统一理解与生成，在实时对话中保留语气、节奏和非语言信息并控制延迟。
+    evolution:
+      - { id: universal-01, label: 语音文本级联交互 }
+      - { id: universal-02, label: 统一语音语言预训练 }
+      - { id: universal-03, label: 原生全双工音频对话 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

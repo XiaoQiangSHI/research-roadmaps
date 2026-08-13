@@ -1,0 +1,45 @@
+id: computer-vision
+name: 计算机视觉研究路线图
+description: 梳理视觉识别、检测分割、三维视觉和视频理解的核心问题与方法演进。
+kind: full
+period: { start: 2012-01-01, end: 2026-12-31 }
+tracks:
+  - id: recognition
+    index: "01"
+    name: 视觉表征与识别
+    color: "#be6246"
+    problem: 如何学习对类别、视角、尺度、域变化和长尾分布都具有泛化能力的视觉表示。
+    evolution:
+      - { id: recognition-01, label: 深层卷积监督学习 }
+      - { id: recognition-02, label: 自监督与视觉 Transformer }
+      - { id: recognition-03, label: 开放词汇与基础视觉模型 }
+  - id: detection-segmentation
+    index: "02"
+    name: 检测、分割与开放世界感知
+    color: "#3e796d"
+    problem: 如何精确定位并分割复杂场景中的对象，同时处理未知类别、遮挡、长尾和提示式交互。
+    evolution:
+      - { id: detection-segmentation-01, label: 区域检测与密集预测 }
+      - { id: detection-segmentation-02, label: 端到端集合预测 }
+      - { id: detection-segmentation-03, label: 开放词汇与通用分割 }
+  - id: three-d
+    index: "03"
+    name: 三维视觉与场景重建
+    color: "#6a63a8"
+    problem: 如何从有限观测恢复几何、材质和语义，并支持新视角合成、定位和可编辑三维表达。
+    evolution:
+      - { id: three-d-01, label: 多视图几何与深度估计 }
+      - { id: three-d-02, label: 神经隐式场景表示 }
+      - { id: three-d-03, label: 高效显式表示与生成式三维先验 }
+  - id: video
+    index: "04"
+    name: 视频理解与时空推理
+    color: "#3473a0"
+    problem: 如何建模长视频中的动作、事件、因果和跨镜头关系，并兼顾计算效率。
+    evolution:
+      - { id: video-01, label: 局部时空特征建模 }
+      - { id: video-02, label: 长程时空注意力 }
+      - { id: video-03, label: 视频基础模型与长上下文推理 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

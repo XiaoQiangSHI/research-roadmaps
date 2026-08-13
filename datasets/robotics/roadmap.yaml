@@ -1,0 +1,45 @@
+id: robotics
+name: 机器人学研究路线图
+description: 梳理机器人在感知定位、规划控制、操作和多机器人系统中的基础研究线路，与具身智能领域互补。
+kind: full
+period: { start: 2010-01-01, end: 2026-12-31 }
+tracks:
+  - id: perception-localization
+    index: "01"
+    name: 感知、定位与建图
+    color: "#be6246"
+    problem: 如何在动态、遮挡、弱纹理和传感器噪声环境中稳定估计机器人与场景状态。
+    evolution:
+      - { id: perception-localization-01, label: 几何 SLAM 与多传感器融合 }
+      - { id: perception-localization-02, label: 语义与学习式定位建图 }
+      - { id: perception-localization-03, label: 神经场景表示与开放世界感知 }
+  - id: planning-control
+    index: "02"
+    name: 运动规划与反馈控制
+    color: "#3e796d"
+    problem: 如何在动力学、碰撞、实时性和不确定性约束下生成安全可执行的运动。
+    evolution:
+      - { id: planning-control-01, label: 采样规划与最优控制 }
+      - { id: planning-control-02, label: 模型预测控制与学习增强 }
+      - { id: planning-control-03, label: 数据驱动规划和安全约束控制 }
+  - id: manipulation
+    index: "03"
+    name: 抓取、操作与接触交互
+    color: "#6a63a8"
+    problem: 如何在对象形状、材质和接触状态不确定时完成稳定抓取、灵巧操作和工具使用。
+    evolution:
+      - { id: manipulation-01, label: 几何抓取与接触规划 }
+      - { id: manipulation-02, label: 学习式视觉操作 }
+      - { id: manipulation-03, label: 多模态灵巧操作与通用技能 }
+  - id: multi-robot
+    index: "04"
+    name: 多机器人协作与自主系统
+    color: "#3473a0"
+    problem: 如何在通信受限和环境变化下进行任务分配、协同感知、轨迹协调与安全验证。
+    evolution:
+      - { id: multi-robot-01, label: 编队控制与分布式一致性 }
+      - { id: multi-robot-02, label: 协同建图与任务分配 }
+      - { id: multi-robot-03, label: 异构群体自主与人机协同 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

@@ -6,7 +6,7 @@
 
 | 你想做什么 | 推荐方式 |
 | --- | --- |
-| 推荐一篇论文 | 使用[网页贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/)，或“推荐论文”Issue 模板 |
+| 推荐一篇论文 | 从对应领域页点击“贡献论文”，或使用[网页贡献向导](https://xiaoqiangshi.github.io/research-roadmaps/contribute/) |
 | 修正机构、日期、链接或文字 | 使用“数据纠错”Issue，或直接提交 PR |
 | 调整论文路线归属 | 提交 Issue 讨论，或在 PR 中给出明确理由 |
 | 新建一个研究领域 | 先使用“新领域提案”Issue 对齐范围，再提交数据 |
@@ -16,7 +16,7 @@ Issue 入口：<https://github.com/XiaoQiangSHI/research-roadmaps/issues/new/cho
 
 网页贡献向导：<https://xiaoqiangshi.github.io/research-roadmaps/contribute/>
 
-网页向导会把每篇新论文保存为 `datasets/<domain>/papers/<paper-id>.yaml`。这种独立文件与领域原有的 `papers.yaml` 同时加载，减少合并冲突，也方便单独审核和回退。
+网页向导会根据当前选择的领域，把每篇新论文保存为 `datasets/<domain>/papers/<paper-id>.yaml`。这种独立文件与领域原有的 `papers.yaml` 同时加载，减少合并冲突，也方便单独审核和回退。每个领域页面都有带领域参数的入口，优先从那里开始贡献。
 
 ## 开始之前
 
@@ -118,7 +118,7 @@ npm install
 - `primary` 表示主要完成机构，不等于“第一作者单位”。
 - 公司提供资金、硬件或 API 不自动构成论文完成机构。
 - Logo 只用于识别；优先复用 `src/lib/brand-icons.ts` 已有品牌图标，否则使用文字徽标。
-- 新机构先加入对应的 `institutions.yaml`，再在论文中引用其 `id`。
+- 通用机构优先加入 `datasets/_shared/institutions.yaml`；只有领域专属机构才加入对应领域的 `institutions.yaml`，然后在论文中引用其 `id`。
 
 若机构归属存在歧义，请在 PR 中附论文作者列表或官方页面，并明确说明判断过程。
 
@@ -136,12 +136,12 @@ npm install
 
 1. 复制 `datasets/_template/` 为 `datasets/<domain-id>/`。
 2. 在 `roadmap.yaml` 定义领域、时间范围、线路与演进阶段。
-3. 在 `papers.yaml` 添加首批代表论文。
-4. 在 `institutions.yaml` 添加被引用机构。
+3. 可以暂时不添加论文；项目明确接受“路线骨架已建立、0 篇论文”的待共建领域。
+4. 如有首批论文，可写入 `papers.yaml` 或 `papers/<paper-id>.yaml`；通用机构直接复用共享目录。
 5. 在 `references.yaml` 记录筛选标准、排除标准和领域级来源。
 6. 在 `editorial.maintainers` 填写 GitHub 用户名。
 
-一个新领域不要求一开始就完整，但必须有足够数据证明路线划分有效。建议首版至少包含 2 条线路和每条 3 篇代表工作。
+一个新领域不要求一开始就有论文，但应提供清晰的领域边界、至少 2 条可讨论的初始线路和持续问题。空领域页面会明确标记为“待社区共建”，路线划分可以随首批论文贡献继续修订。
 
 ## 新增专题视图
 

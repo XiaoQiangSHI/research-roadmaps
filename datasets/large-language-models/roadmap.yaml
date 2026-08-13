@@ -1,0 +1,45 @@
+id: large-language-models
+name: 大语言模型研究路线图
+description: 梳理语言模型在规模化预训练、对齐与推理、知识增强和高效部署上的主要发展线路。
+kind: full
+period: { start: 2017-01-01, end: 2026-12-31 }
+tracks:
+  - id: scaling
+    index: "01"
+    name: 架构、数据与规模化预训练
+    color: "#be6246"
+    problem: 如何在计算、数据和模型容量持续增长时提升能力，同时控制训练成本、数据质量和规模化收益递减。
+    evolution:
+      - { id: scaling-01, label: Transformer 与自监督预训练 }
+      - { id: scaling-02, label: 规模定律与数据计算协同 }
+      - { id: scaling-03, label: 稀疏架构与高质量数据治理 }
+  - id: alignment
+    index: "02"
+    name: 指令遵循与人类对齐
+    color: "#3e796d"
+    problem: 如何让模型可靠遵循人类意图，并降低有害、虚假、偏见和不可控行为。
+    evolution:
+      - { id: alignment-01, label: 指令微调与偏好建模 }
+      - { id: alignment-02, label: 人类或 AI 反馈强化学习 }
+      - { id: alignment-03, label: 可扩展监督与安全对齐 }
+  - id: reasoning
+    index: "03"
+    name: 推理、规划与工具使用
+    color: "#6a63a8"
+    problem: 如何使语言模型完成可验证的多步推理、调用外部工具，并在长任务中保持计划一致性。
+    evolution:
+      - { id: reasoning-01, label: 提示诱导的逐步推理 }
+      - { id: reasoning-02, label: 工具调用与过程监督 }
+      - { id: reasoning-03, label: 推理时计算与可验证反馈 }
+  - id: knowledge-efficiency
+    index: "04"
+    name: 知识增强与高效部署
+    color: "#3473a0"
+    problem: 如何更新和引用外部知识，同时降低训练、推理、微调和长上下文处理成本。
+    evolution:
+      - { id: knowledge-efficiency-01, label: 检索增强与参数高效微调 }
+      - { id: knowledge-efficiency-02, label: 量化、蒸馏与长上下文 }
+      - { id: knowledge-efficiency-03, label: 动态检索与端侧部署 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

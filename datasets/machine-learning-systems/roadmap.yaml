@@ -1,0 +1,45 @@
+id: machine-learning-systems
+name: 机器学习系统研究路线图
+description: 梳理分布式训练、推理服务、编译优化和数据系统对现代机器学习的基础支撑。
+kind: full
+period: { start: 2012-01-01, end: 2026-12-31 }
+tracks:
+  - id: distributed-training
+    index: "01"
+    name: 分布式与大规模训练
+    color: "#be6246"
+    problem: 如何跨设备高效训练超大模型，并控制通信、内存、容错和异构硬件带来的瓶颈。
+    evolution:
+      - { id: distributed-training-01, label: 数据并行与参数服务器 }
+      - { id: distributed-training-02, label: 模型并行与内存分片 }
+      - { id: distributed-training-03, label: 自动并行与异构集群调度 }
+  - id: inference
+    index: "02"
+    name: 推理优化与在线服务
+    color: "#3e796d"
+    problem: 如何在吞吐、延迟、成本、上下文长度和服务质量之间动态权衡。
+    evolution:
+      - { id: inference-01, label: 算子融合与模型压缩 }
+      - { id: inference-02, label: 动态批处理与 KV 缓存管理 }
+      - { id: inference-03, label: 推测解码与分布式推理编排 }
+  - id: compiler
+    index: "03"
+    name: 编译器、内核与硬件协同
+    color: "#6a63a8"
+    problem: 如何把模型计算自动映射到多样硬件，并稳定获得接近手工内核的性能和可移植性。
+    evolution:
+      - { id: compiler-01, label: 计算图优化与自动微分 }
+      - { id: compiler-02, label: 张量编译和自动调优 }
+      - { id: compiler-03, label: 模型硬件协同与生成式内核优化 }
+  - id: data-mlops
+    index: "04"
+    name: 数据系统、评测与 MLOps
+    color: "#3473a0"
+    problem: 如何追踪数据与模型版本、持续评测、发现漂移，并让训练和部署结果可复现。
+    evolution:
+      - { id: data-mlops-01, label: 数据流水线与实验追踪 }
+      - { id: data-mlops-02, label: 特征平台与持续部署 }
+      - { id: data-mlops-03, label: 大模型数据治理与在线评测 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

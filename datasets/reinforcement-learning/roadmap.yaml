@@ -1,0 +1,45 @@
+id: reinforcement-learning
+name: 强化学习研究路线图
+description: 梳理价值与策略学习、模型式方法、离线强化学习和多智能体决策的核心发展线路。
+kind: full
+period: { start: 2013-01-01, end: 2026-12-31 }
+tracks:
+  - id: value-policy
+    index: "01"
+    name: 价值估计与策略优化
+    color: "#be6246"
+    problem: 如何在有限交互中稳定估计长期回报并优化策略，同时控制方差、偏差和训练不稳定。
+    evolution:
+      - { id: value-policy-01, label: 深度价值学习 }
+      - { id: value-policy-02, label: Actor-Critic 与可信策略更新 }
+      - { id: value-policy-03, label: 大规模通用策略优化 }
+  - id: model-based
+    index: "02"
+    name: 模型式强化学习与规划
+    color: "#3e796d"
+    problem: 如何学习足够准确的环境模型用于规划，并避免模型误差在长时预测中累积。
+    evolution:
+      - { id: model-based-01, label: 学习动力学与短视规划 }
+      - { id: model-based-02, label: 潜空间世界模型 }
+      - { id: model-based-03, label: 生成式规划与大规模预训练 }
+  - id: offline
+    index: "03"
+    name: 离线、模仿与数据驱动决策
+    color: "#6a63a8"
+    problem: 如何仅从固定数据学习策略，并处理分布外动作、次优示范和数据覆盖不足。
+    evolution:
+      - { id: offline-01, label: 模仿学习与逆强化学习 }
+      - { id: offline-02, label: 保守离线价值学习 }
+      - { id: offline-03, label: 序列建模与离线到在线适应 }
+  - id: multi-agent
+    index: "04"
+    name: 多智能体与通用决策
+    color: "#3473a0"
+    problem: 如何在合作或竞争环境中处理非平稳性、信用分配、通信和跨任务泛化。
+    evolution:
+      - { id: multi-agent-01, label: 集中训练分散执行 }
+      - { id: multi-agent-02, label: 通信与群体博弈 }
+      - { id: multi-agent-03, label: 通用智能体与跨环境迁移 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

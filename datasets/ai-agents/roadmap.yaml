@@ -1,0 +1,45 @@
+id: ai-agents
+name: AI 智能体研究路线图
+description: 梳理自主智能体在规划、工具使用、记忆、自我改进和多智能体协作上的发展线路。
+kind: full
+period: { start: 2022-01-01, end: 2026-12-31 }
+tracks:
+  - id: planning
+    index: "01"
+    name: 任务规划与执行控制
+    color: "#be6246"
+    problem: 如何将开放目标分解为可执行步骤，并在环境变化、错误和长任务中持续调整计划。
+    evolution:
+      - { id: planning-01, label: 思维链式任务分解 }
+      - { id: planning-02, label: 推理与行动交替闭环 }
+      - { id: planning-03, label: 长程计划、反思与动态重规划 }
+  - id: tools
+    index: "02"
+    name: 工具使用与计算机操作
+    color: "#3e796d"
+    problem: 如何让智能体可靠选择并调用 API、代码、浏览器和桌面工具，同时处理权限、异常与反馈。
+    evolution:
+      - { id: tools-01, label: 函数调用与 API 学习 }
+      - { id: tools-02, label: 浏览器和代码执行智能体 }
+      - { id: tools-03, label: 通用计算机操作与安全沙箱 }
+  - id: memory
+    index: "03"
+    name: 记忆、学习与自我改进
+    color: "#6a63a8"
+    problem: 如何从历史交互中选择性记忆、归纳技能并改进策略，同时避免错误经验累积。
+    evolution:
+      - { id: memory-01, label: 外部记忆与经验检索 }
+      - { id: memory-02, label: 反思、技能库与自动课程 }
+      - { id: memory-03, label: 持续学习与可验证自我改进 }
+  - id: multi-agent
+    index: "04"
+    name: 多智能体协作与社会模拟
+    color: "#3473a0"
+    problem: 如何让多个智能体有效分工、通信、达成共识并控制协作成本与级联错误。
+    evolution:
+      - { id: multi-agent-01, label: 角色化对话协作 }
+      - { id: multi-agent-02, label: 工作流编排与辩论 }
+      - { id: multi-agent-03, label: 自组织团队与群体评测 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]

@@ -1,11 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { loadRoadmap } from '@/lib/data';
+import { listRoadmaps } from '@/lib/data';
 
-const roadmap = await loadRoadmap('embodied-ai');
+const roadmaps = (await listRoadmaps()).filter((roadmap) => roadmap.kind === 'full');
+const contributionDomains = roadmaps.map((roadmap) => ({
+  id: roadmap.id,
+  name: roadmap.name,
+  tracks: roadmap.tracks,
+  institutions: roadmap.institutions,
+  papers: roadmap.papers.map((paper) => ({ id: paper.id, title: paper.title, arxiv: paper.arxiv }))
+}));
 const base = import.meta.env.BASE_URL;
 const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.com/XiaoQiangSHI/research-roadmaps';
-const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <BaseLayout title="贡献论文 · Open Research Roadmaps" description="通过网页向导生成经过校验的论文 YAML，并在 GitHub 上提交贡献。">
@@ -22,6 +28,11 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
 
   <main class="contribution-layout shell">
     <form id="paper-form" novalidate>
+      <section class="form-section domain-section">
+        <div class="section-heading"><span>00</span><div><h2>选择研究领域</h2><p>从领域页面进入时会自动选中；你也可以在这里切换。</p></div></div>
+        <label><span>论文所属领域 <em>必填</em></span><select id="domain" name="domain" required>{roadmaps.map((roadmap) => <option value={roadmap.id}>{roadmap.name} · {roadmap.papers.length ? `${roadmap.papers.length} 篇` : '等待首篇论文'}</option>)}</select></label>
+      </section>
+
       <section class="form-section">
         <div class="section-heading"><span>01</span><div><h2>论文信息</h2><p>使用论文首次公开的信息，不要根据标题猜测日期或机构。</p></div></div>
         <div class="field-grid two-columns">
@@ -45,10 +56,10 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
       <section class="form-section">
         <div class="section-heading"><span>03</span><div><h2>路线归属</h2><p>每篇论文只选择一条主线路，重要交叉关系可以放到相关线路。</p></div></div>
         <div class="field-grid two-columns">
-          <label><span>主线路 <em>必填</em></span><select id="track" name="track" required><option value="">请选择</option>{roadmap.tracks.map((track) => <option value={track.id}>{track.index} · {track.name}</option>)}</select></label>
+          <label><span>主线路 <em>必填</em></span><select id="track" name="track" required><option value="">请选择</option></select></label>
           <label><span>归类置信度 <em>必填</em></span><select id="confidence" name="confidence" required><option value="high">高：核心贡献直接属于该线路</option><option value="medium">中：跨多条线路，但主贡献明确</option><option value="low">低：暂时归入最接近的线路</option></select></label>
         </div>
-        <fieldset class="related-tracks"><legend>相关线路 <small>可选</small></legend>{roadmap.tracks.map((track) => <label><input type="checkbox" name="relatedTracks" value={track.id} /><span>{track.index} · {track.name}</span></label>)}</fieldset>
+        <fieldset class="related-tracks"><legend>相关线路 <small>可选</small></legend><div id="related-track-options"></div></fieldset>
         <label><span>归类理由 <em>必填</em></span><textarea id="rationale" name="rationale" required minlength="8" rows="3" placeholder="说明论文的主要问题和核心贡献为什么属于这条线路。"></textarea></label>
       </section>
 
@@ -57,12 +68,12 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
         <div class="picker-grid">
           <div class="institution-picker" data-picker="primary">
             <label for="primary-select"><span>主导机构 <em>至少一个</em></span></label>
-            <div class="picker-control"><select id="primary-select"><option value="">选择机构</option>{institutions.map((institution) => <option value={institution.id}>{institution.name} · {institution.id}</option>)}</select><button type="button" data-add-institution="primary">添加</button></div>
+            <div class="picker-control"><select id="primary-select"><option value="">选择机构</option></select><button type="button" data-add-institution="primary">添加</button></div>
             <div class="selected-institutions" data-selected="primary" aria-live="polite"></div>
           </div>
           <div class="institution-picker" data-picker="collaborators">
             <label for="collaborator-select"><span>合作机构 <em>可选</em></span></label>
-            <div class="picker-control"><select id="collaborator-select"><option value="">选择机构</option>{institutions.map((institution) => <option value={institution.id}>{institution.name} · {institution.id}</option>)}</select><button type="button" data-add-institution="collaborators">添加</button></div>
+            <div class="picker-control"><select id="collaborator-select"><option value="">选择机构</option></select><button type="button" data-add-institution="collaborators">添加</button></div>
             <div class="selected-institutions" data-selected="collaborators" aria-live="polite"></div>
           </div>
         </div>
@@ -80,6 +91,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
     </form>
 
     <aside class="submission-panel">
+      <div class="active-domain"><span>当前领域</span><strong id="active-domain-name"></strong></div>
       <div class="submission-status"><span id="status-dot"></span><strong id="status-title">等待填写</strong><small id="status-detail">完成必填项后即可提交</small></div>
       <div id="validation-errors" class="validation-errors" aria-live="polite"></div>
       <div class="preview-heading"><h2>YAML 预览</h2><button id="copy-yaml" type="button" disabled>复制</button></div>
@@ -94,7 +106,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   </main>
 </BaseLayout>
 
-<script is:inline define:vars={{ availableInstitutions: institutions, existingPaperIds: roadmap.papers.map((paper) => paper.id), existingPaperTitles: roadmap.papers.map((paper) => paper.title.toLowerCase()), existingArxivIds: roadmap.papers.map((paper) => paper.arxiv), repositoryUrl }}>
+<script is:inline define:vars={{ contributionDomains, repositoryUrl }}>
   const form = document.getElementById('paper-form');
   const preview = document.getElementById('yaml-preview');
   const errorsElement = document.getElementById('validation-errors');
@@ -104,7 +116,16 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   const statusDot = document.getElementById('status-dot');
   const statusTitle = document.getElementById('status-title');
   const statusDetail = document.getElementById('status-detail');
-  const institutionMap = new Map(availableInstitutions.map((institution) => [institution.id, institution]));
+  const domainSelect = document.getElementById('domain');
+  const trackSelect = document.getElementById('track');
+  const relatedTrackOptions = document.getElementById('related-track-options');
+  const primarySelect = document.getElementById('primary-select');
+  const collaboratorSelect = document.getElementById('collaborator-select');
+  let activeDomain;
+  let institutionMap = new Map();
+  let existingPaperIds = new Set();
+  let existingPaperTitles = new Set();
+  let existingArxivIds = new Set();
   const selectedInstitutions = { primary: [], collaborators: [] };
   const touchedFields = new Set();
   const touchedInstitutionGroups = new Set();
@@ -116,6 +137,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   const value = (id) => document.getElementById(id).value.trim();
   const checkedValues = (name) => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
   const line = (key, text, indent = 0) => `${' '.repeat(indent)}${key}: ${quote(text)}`;
+  const escapeHtml = (text) => String(text).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
 
   function buildYaml() {
     const links = [['paper', value('paper-url')], ['project', value('project-url')], ['code', value('code-url')], ['blog', value('blog-url')]].filter(([, url]) => url);
@@ -156,9 +178,9 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
       }
     }
     if (!selectedInstitutions.primary.length && (!visibleOnly || touchedInstitutionGroups.has('primary'))) errors.push('至少添加一个主导机构');
-    if (existingPaperIds.includes(value('paper-id')) && (!visibleOnly || touchedFields.has(document.getElementById('paper-id')))) errors.push('数据 ID 已存在，请确认是否重复收录');
-    if (existingPaperTitles.includes(value('title').toLowerCase()) && (!visibleOnly || touchedFields.has(document.getElementById('title')))) errors.push('论文标题已存在，请确认是否重复收录');
-    if (existingArxivIds.includes(value('arxiv')) && (!visibleOnly || touchedFields.has(document.getElementById('arxiv')))) errors.push('arXiv 编号已存在，请确认是否重复收录');
+    if (existingPaperIds.has(value('paper-id')) && (!visibleOnly || touchedFields.has(document.getElementById('paper-id')))) errors.push('数据 ID 已存在，请确认是否重复收录');
+    if (existingPaperTitles.has(value('title').toLowerCase()) && (!visibleOnly || touchedFields.has(document.getElementById('title')))) errors.push('论文标题已存在，请确认是否重复收录');
+    if (existingArxivIds.has(value('arxiv')) && (!visibleOnly || touchedFields.has(document.getElementById('arxiv')))) errors.push('arXiv 编号已存在，请确认是否重复收录');
     const overlaps = selectedInstitutions.primary.filter((id) => selectedInstitutions.collaborators.includes(id));
     if (overlaps.length && (!visibleOnly || touchedInstitutionGroups.size > 0)) errors.push('同一机构不能同时作为主导和合作机构');
     if (checkedValues('relatedTracks').includes(value('track')) && (!visibleOnly || touchedFields.has(document.getElementById('track')))) errors.push('主线路不需要重复加入相关线路');
@@ -180,7 +202,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
     downloadButton.disabled = !ready;
     githubSubmit.setAttribute('aria-disabled', String(!ready));
     if (ready) {
-      const filename = `datasets/embodied-ai/papers/${value('paper-id')}.yaml`;
+      const filename = `datasets/${activeDomain.id}/papers/${value('paper-id')}.yaml`;
       githubSubmit.href = `${repositoryUrl}/new/main?filename=${encodeURIComponent(filename)}&value=${encodeURIComponent(generatedYaml)}&message=${encodeURIComponent(`Add ${value('title')}`)}`;
     } else {
       githubSubmit.href = '#';
@@ -193,6 +215,28 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
       const institution = institutionMap.get(id);
       return `<span><strong>${institution.shortName}</strong><small>${institution.name}</small><button type="button" data-remove-institution="${type}" data-institution-id="${id}" aria-label="移除 ${institution.name}">×</button></span>`;
     }).join('') || '<p>尚未添加</p>';
+    updatePreview();
+  }
+
+  function activateDomain(domainId, updateAddress = true) {
+    activeDomain = contributionDomains.find((domain) => domain.id === domainId) || contributionDomains[0];
+    domainSelect.value = activeDomain.id;
+    document.getElementById('active-domain-name').textContent = activeDomain.name;
+    existingPaperIds = new Set(activeDomain.papers.map((paper) => paper.id));
+    existingPaperTitles = new Set(activeDomain.papers.map((paper) => paper.title.toLowerCase()));
+    existingArxivIds = new Set(activeDomain.papers.map((paper) => paper.arxiv));
+    institutionMap = new Map(activeDomain.institutions.map((institution) => [institution.id, institution]));
+    const trackOptions = activeDomain.tracks.map((track) => `<option value="${escapeHtml(track.id)}">${escapeHtml(track.index)} · ${escapeHtml(track.name)}</option>`).join('');
+    trackSelect.innerHTML = `<option value="">请选择</option>${trackOptions}`;
+    relatedTrackOptions.innerHTML = activeDomain.tracks.map((track) => `<label><input type="checkbox" name="relatedTracks" value="${escapeHtml(track.id)}" /><span>${escapeHtml(track.index)} · ${escapeHtml(track.name)}</span></label>`).join('');
+    const institutionOptions = activeDomain.institutions.map((institution) => `<option value="${escapeHtml(institution.id)}">${escapeHtml(institution.name)} · ${escapeHtml(institution.id)}</option>`).join('');
+    primarySelect.innerHTML = `<option value="">选择机构</option>${institutionOptions}`;
+    collaboratorSelect.innerHTML = `<option value="">选择机构</option>${institutionOptions}`;
+    selectedInstitutions.primary = [];
+    selectedInstitutions.collaborators = [];
+    renderInstitutions('primary');
+    renderInstitutions('collaborators');
+    if (updateAddress) history.replaceState(null, '', `${location.pathname}?domain=${encodeURIComponent(activeDomain.id)}`);
     updatePreview();
   }
 
@@ -229,7 +273,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
     }
   });
   document.getElementById('paper-url').addEventListener('input', (event) => { event.target.dataset.auto = 'false'; });
-  document.getElementById('track').addEventListener('change', (event) => {
+  trackSelect.addEventListener('change', (event) => {
     form.querySelectorAll('input[name="relatedTracks"]').forEach((input) => {
       input.disabled = input.value === event.target.value;
       if (input.disabled) input.checked = false;
@@ -237,6 +281,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   });
   form.addEventListener('input', (event) => { touchedFields.add(event.target); updatePreview(); });
   form.addEventListener('change', (event) => { touchedFields.add(event.target); updatePreview(); });
+  domainSelect.addEventListener('change', () => activateDomain(domainSelect.value));
   githubSubmit.addEventListener('click', (event) => { if (githubSubmit.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
   copyButton.addEventListener('click', async () => {
     await navigator.clipboard.writeText(generatedYaml);
@@ -252,8 +297,8 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
     URL.revokeObjectURL(url);
   });
 
-  renderInstitutions('primary');
-  renderInstitutions('collaborators');
+  const requestedDomain = new URLSearchParams(location.search).get('domain');
+  activateDomain(requestedDomain, false);
 </script>
 
 <style>
@@ -268,6 +313,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   #paper-form { display: grid; gap: 14px; }
   .form-section, .submission-panel { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 88%, transparent); }
   .form-section { padding: 25px; }
+  .domain-section { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); background: color-mix(in srgb, var(--accent) 5%, var(--surface)); }
   .section-heading { display: grid; grid-template-columns: 28px 1fr; gap: 11px; margin-bottom: 22px; }
   .section-heading > span { padding-top: 3px; color: var(--accent); font-family: Georgia, serif; font-size: 12px; }
   .section-heading h2 { margin: 0; font-family: Georgia, "Songti SC", serif; font-size: 24px; font-weight: 500; }
@@ -282,7 +328,8 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   input, select { min-height: 43px; padding: 0 11px; }
   textarea { padding: 11px; resize: vertical; line-height: 1.65; }
   input:focus, select:focus, textarea:focus { border-color: var(--accent); outline: 3px solid color-mix(in srgb, var(--accent) 12%, transparent); }
-  .related-tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 16px 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+  .related-tracks { margin: 16px 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+  #related-track-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .related-tracks legend { padding: 0 5px; font-size: 12px; font-weight: 750; }
   .related-tracks label { display: flex; grid: none; gap: 7px; align-items: start; color: var(--muted); font-size: 11px; line-height: 1.4; }
   .related-tracks input { flex: 0 0 auto; width: 14px; min-height: 14px; margin: 1px 0 0; padding: 0; }
@@ -301,6 +348,9 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
   .field-note { margin: 12px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
   .field-note a { color: var(--accent); }
   .submission-panel { position: sticky; top: 16px; padding: 22px; }
+  .active-domain { display: flex; justify-content: space-between; gap: 14px; margin: -4px 0 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-size: 11px; }
+  .active-domain span { color: var(--muted); }
+  .active-domain strong { text-align: right; }
   .submission-status { display: grid; grid-template-columns: 10px 1fr; gap: 3px 9px; align-items: center; }
   .submission-status > span { grid-row: 1 / 3; width: 9px; height: 9px; border-radius: 50%; background: #c79737; box-shadow: 0 0 0 4px color-mix(in srgb, #c79737 12%, transparent); }
   .submission-status > span[data-ready='true'] { background: #3e796d; box-shadow: 0 0 0 4px color-mix(in srgb, #3e796d 12%, transparent); }
@@ -326,7 +376,7 @@ const institutions = [...roadmap.institutions].sort((a, b) => a.name.localeCompa
     .contribute-hero ol { gap: 12px; justify-content: space-between; }
     .contribute-hero li { display: grid; justify-items: center; gap: 5px; text-align: center; }
     .form-section { padding: 20px 16px; }
-    .two-columns, .picker-grid, .related-tracks { grid-template-columns: 1fr; }
+    .two-columns, .picker-grid, #related-track-options { grid-template-columns: 1fr; }
     .submission-actions { grid-template-columns: 1fr; }
   }
 </style>

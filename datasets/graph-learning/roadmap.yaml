@@ -1,0 +1,45 @@
+id: graph-learning
+name: 图机器学习研究路线图
+description: 梳理图表示学习、图神经网络、知识图谱和图生成与科学应用的发展线路。
+kind: full
+period: { start: 2013-01-01, end: 2026-12-31 }
+tracks:
+  - id: representation
+    index: "01"
+    name: 图表示与消息传递
+    color: "#be6246"
+    problem: 如何编码不规则关系结构，并在置换不变性、表达能力、过平滑和计算规模之间权衡。
+    evolution:
+      - { id: representation-01, label: 图嵌入与谱方法 }
+      - { id: representation-02, label: 消息传递图神经网络 }
+      - { id: representation-03, label: 图 Transformer 与可扩展架构 }
+  - id: knowledge
+    index: "02"
+    name: 知识图谱与关系推理
+    color: "#3e796d"
+    problem: 如何补全不完整知识、组合多跳关系，并为预测提供可验证的结构化依据。
+    evolution:
+      - { id: knowledge-01, label: 关系嵌入与链接预测 }
+      - { id: knowledge-02, label: 图神经关系推理 }
+      - { id: knowledge-03, label: 语言模型与知识图谱协同 }
+  - id: dynamic
+    index: "03"
+    name: 异质、时序与大规模图学习
+    color: "#6a63a8"
+    problem: 如何处理节点边类型丰富、结构持续变化且规模巨大的现实图数据。
+    evolution:
+      - { id: dynamic-01, label: 异质图元路径建模 }
+      - { id: dynamic-02, label: 时序图神经网络 }
+      - { id: dynamic-03, label: 分布式采样与动态图基础模型 }
+  - id: generation
+    index: "04"
+    name: 图生成与组合结构设计
+    color: "#3473a0"
+    problem: 如何生成满足离散结构、物理约束和目标属性的新图，用于分子、材料和组合优化。
+    evolution:
+      - { id: generation-01, label: 自回归与变分图生成 }
+      - { id: generation-02, label: 等变网络与几何生成 }
+      - { id: generation-03, label: 图扩散与约束设计 }
+editorial:
+  note: 当前仅建立初始路线骨架，尚无论文条目，等待社区共同审查与贡献。
+  maintainers: [XiaoQiangSHI]
