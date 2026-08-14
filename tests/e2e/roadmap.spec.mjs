@@ -85,3 +85,34 @@ test('homepage and empty domains expose first-paper contribution entry points', 
   await expect(page.locator('.contribute-button')).toHaveAttribute('href', '/contribute/?domain=computer-vision');
   await expect(page.getByRole('link', { name: '贡献第一篇论文' })).toHaveAttribute('href', '/contribute/?domain=computer-vision');
 });
+
+test('site branding loads without overlapping navigation', async ({ page }) => {
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 390, height: 900 },
+    { width: 320, height: 720 }
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+
+    const branding = await page.evaluate(() => {
+      const brand = document.querySelector('.site-nav .brand');
+      const logo = document.querySelector('.site-nav .brand img');
+      const links = document.querySelector('.site-nav > div');
+      const brandBox = brand.getBoundingClientRect();
+      const linksBox = links.getBoundingClientRect();
+
+      return {
+        favicon: document.querySelector('link[rel="icon"]')?.getAttribute('href'),
+        logoLoaded: logo.complete && logo.naturalWidth > 0,
+        hasHorizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        overlaps: brandBox.right > linksBox.left
+      };
+    });
+
+    expect(branding.favicon).toBe('/favicon.png');
+    expect(branding.logoLoaded).toBe(true);
+    expect(branding.hasHorizontalOverflow).toBe(false);
+    expect(branding.overlaps).toBe(false);
+  }
+});

@@ -15,11 +15,15 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href={`${base}favicon.png`} />
     <title>{title}</title>
   </head>
   <body>
     <nav class="site-nav">
-      <a class="brand" href={base}>Open Research Roadmaps</a>
+      <a class="brand" href={base} aria-label="Open Research Roadmaps 首页">
+        <img src={`${base}brand/infrec-logo.png`} alt="" width="642" height="200" />
+        <span>Open Research Roadmaps</span>
+      </a>
       <div>
         <a href={`${base}contribute/`}>贡献论文</a>
         <a href={`${base}about/`}>方法与规范</a>
@@ -48,7 +52,15 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL;
   .shell { width: min(1500px, calc(100% - 40px)); margin: 0 auto; }
   .site-nav { display: flex; justify-content: space-between; align-items: center; width: min(1500px, calc(100% - 40px)); margin: 0 auto; padding: 20px 0; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
   .site-nav a { text-decoration: none; }
-  .site-nav .brand { font-weight: 800; letter-spacing: -.02em; }
+  .site-nav .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; font-weight: 800; letter-spacing: 0; }
+  .site-nav .brand img { display: block; width: 148px; height: auto; border-radius: 4px; }
+  .site-nav .brand span { white-space: nowrap; }
   .site-nav div { display: flex; gap: 20px; color: var(--muted); font-size: 13px; }
-  @media (max-width: 620px) { .shell, .site-nav { width: min(100% - 24px, 1500px); } .site-nav div { gap: 12px; } }
+  @media (max-width: 620px) {
+    .shell, .site-nav { width: min(100% - 24px, 1500px); }
+    .site-nav { gap: 12px; }
+    .site-nav .brand img { width: 116px; }
+    .site-nav .brand span { display: none; }
+    .site-nav div { gap: 10px; }
+  }
 </style>
