@@ -1,0 +1,36 @@
+id: gap
+title: GaP
+date: 2026-07-06
+arxiv: "2607.05369"
+track: agent
+relatedTracks:
+  - simreal
+summary: 用多智能体编码框架从自然语言和模块化技能库生成可执行机器人图策略，并通过并行仿真排练自动改进流程。
+problem: 固定自动化难以适应物体几何和姿态变化；端到端无模型策略在长期重复的工业任务中又难达到可靠性，并且不易解释和定位失败。
+solution: 行为、技能和验证智能体把任务组合成包含感知、规划与控制节点的有向计算图；系统在参数化 Isaac 仿真中并行试跑，依据状态和接触反馈定位失败并迭代修改图结构与参数，最终由边缘执行器闭环运行固定后的图策略。
+institutions:
+  primary:
+    - uc-berkeley
+    - nvidia
+  collaborators:
+    - cmu
+    - bosch
+links:
+  paper: https://arxiv.org/abs/2607.05369
+  project: https://graph-robots.github.io/gap/
+  code: https://github.com/graph-robots/graph-as-policy
+  explanations:
+    - title: S-X-Q · GaP 方法通俗讲解
+      url: https://www.cnblogs.com/sxq-blog/p/22481629
+classification:
+  confidence: editorial
+  rationale: 主要贡献是由智能体生成可解释的可执行策略，并用物理反馈持续改进，因此归入“具身智能体与自我改进”；仿真排练是关键支撑机制。
+sources:
+  - type: paper
+    url: https://arxiv.org/abs/2607.05369
+  - type: project
+    url: https://graph-robots.github.io/gap/
+  - type: code
+    url: https://github.com/graph-robots/graph-as-policy
+  - type: explanation
+    url: https://www.cnblogs.com/sxq-blog/p/22481629

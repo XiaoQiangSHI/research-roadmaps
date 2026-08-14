@@ -14,6 +14,7 @@ const institutions = embodiedRoadmap.institutions;
 test('embodied AI migration preserves the source coverage', () => {
   assert.equal(roadmap.tracks.length, 7);
   assert.equal(papers.length, 60);
+  assert.equal(embodiedRoadmap.papers.length, 62);
   assert.ok(institutions.length >= 25);
 });
 
@@ -29,6 +30,21 @@ test('every paper has a valid institution and source', () => {
 test('Prismer and AMAGO retain the reviewed institution attribution', () => {
   assert.deepEqual(papers.find((paper) => paper.id === 'prismer').institutions.primary, ['nvidia']);
   assert.deepEqual(papers.find((paper) => paper.id === 'amago').institutions.primary, ['ut-austin', 'nvidia']);
+});
+
+test('GaP and RoboTTT retain their reviewed routes, institutions, and explanations', () => {
+  const gap = embodiedRoadmap.papers.find((paper) => paper.id === 'gap');
+  const robottt = embodiedRoadmap.papers.find((paper) => paper.id === 'robottt');
+
+  assert.equal(gap.track, 'agent');
+  assert.deepEqual(gap.relatedTracks, ['simreal']);
+  assert.deepEqual(gap.institutions.primary, ['uc-berkeley', 'nvidia']);
+  assert.ok(gap.links.explanations.some((item) => item.url.endsWith('/22481629')));
+
+  assert.equal(robottt.track, 'open');
+  assert.deepEqual(robottt.relatedTracks, ['policy']);
+  assert.deepEqual(robottt.institutions.primary, ['nvidia']);
+  assert.ok(robottt.links.explanations.some((item) => item.url.endsWith('/22480410')));
 });
 
 test('legacy blog links are exposed as explanation lists', () => {

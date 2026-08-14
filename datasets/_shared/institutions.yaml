@@ -216,3 +216,10 @@ institutions:
     logo:
       kind: text
       value: TRI
+  - id: bosch
+    name: Bosch Research
+    shortName: Bosch
+    type: company
+    logo:
+      kind: text
+      value: B

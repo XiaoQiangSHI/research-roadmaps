@@ -1,0 +1,32 @@
+id: robottt
+title: RoboTTT
+date: 2026-07-16
+arxiv: "2607.15275"
+track: open
+relatedTracks:
+  - policy
+summary: 将测试时训练引入机器人基础模型，用固定大小的快权重压缩最长 8K 时间步历史，使策略能利用长程经验而不增加推理延迟。
+problem: 短历史 VLA 难以记住多阶段进度、执行失败和上下文演示；保留全部历史的注意力又会让内存与延迟随时间增长，并不保证模型真正利用这些信息。
+solution: 在 GR00T N1.7 的 DiT 层中加入 TTT MLP，每步先以梯度更新把历史写入快权重，再用当前查询读取；结合 Sequence Action Forcing、截断反向传播和损失掩码训练 8K 上下文，并通过人类视频与 DAgger 纠正实现一次模仿和在线改进。
+institutions:
+  primary:
+    - nvidia
+  collaborators:
+    - stanford
+    - ut-austin
+links:
+  paper: https://arxiv.org/abs/2607.15275
+  project: https://research.nvidia.com/labs/gear/robottt/
+  explanations:
+    - title: S-X-Q · RoboTTT 方法详解
+      url: https://www.cnblogs.com/sxq-blog/p/22480410
+classification:
+  confidence: editorial
+  rationale: 核心贡献是把长时交互历史压缩为可在推理中更新和查询的参数化记忆，因此归入“开放世界、记忆与具身推理”，其实现建立在 VLA 策略之上。
+sources:
+  - type: paper
+    url: https://arxiv.org/abs/2607.15275
+  - type: project
+    url: https://research.nvidia.com/labs/gear/robottt/
+  - type: explanation
+    url: https://www.cnblogs.com/sxq-blog/p/22480410

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('renders, filters, and opens paper details', async ({ page }) => {
   await page.goto('/roadmaps/embodied-ai/');
   await expect(page.getByRole('heading', { name: '具身智能论文发展路线图' })).toBeVisible();
-  await expect(page.locator('[data-paper-node]')).toHaveCount(60);
+  await expect(page.locator('[data-paper-node]')).toHaveCount(62);
 
   await page.getByPlaceholder('例如：论文标题、问题或机构').fill('Prismer');
   const visible = page.locator('[data-paper-node]:not([hidden])');
@@ -14,6 +14,38 @@ test('renders, filters, and opens paper details', async ({ page }) => {
   await expect(page.getByRole('dialog').getByRole('link', { name: '阅读论文' })).toHaveAttribute('href', 'https://arxiv.org/abs/2303.02506');
   await expect(page.getByRole('dialog').getByRole('heading', { name: '论文讲解' })).toBeVisible();
   await expect(page.getByRole('dialog').getByRole('link', { name: '贡献讲解' })).toHaveAttribute('href', '/contribute/explanation/?domain=embodied-ai&paper=prismer');
+});
+
+test('GaP and RoboTTT expose their reviewed details and blog explanations', async ({ page }) => {
+  const papers = [
+    {
+      id: 'gap',
+      title: 'GaP',
+      institution: 'Bosch Research',
+      explanation: 'S-X-Q · GaP 方法通俗讲解',
+      explanationUrl: 'https://www.cnblogs.com/sxq-blog/p/22481629'
+    },
+    {
+      id: 'robottt',
+      title: 'RoboTTT',
+      institution: 'NVIDIA',
+      explanation: 'S-X-Q · RoboTTT 方法详解',
+      explanationUrl: 'https://www.cnblogs.com/sxq-blog/p/22480410'
+    }
+  ];
+
+  for (const paper of papers) {
+    await page.goto('/roadmaps/embodied-ai/');
+    await page.getByPlaceholder('例如：论文标题、问题或机构').fill(paper.title);
+    const target = page.locator(`[data-paper-id="${paper.id}"]:not([hidden])`);
+    await expect(target).toBeVisible();
+    await target.getByRole('button').click();
+
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: paper.title })).toBeVisible();
+    await expect(dialog).toContainText(paper.institution);
+    await expect(dialog.getByRole('link', { name: paper.explanation })).toHaveAttribute('href', paper.explanationUrl);
+  }
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {

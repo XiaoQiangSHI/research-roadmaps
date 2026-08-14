@@ -127,6 +127,8 @@ tracks:
         label: 真实机器人自动实验
       - id: agent-06
         label: 基于逐步证据的技能发现与复用
+      - id: agent-07
+        label: 可执行图策略生成与仿真排练自学习
   - id: open
     index: "07"
     name: 开放世界、记忆与具身推理
@@ -145,6 +147,8 @@ tracks:
         label: 跨游戏视觉动作基础模型
       - id: open-06
         label: 统一的具身感知、记忆与高层规划
+      - id: open-07
+        label: 测试时训练的固定大小长上下文记忆
 editorial:
   note: 每篇论文只指定一条主线路；路线归属是便于理解技术演进的编辑判断。
   maintainers:
