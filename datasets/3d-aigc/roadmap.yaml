@@ -60,8 +60,8 @@ tracks:
     problem: 如何设计既紧凑又保留几何、材质和空间结构的三维 latent，使生成更高效、更可控并能复用多种解码器。
     evolution:
       - { id: structured-latents-01, label: 固定数量 latent 集合 }
-      - { id: structured-latents-02, label: 稀疏空间结构 latent }
-      - { id: structured-latents-03, label: 几何与材质共享结构空间 }
+      - { id: structured-latents-02, label: 稀疏空间结构 latent（TRELLIS） }
+      - { id: structured-latents-03, label: 几何与材质共享结构空间（TRELLIS.2） }
   - id: scene-world-generation
     index: "06"
     name: 三维场景与世界生成

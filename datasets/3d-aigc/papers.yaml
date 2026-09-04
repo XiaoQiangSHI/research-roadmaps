@@ -220,6 +220,8 @@ papers:
         - ustc
     links:
       paper: "https://arxiv.org/abs/2512.14692"
+      project: "https://microsoft.github.io/TRELLIS.2/"
+      code: "https://github.com/microsoft/TRELLIS.2"
       explanations:
         - title: "S-X-Q · TRELLIS.2"
           url: "https://www.cnblogs.com/sxq-blog/p/22824385"
@@ -229,6 +231,10 @@ papers:
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2512.14692"
+      - type: project
+        url: "https://microsoft.github.io/TRELLIS.2/"
+      - type: code
+        url: "https://github.com/microsoft/TRELLIS.2"
       - type: explanation
         url: "https://www.cnblogs.com/sxq-blog/p/22824385"
   - id: trellis
@@ -246,6 +252,8 @@ papers:
         - ustc
     links:
       paper: "https://arxiv.org/abs/2412.01506"
+      project: "https://microsoft.github.io/TRELLIS/"
+      code: "https://github.com/Microsoft/TRELLIS"
       explanations:
         - title: "S-X-Q · TRELLIS"
           url: "https://www.cnblogs.com/sxq-blog/p/22814249"
@@ -255,6 +263,10 @@ papers:
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2412.01506"
+      - type: project
+        url: "https://microsoft.github.io/TRELLIS/"
+      - type: code
+        url: "https://github.com/Microsoft/TRELLIS"
       - type: explanation
         url: "https://www.cnblogs.com/sxq-blog/p/22814249"
   - id: clay

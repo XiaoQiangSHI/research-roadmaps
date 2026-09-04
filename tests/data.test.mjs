@@ -69,6 +69,17 @@ test('SceneSmith is classified as scene generation with an asset-generation cros
   assert.ok(scenesmith.links.explanations.some((item) => item.url.endsWith('/22846498')));
 });
 
+test('TRELLIS series keeps recognizable project and code links', () => {
+  const trellis = threeDAigcRoadmap.papers.find((paper) => paper.id === 'trellis');
+  const trellis2 = threeDAigcRoadmap.papers.find((paper) => paper.id === 'trellis-2');
+  assert.equal(trellis.track, 'structured-latents');
+  assert.equal(trellis2.track, 'structured-latents');
+  assert.equal(trellis.links.project, 'https://microsoft.github.io/TRELLIS/');
+  assert.equal(trellis.links.code, 'https://github.com/Microsoft/TRELLIS');
+  assert.equal(trellis2.links.project, 'https://microsoft.github.io/TRELLIS.2/');
+  assert.equal(trellis2.links.code, 'https://github.com/microsoft/TRELLIS.2');
+});
+
 test('legacy blog links are exposed as explanation lists', () => {
   const legacyPaper = papers.find((paper) => paper.links.blog);
   const normalizedPaper = embodiedRoadmap.papers.find((paper) => paper.id === legacyPaper.id);
