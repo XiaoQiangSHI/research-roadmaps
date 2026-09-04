@@ -10,6 +10,7 @@ scope:
   exclude:
     - 以视觉和语言之间的对齐、指令交互或跨模态推理为核心的工作归入多模态人工智能。
     - 以机器人行动决策或物理交互闭环为核心的工作归入机器人学或具身智能。
+    - 以文本或图像条件三维内容合成、生成式补全或可生产资产创作为主要贡献的工作归入 3D AIGC。
   relatedDomains: [multimodal-ai, robotics, generative-models, 3d-aigc]
 period: { start: 2012-01-01, end: 2026-12-31 }
 tracks:

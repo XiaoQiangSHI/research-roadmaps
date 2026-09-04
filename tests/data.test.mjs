@@ -49,13 +49,24 @@ test('GaP and RoboTTT retain their reviewed routes, institutions, and explanatio
 });
 
 test('3D AIGC includes the complete blog category with explanation links', () => {
-  assert.equal(threeDAigcRoadmap.papers.length, 26);
+  assert.equal(threeDAigcRoadmap.papers.length, 27);
   assert.equal(threeDAigcRoadmap.tracks.length, 6);
 
   const explanationUrls = threeDAigcRoadmap.papers.flatMap((paper) => (paper.links.explanations || []).map((item) => item.url));
-  assert.equal(explanationUrls.length, 26);
-  assert.equal(new Set(explanationUrls).size, 26);
+  assert.equal(explanationUrls.length, 27);
+  assert.equal(new Set(explanationUrls).size, 27);
   assert.ok(explanationUrls.every((url) => /^https:\/\/www\.cnblogs\.com\/sxq-blog\/p\/\d+$/.test(url)));
+});
+
+test('SceneSmith is classified as scene generation with an asset-generation crossover', () => {
+  const scenesmith = threeDAigcRoadmap.papers.find((paper) => paper.id === 'scenesmith');
+  assert.equal(scenesmith.track, 'scene-world-generation');
+  assert.deepEqual(scenesmith.relatedTracks, ['object-reconstruction']);
+  assert.deepEqual(scenesmith.institutions.primary, ['mit']);
+  assert.deepEqual(scenesmith.institutions.collaborators, ['toyota-research']);
+  assert.equal(scenesmith.links.project, 'https://scenesmith.github.io/');
+  assert.equal(scenesmith.links.code, 'https://github.com/nepfaff/scenesmith');
+  assert.ok(scenesmith.links.explanations.some((item) => item.url.endsWith('/22846498')));
 });
 
 test('legacy blog links are exposed as explanation lists', () => {
@@ -88,7 +99,7 @@ test('the catalogue includes active and empty research domains', async () => {
   const roadmaps = await listRoadmaps();
   assert.equal(roadmaps.length, 15);
   assert.equal(roadmaps[0].id, 'embodied-ai');
-  assert.ok(roadmaps.some((item) => item.id === '3d-aigc' && item.papers.length === 26));
+  assert.ok(roadmaps.some((item) => item.id === '3d-aigc' && item.papers.length === 27));
   assert.ok(roadmaps.some((item) => item.id === 'computer-vision' && item.papers.length === 0));
 });
 

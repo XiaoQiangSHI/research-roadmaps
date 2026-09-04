@@ -1,4 +1,38 @@
 papers:
+  - id: scenesmith
+    title: "SceneSmith: Agentic Generation of Simulation-Ready Indoor Scenes"
+    date: "2026-02-09"
+    arxiv: "2602.09153"
+    track: scene-world-generation
+    relatedTracks:
+      - object-reconstruction
+    summary: "SceneSmith 将自然语言逐级转化为可编辑、可验证且可直接用于机器人仿真的室内三维场景，并为其中的对象配置可用资产和物理属性。"
+    problem: "现有文本到场景方法常生成稀疏、静态且缺少碰撞与关节信息的房间，难以覆盖密集杂物、可操作对象和可靠的物理仿真。"
+    solution: "系统用层级场景树依次规划房间布局、家具、墙面与顶面物体及支撑面上的小物体；每个阶段由 Designer、Critic 和 Orchestrator 迭代修正，再通过资产路由组合文本到三维生成与 articulated 资产检索，并进行物理属性估计、碰撞检查和重力沉降。"
+    institutions:
+      primary:
+        - mit
+      collaborators:
+        - toyota-research
+    links:
+      paper: "https://arxiv.org/abs/2602.09153"
+      project: "https://scenesmith.github.io/"
+      code: "https://github.com/nepfaff/scenesmith"
+      explanations:
+        - title: "S-X-Q · SceneSmith：主要原理"
+          url: "https://www.cnblogs.com/sxq-blog/p/22846498"
+    classification:
+      confidence: editorial
+      rationale: "主要贡献是从自然语言生成层级化、可编辑且具备物理验证能力的室内三维场景；机器人策略评估是应用验证，资产生成是其中的支撑模块，因此归入场景与世界生成线路，并关联物体级资产生成。"
+    sources:
+      - type: paper
+        url: "https://arxiv.org/abs/2602.09153"
+      - type: project
+        url: "https://scenesmith.github.io/"
+      - type: code
+        url: "https://github.com/nepfaff/scenesmith"
+      - type: explanation
+        url: "https://www.cnblogs.com/sxq-blog/p/22846498"
   - id: meshy-t2
     title: "Meshy T2: Fast Native Mesh Generation with Flow Matching"
     date: "2026-07-28"
