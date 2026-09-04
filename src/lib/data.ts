@@ -29,6 +29,7 @@ export type ExplanationContribution = ExplanationLink & { id: string; paperId: s
 export type Paper = {
   id: string;
   title: string;
+  shortTitle?: string;
   date: string;
   arxiv: string;
   track: string;

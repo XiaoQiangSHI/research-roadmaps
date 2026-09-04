@@ -77,6 +77,7 @@ npm install
 ```yaml
 id: example-paper
 title: Example Paper
+shortTitle: Example
 date: 2024-01-01
 arxiv: "2401.00001"
 track: example-track
@@ -111,6 +112,7 @@ sources:
 
 - `id`：领域内唯一，小写连字符格式，后续不要随意修改。
 - `date`：优先使用论文首次公开日期，采用 `YYYY-MM-DD`。
+- `shortTitle`：路线图时间轴上的简称，可选；省略时显示完整 `title`，建议使用论文社区通用名称（如 `DreamFusion`、`TRELLIS.2`）。
 - `arxiv`：只填编号，不带版本号；没有 arXiv 时请先开 Issue 讨论标识方式。
 - `track`：一条主线路，代表论文最核心的贡献。
 - `relatedTracks`：可选，只表达重要的次要关联。

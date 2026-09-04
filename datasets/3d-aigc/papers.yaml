@@ -1,6 +1,7 @@
 papers:
   - id: scenesmith
     title: "SceneSmith: Agentic Generation of Simulation-Ready Indoor Scenes"
+    shortTitle: "SceneSmith"
     date: "2026-02-09"
     arxiv: "2602.09153"
     track: scene-world-generation
@@ -35,6 +36,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22846498"
   - id: meshy-t2
     title: "Meshy T2: Fast Native Mesh Generation with Flow Matching"
+    shortTitle: "Meshy T2"
     date: "2026-07-28"
     arxiv: "2607.28675"
     track: object-reconstruction
@@ -51,7 +53,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22844422"
     classification:
       confidence: editorial
-      rationale: "论文直接解决从图像快速生成原生显式网格的问题，属于物体重建线路。"
+      rationale: "论文直接解决从图像快速生成原生显式网格的问题，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2607.28675"
@@ -59,6 +61,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22844422"
   - id: sam-3d-objects
     title: "SAM 3D: 3Dfy Anything in Images"
+    shortTitle: "SAM 3D"
     date: "2025-11-20"
     arxiv: "2511.16624"
     track: object-reconstruction
@@ -75,7 +78,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22838669"
     classification:
       confidence: editorial
-      rationale: "核心贡献是从真实场景图像恢复单个目标的完整三维资产，属于物体重建线路。"
+      rationale: "核心贡献是从真实场景图像恢复单个目标的完整三维资产，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2511.16624"
@@ -83,6 +86,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22838669"
   - id: hy-world-2
     title: "HY-World 2.0: A Multi-Modal World Model for Reconstructing, Generating, and Simulating 3D Worlds"
+    shortTitle: "HY-World 2.0"
     date: "2026-04-15"
     arxiv: "2604.14268"
     track: scene-world-generation
@@ -107,6 +111,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22831104"
   - id: worldgrow
     title: "WorldGrow: Generating Infinite 3D World"
+    shortTitle: "WorldGrow"
     date: "2025-10-24"
     arxiv: "2510.21682"
     track: scene-world-generation
@@ -133,6 +138,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22830668"
   - id: scene-dreamer-3d
     title: "3D-SceneDreamer: Text-Driven 3D-Consistent Scene Generation"
+    shortTitle: "3D-SceneDreamer"
     date: "2024-03-14"
     arxiv: "2403.09439"
     track: scene-world-generation
@@ -159,6 +165,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22830072"
   - id: hunyuan3d-2-1
     title: "Hunyuan3D 2.1: From Images to High-Fidelity 3D Assets with Production-Ready PBR Material"
+    shortTitle: "Hunyuan3D 2.1"
     date: "2025-06-18"
     arxiv: "2506.15442"
     track: object-reconstruction
@@ -175,7 +182,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22826612"
     classification:
       confidence: editorial
-      rationale: "论文以图像到可生产三维资产为主要目标，属于物体重建线路。"
+      rationale: "论文以图像到可生产三维资产为主要目标，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2506.15442"
@@ -183,6 +190,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22826612"
   - id: hunyuan3d-2
     title: "Hunyuan3D 2.0: Scaling Diffusion Models for High Resolution Textured 3D Assets Generation"
+    shortTitle: "Hunyuan3D 2.0"
     date: "2025-01-21"
     arxiv: "2501.12202"
     track: object-reconstruction
@@ -199,7 +207,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22826405"
     classification:
       confidence: editorial
-      rationale: "工作直接推进单图到带纹理三维物体的生成质量和效率，属于物体重建线路。"
+      rationale: "工作直接推进单图到带纹理三维物体的生成质量和效率，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2501.12202"
@@ -207,9 +215,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22826405"
   - id: trellis-2
     title: "Native and Compact Structured Latents for 3D Generation"
+    shortTitle: "TRELLIS.2"
     date: "2025-12-16"
     arxiv: "2512.14692"
-    track: structured-latents
+    track: geometry-representation
     summary: "TRELLIS.2 在统一稀疏 O-Voxel 坐标中编码几何与 PBR 材质，并以紧凑 latent 生成三维资产。"
     problem: "三维生成的几何和材质通常使用不同坐标或密集表示，既浪费计算又难以保持空间对应。"
     solution: "方法先生成稀疏 O-Voxel 结构，再分别用 Shape 与 Material SC-VAE 压缩，并以多路 flow 在共享空间中生成和解码。"
@@ -227,7 +236,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22824385"
     classification:
       confidence: editorial
-      rationale: "主要贡献是统一且紧凑的三维潜变量设计，属于结构化三维潜变量线路。"
+      rationale: "主要贡献是统一且紧凑的三维潜变量设计，属于三维表示与生成基础路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2512.14692"
@@ -239,9 +248,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22824385"
   - id: trellis
     title: "Structured 3D Latents for Scalable and Versatile 3D Generation"
+    shortTitle: "TRELLIS"
     date: "2024-12-02"
     arxiv: "2412.01506"
-    track: structured-latents
+    track: geometry-representation
     summary: "TRELLIS 用稀疏结构化 latent 表示三维表面，并支持从同一表示解码网格、Gaussian 和辐射场。"
     problem: "直接在网格顶点或密集体素上生成难以扩展到复杂形状，也不利于复用多种三维输出格式。"
     solution: "模型先预测哪些体素承载表面，再为这些位置生成局部 SLat 特征，最后通过不同解码器得到多种三维表示。"
@@ -259,7 +269,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22814249"
     classification:
       confidence: editorial
-      rationale: "工作提出可扩展、可复用的三维结构 latent，是该结构化潜变量线路的代表。"
+      rationale: "工作提出可扩展、可复用的三维结构 latent，是三维表示与生成基础路线的代表。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2412.01506"
@@ -271,9 +281,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22814249"
   - id: clay
     title: "CLAY: A Controllable Large-scale Generative Model for Creating High-quality 3D Assets"
+    shortTitle: "CLAY"
     date: "2024-05-30"
     arxiv: "2406.13897"
-    track: structured-latents
+    track: geometry-representation
     summary: "CLAY 用几何 latent 生成连续三维形状，再以多视角材质扩散生成可贴回网格的 PBR 纹理。"
     problem: "三维资产既要有完整几何，又要支持文字、图像和三维控制以及高分辨率材质生成。"
     solution: "多分辨率 VAE 与 DiT 在 occupancy 场 latent 中生成几何，多视角材料模型生成 diffuse、roughness 和 metallic 并进行 UV 回写。"
@@ -289,7 +300,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22810090"
     classification:
       confidence: editorial
-      rationale: "CLAY 的核心是大规模几何 latent 与外观生成的组合，属于结构化三维潜变量线路。"
+      rationale: "CLAY 的核心是大规模几何 latent 与外观生成的组合，属于三维表示与生成基础路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2406.13897"
@@ -297,9 +308,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22810090"
   - id: shape2vecset-3d
     title: "3DShape2VecSet: A 3D Shape Representation for Neural Fields and Generative Diffusion Models"
+    shortTitle: "3DShape2VecSet"
     date: "2023-01-26"
     arxiv: "2301.11445"
-    track: structured-latents
+    track: geometry-representation
     summary: "3DShape2VecSet 把每个形状压缩成固定数量的向量集合，再通过查询坐标解码 occupancy 场。"
     problem: "神经场逐点编码三维形状成本高，直接扩散整个场又难以控制计算量和表示容量。"
     solution: "编码器学习固定大小的 latent set，解码器用 cross/self-attention 读取这些向量回答空间点的 occupancy，扩散模型只需生成 latent set。"
@@ -314,7 +326,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22797146"
     classification:
       confidence: editorial
-      rationale: "论文的主要创新是适合生成建模的固定大小三维 latent set，属于结构化三维潜变量线路。"
+      rationale: "论文的主要创新是适合生成建模的固定大小三维 latent set，属于三维表示与生成基础路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2301.11445"
@@ -322,6 +334,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22797146"
   - id: lgm
     title: "LGM: Large Multi-View Gaussian Model for High-Resolution 3D Content Creation"
+    shortTitle: "LGM"
     date: "2024-02-07"
     arxiv: "2402.05054"
     track: object-reconstruction
@@ -348,6 +361,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22788753"
   - id: sf3d
     title: "SF3D: Stable Fast 3D Mesh Reconstruction with UV-unwrapping and Illumination Disentanglement"
+    shortTitle: "SF3D"
     date: "2024-08-01"
     arxiv: "2408.00653"
     track: object-reconstruction
@@ -365,7 +379,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22788587"
     classification:
       confidence: editorial
-      rationale: "核心结果是单图到生产可用网格和 UV 的前馈重建，属于物体重建线路。"
+      rationale: "核心结果是单图到生产可用网格和 UV 的前馈重建，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2408.00653"
@@ -373,6 +387,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22788587"
   - id: triposr
     title: "TripoSR: Fast 3D Object Reconstruction from a Single Image"
+    shortTitle: "TripoSR"
     date: "2024-03-04"
     arxiv: "2403.02151"
     track: object-reconstruction
@@ -390,7 +405,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22780289"
     classification:
       confidence: editorial
-      rationale: "论文直接面向单图快速三维物体重建，属于物体重建线路。"
+      rationale: "论文直接面向单图快速三维物体重建，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2403.02151"
@@ -398,6 +413,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22780289"
   - id: instantmesh
     title: "InstantMesh: Efficient 3D Mesh Generation from a Single Image with Sparse-view Large Reconstruction Models"
+    shortTitle: "InstantMesh"
     date: "2024-04-10"
     arxiv: "2404.07191"
     track: object-reconstruction
@@ -415,7 +431,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22780011"
     classification:
       confidence: editorial
-      rationale: "工作以单图生成完整可渲染网格为目标，属于物体重建线路。"
+      rationale: "工作以单图生成完整可渲染网格为目标，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2404.07191"
@@ -423,6 +439,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22780011"
   - id: lrm
     title: "LRM: Large Reconstruction Model for Single Image to 3D"
+    shortTitle: "LRM"
     date: "2023-11-08"
     arxiv: "2311.04400"
     track: object-reconstruction
@@ -440,7 +457,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22779562"
     classification:
       confidence: editorial
-      rationale: "其主要贡献是大规模单图到三维的前馈重建范式，属于物体重建线路。"
+      rationale: "其主要贡献是大规模单图到三维的前馈重建范式，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2311.04400"
@@ -448,6 +465,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22779562"
   - id: wonder3d
     title: "Wonder3D: Single Image to 3D using Cross-Domain Diffusion"
+    shortTitle: "Wonder3D"
     date: "2023-10-23"
     arxiv: "2310.15008"
     track: object-reconstruction
@@ -470,7 +488,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22776517"
     classification:
       confidence: editorial
-      rationale: "论文把生成的多视图证据用于单图物体重建，属于物体重建线路。"
+      rationale: "论文把生成的多视图证据用于单图物体重建，属于三维物体生成与重建路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2310.15008"
@@ -478,9 +496,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22776517"
   - id: mvdream
     title: "MVDream: Multi-view Diffusion for 3D Generation"
+    shortTitle: "MVDream"
     date: "2023-08-31"
     arxiv: "2308.16512"
-    track: multi-view-prior
+    track: object-reconstruction
     summary: "MVDream 让扩散模型联合生成多个相机视角，为文本到三维优化提供一致的多视图先验。"
     problem: "逐张生成视图时每个角度可能独立改变物体身份，导致三维优化中的 Janus 和几何冲突。"
     solution: "模型在 U-Net 中加入跨视图注意力，同时建模多个相机条件的图像分布，并将联合评分反馈给三维表示。"
@@ -495,7 +514,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22772118"
     classification:
       confidence: editorial
-      rationale: "论文的核心是学习多视图一致的生成先验，而非最终网格解码，属于多视图先验线路。"
+      rationale: "论文的核心是学习多视图一致的生成先验，而非最终网格解码，属于三维物体生成与重建路线中的多视图先验阶段。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2308.16512"
@@ -503,9 +522,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22772118"
   - id: zero123-plus-plus
     title: "Zero123++: a Single Image to Consistent Multi-view Diffusion Base Model"
+    shortTitle: "Zero123++"
     date: "2023-10-23"
     arxiv: "2310.15110"
-    track: multi-view-prior
+    track: object-reconstruction
     summary: "Zero123++ 把六个目标视图拼成固定布局的一张画布，在一次联合扩散中生成一致的多视图。"
     problem: "独立采样多个视图会丢失输入细节并产生相互矛盾的外观，难以直接服务三维重建。"
     solution: "模型对整张多视图画布做联合去噪，配合 reference attention 和 CLIP 约束保持参考图内容与视角间的一致性。"
@@ -523,7 +543,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22771858"
     classification:
       confidence: editorial
-      rationale: "该工作专门提供单图到一致多视图的生成基础模型，属于多视图先验线路。"
+      rationale: "该工作专门提供单图到一致多视图的生成基础模型，属于三维物体生成与重建路线中的多视图先验阶段。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2310.15110"
@@ -531,9 +551,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22771858"
   - id: zero-1-to-3
     title: "Zero-1-to-3: Zero-shot One Image to 3D Object"
+    shortTitle: "Zero-1-to-3"
     date: "2023-03-20"
     arxiv: "2303.11328"
-    track: multi-view-prior
+    track: object-reconstruction
     summary: "Zero-1-to-3 将普通图像扩散模型改造成能理解相对相机变化的新视图生成器。"
     problem: "只有一张输入图时，模型需要根据指定相机运动合理补出未观测视角，而不是只改变二维纹理。"
     solution: "网络显式编码输入与目标视角的相对相机变换，生成对应新视图，并可作为 VoxelRF 等三维表示的优化先验。"
@@ -548,7 +569,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22771113"
     classification:
       confidence: editorial
-      rationale: "主要贡献是相机条件的新视图生成，为后续三维构建提供多视图证据。"
+      rationale: "主要贡献是相机条件的新视图生成，为三维物体生成与重建路线提供多视图证据。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2303.11328"
@@ -556,9 +577,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22771113"
   - id: prolificdreamer
     title: "ProlificDreamer: High-Fidelity and Diverse Text-to-3D Generation with Variational Score Distillation"
+    shortTitle: "ProlificDreamer"
     date: "2023-05-25"
     arxiv: "2305.16213"
-    track: text-to-3d
+    track: object-reconstruction
     summary: "ProlificDreamer 用变分得分蒸馏优化 NeRF，在文本一致性之外提升三维结果的细节和多样性。"
     problem: "标准 SDS 容易把多个视角压成过度平滑或单一解，文本到三维结果常缺少细节和多样性。"
     solution: "VSD 维护一个可学习的 LoRA 扩散分布，用冻结扩散模型与该分布的得分差指导 NeRF，再转成 DMTet 网格和 UV 外观。"
@@ -573,7 +595,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22744462"
     classification:
       confidence: editorial
-      rationale: "工作直接改进文本驱动三维优化的得分蒸馏目标，属于文本到三维生成线路。"
+      rationale: "工作直接改进文本驱动三维优化的得分蒸馏目标，属于三维物体生成与重建路线中的文本生成阶段。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2305.16213"
@@ -581,9 +603,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22744462"
   - id: magic3d
     title: "Magic3D: High-Resolution Text-to-3D Content Creation"
+    shortTitle: "Magic3D"
     date: "2022-11-18"
     arxiv: "2211.10440"
-    track: text-to-3d
+    track: object-reconstruction
     summary: "Magic3D 先优化低分辨率神经场获得文本语义，再细化为高分辨率稀疏三角网格。"
     problem: "直接用二维扩散先验优化高分辨率三维表示计算昂贵，且早期形状容易不稳定。"
     solution: "两阶段流程先用 SDS 优化粗 NeRF，再将其转换为稀疏 DMTet 网格并用高分辨率神经纹理继续优化。"
@@ -597,7 +620,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22737559"
     classification:
       confidence: editorial
-      rationale: "Magic3D 的主要贡献是分阶段提升文本到三维的分辨率与可用性。"
+      rationale: "Magic3D 的主要贡献是分阶段提升三维物体生成与重建路线中文本生成的分辨率与可用性。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2211.10440"
@@ -605,9 +628,10 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22737559"
   - id: dreamfusion
     title: "DreamFusion: Text-to-3D using 2D Diffusion"
+    shortTitle: "DreamFusion"
     date: "2022-09-29"
     arxiv: "2209.14988"
-    track: text-to-3d
+    track: object-reconstruction
     summary: "DreamFusion 让冻结的二维扩散模型通过多视角渲染反馈指导 NeRF，从文字优化出三维对象。"
     problem: "三维数据和三维扩散模型不足时，如何利用成熟的二维文生图先验完成文本到三维生成。"
     solution: "对 NeRF 的随机视角渲染施加 Score Distillation Sampling，将二维扩散模型的去噪方向反传到三维参数。"
@@ -622,7 +646,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22726223"
     classification:
       confidence: editorial
-      rationale: "论文奠定了二维扩散先验指导文本到三维优化的核心范式。"
+      rationale: "论文奠定了二维扩散先验指导三维物体生成与重建的文本生成范式。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2209.14988"
@@ -630,6 +654,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22726223"
   - id: dmtet
     title: "Deep Marching Tetrahedra: a Hybrid Representation for High-Resolution 3D Shape Synthesis"
+    shortTitle: "DMTet"
     date: "2021-11-08"
     arxiv: "2111.04276"
     track: geometry-representation
@@ -648,7 +673,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22722224"
     classification:
       confidence: editorial
-      rationale: "DMTet 的核心是连接神经预测与网格提取的三维几何表示，属于几何表示线路。"
+      rationale: "DMTet 的核心是连接神经预测与网格提取的三维几何表示，属于三维表示与生成基础路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/2111.04276"
@@ -656,6 +681,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22722224"
   - id: occupancy-networks
     title: "Occupancy Networks: Learning 3D Reconstruction in Function Space"
+    shortTitle: "Occupancy Networks"
     date: "2018-12-10"
     arxiv: "1812.03828"
     track: geometry-representation
@@ -672,7 +698,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22719208"
     classification:
       confidence: editorial
-      rationale: "该工作建立了函数空间三维重建的基础表示，是几何表示线路的起点。"
+      rationale: "该工作建立了函数空间三维重建的基础表示，是三维表示与生成基础路线的起点。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/1812.03828"
@@ -680,6 +706,7 @@ papers:
         url: "https://www.cnblogs.com/sxq-blog/p/22719208"
   - id: deepsdf
     title: "DeepSDF: Learning Continuous Signed Distance Functions for Shape Representation"
+    shortTitle: "DeepSDF"
     date: "2019-01-16"
     arxiv: "1901.05103"
     track: geometry-representation
@@ -698,7 +725,7 @@ papers:
           url: "https://www.cnblogs.com/sxq-blog/p/22717074"
     classification:
       confidence: editorial
-      rationale: "论文以连续 signed distance 作为形状表示基础，属于几何表示线路。"
+      rationale: "论文以连续 signed distance 作为形状表示基础，属于三维表示与生成基础路线。"
     sources:
       - type: paper
         url: "https://arxiv.org/abs/1901.05103"

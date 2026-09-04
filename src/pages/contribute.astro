@@ -40,6 +40,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
         <div class="section-heading"><span>01</span><div><h2>论文信息</h2><p>使用论文首次公开的信息，不要根据标题猜测日期或机构。</p></div></div>
         <div class="field-grid two-columns">
           <label><span>论文标题 <em>必填</em></span><input id="title" name="title" required minlength="2" autocomplete="off" /></label>
+          <label><span>路线图简称 <em>可选</em></span><input id="short-title" name="shortTitle" minlength="2" autocomplete="off" placeholder="例如：DreamFusion、TRELLIS.2" /></label>
           <label><span>数据 ID <em>自动生成，可修改</em></span><input id="paper-id" name="id" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" autocomplete="off" /></label>
           <label><span>arXiv 编号 <em>必填</em></span><input id="arxiv" name="arxiv" required pattern="[0-9]{4}\.[0-9]{5}" placeholder="例如 2303.02506" inputmode="decimal" /></label>
           <label><span>首次公开日期 <em>必填</em></span><input id="date" name="date" type="date" required /></label>
@@ -163,6 +164,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
     const lines = [
       line('id', value('paper-id')),
       line('title', value('title')),
+      ...(value('short-title') ? [line('shortTitle', value('short-title'))] : []),
       line('date', value('date')),
       line('arxiv', value('arxiv')),
       line('track', value('track'))

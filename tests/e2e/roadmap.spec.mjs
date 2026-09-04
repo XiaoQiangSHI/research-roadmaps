@@ -48,6 +48,22 @@ test('GaP and RoboTTT expose their reviewed details and blog explanations', asyn
   }
 });
 
+test('3D AIGC uses compact paper names across three broad routes', async ({ page }) => {
+  await page.goto('/roadmaps/3d-aigc/');
+  await expect(page.locator('.track-section')).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: '三维表示与生成基础' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '三维物体生成与重建' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '三维场景与世界生成' })).toBeVisible();
+
+  const dreamfusion = page.locator('[data-paper-id="dreamfusion"]');
+  await expect(dreamfusion.locator('.paper-heading')).toContainText('DreamFusion');
+  await expect(dreamfusion.locator('.paper-heading')).not.toContainText('Text-to-3D using 2D Diffusion');
+  await dreamfusion.getByRole('button').click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByRole('heading', { name: 'DreamFusion' })).toBeVisible();
+  await expect(dialog.locator('#dialog-full-title')).toContainText('Text-to-3D using 2D Diffusion');
+});
+
 test('mobile layout has no horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/roadmaps/embodied-ai/');
@@ -68,6 +84,7 @@ test('contribution wizard validates and prepares a standalone paper file', async
   await expect(page.locator('#active-domain-name')).toHaveText('计算机视觉研究路线图');
   await expect(page.locator('#validation-errors')).toBeEmpty();
   await page.locator('#title').fill('Example Contribution Paper');
+  await page.locator('#short-title').fill('Example Paper');
   await page.locator('#arxiv').fill('2608.01234');
   await page.locator('#date').fill('2026-08-01');
   await page.locator('#summary').fill('提出一个用于验证论文贡献向导的完整示例方法。');
@@ -83,6 +100,7 @@ test('contribution wizard validates and prepares a standalone paper file', async
 
   await expect(page.getByText('可以提交', { exact: true })).toBeVisible();
   await expect(page.locator('#yaml-preview')).toContainText('id: "example-contribution-paper"');
+  await expect(page.locator('#yaml-preview')).toContainText('shortTitle: "Example Paper"');
   await expect(page.locator('#yaml-preview')).toContainText('primary:\n    - "nvidia"');
   await expect(page.locator('#yaml-preview')).toContainText('explanations:');
   await expect(page.locator('#yaml-preview')).toContainText('title: "Example Author · 深入讲解"');

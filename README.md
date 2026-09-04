@@ -35,7 +35,7 @@
 | 状态 | 领域 |
 | --- | --- |
 | 持续维护 | [具身智能](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/embodied-ai/)（60 篇论文、7 条发展线路） |
-| 持续维护 | [3D AIGC](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/3d-aigc/)（27 篇论文 / 技术文章、6 条发展线路；讲解来自作者博客的 3D-AIGC 分类） |
+| 持续维护 | [3D AIGC](https://xiaoqiangshi.github.io/research-roadmaps/roadmaps/3d-aigc/)（27 篇论文 / 技术文章、3 条发展线路；讲解来自作者博客的 3D-AIGC 分类） |
 | 待社区共建 | 大语言模型、自然语言处理、计算机视觉、多模态人工智能、生成模型、强化学习、AI 智能体、语音与音频智能、图机器学习、机器学习系统、可信人工智能、AI for Science、机器人学 |
 
 每个领域页面都提供“贡献论文”按钮，并自动预选当前领域；贡献者选择合适的路线后，网页向导会生成对应的提交文件和路径。
@@ -99,7 +99,7 @@
 ```text
 datasets/<domain>/
 ├─ roadmap.yaml       # 领域层级、收录边界、相邻领域、路线与演进阶段
-├─ papers.yaml        # 可选；聚合的论文事实、原创概括、链接与归类依据
+├─ papers.yaml        # 可选；聚合的论文事实、简称、原创概括、链接与归类依据
 ├─ papers/*.yaml      # 贡献向导生成的单篇论文文件
 ├─ explanations/<paper-id>/*.yaml  # 社区为已有论文独立追加的讲解链接
 ├─ institutions.yaml  # 可选；领域专属机构，会覆盖同 ID 的共享机构

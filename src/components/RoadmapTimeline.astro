@@ -48,13 +48,14 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
         <div class="timeline" aria-label={`${track.name}论文时间轴`}>
           {papers.map((paper, order) => {
             const primary = institutionMap.get(paper.institutions.primary[0]);
-            const searchText = [paper.title, paper.summary, paper.problem, paper.solution, primary?.name, ...paper.institutions.primary.map((id) => institutionMap.get(id)?.name)].filter(Boolean).join(' ').toLowerCase();
+            const displayTitle = paper.shortTitle || paper.title;
+            const searchText = [paper.title, paper.shortTitle, paper.summary, paper.problem, paper.solution, primary?.name, ...paper.institutions.primary.map((id) => institutionMap.get(id)?.name)].filter(Boolean).join(' ').toLowerCase();
             return (
               <div class="paper-node" data-paper-node data-paper-id={paper.id} data-search={searchText} data-order={order} style={`--x:${dateX(paper.date).toFixed(3)}%`}>
                 <button class="paper-button" type="button" data-open-paper={paper.id} aria-label={`查看 ${paper.title} 详情`}>
                   <span class="paper-heading">
                     <InstitutionMark institution={primary} />
-                    <span>{paper.title}<small>{primary?.shortName || 'Research team'}</small></span>
+                    <span title={paper.shortTitle ? paper.title : undefined}>{displayTitle}<small>{primary?.shortName || 'Research team'}</small></span>
                   </span>
                   <time datetime={paper.date}>{paper.date.slice(0, 7)}</time>
                 </button>
@@ -75,6 +76,7 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
       <header class="dialog-header">
         <div class="dialog-meta"><time id="dialog-date"></time><span id="dialog-arxiv"></span></div>
         <h2 id="dialog-title"></h2>
+        <p id="dialog-full-title" class="dialog-full-title" hidden></p>
         <div class="dialog-tags"><span id="dialog-track"></span><span id="dialog-confidence"></span></div>
       </header>
       <section class="dialog-institutions" aria-labelledby="dialog-institutions-title">
@@ -135,7 +137,10 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
     document.getElementById('dialog-date').textContent = paper.date;
     document.getElementById('dialog-date').dateTime = paper.date;
     document.getElementById('dialog-arxiv').textContent = `arXiv ${paper.arxiv}`;
-    document.getElementById('dialog-title').textContent = paper.title;
+    document.getElementById('dialog-title').textContent = paper.shortTitle || paper.title;
+    const fullTitle = document.getElementById('dialog-full-title');
+    fullTitle.textContent = paper.shortTitle && paper.shortTitle !== paper.title ? `正式标题：${paper.title}` : '';
+    fullTitle.hidden = !fullTitle.textContent;
     document.getElementById('dialog-track').textContent = `${track.index} · ${track.name}`;
     document.getElementById('dialog-confidence').textContent = confidenceLabels[paper.classification.confidence] || paper.classification.confidence;
     document.getElementById('dialog-orgs').innerHTML = orgs.map((org, index) => {
@@ -284,6 +289,7 @@ for (let year = Number(roadmap.period.start.slice(0, 4)); year <= Number(roadmap
   .dialog-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 13px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
   .dialog-meta span::before { content: ''; display: inline-block; width: 3px; height: 3px; margin: 0 10px 3px 0; border-radius: 50%; background: var(--route); }
   .dialog-header > h2 { max-width: 720px; margin: 0; font-size: clamp(36px, 5vw, 54px); line-height: 1.02; letter-spacing: -.035em; overflow-wrap: anywhere; }
+  .dialog-full-title { max-width: 720px; margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
   .dialog-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 17px; }
   .dialog-tags span { padding: 6px 10px; border: 1px solid color-mix(in srgb, var(--route) 20%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--route) 8%, var(--surface)); color: color-mix(in srgb, var(--route) 82%, var(--ink)); font-size: 11px; font-weight: 800; letter-spacing: .02em; }
   .dialog-close { position: absolute; z-index: 2; top: 21px; right: 22px; display: grid; place-items: center; width: 42px; min-height: 42px; padding: 0 0 2px; border-color: color-mix(in srgb, var(--route) 16%, var(--line)); border-radius: 50%; background: color-mix(in srgb, var(--surface) 92%, transparent); color: var(--muted); font-size: 25px; line-height: 1; transition: transform .18s ease, border-color .18s ease, color .18s ease; }

@@ -1,6 +1,7 @@
 papers:
   - id: example-paper
     title: Example Paper
+    shortTitle: Example
     date: 2024-01-01
     arxiv: "2401.00001"
     track: example-track

@@ -50,7 +50,9 @@ test('GaP and RoboTTT retain their reviewed routes, institutions, and explanatio
 
 test('3D AIGC includes the complete blog category with explanation links', () => {
   assert.equal(threeDAigcRoadmap.papers.length, 27);
-  assert.equal(threeDAigcRoadmap.tracks.length, 6);
+  assert.equal(threeDAigcRoadmap.tracks.length, 3);
+  assert.ok(threeDAigcRoadmap.papers.every((paper) => paper.shortTitle));
+  assert.equal(new Set(threeDAigcRoadmap.papers.map((paper) => paper.shortTitle)).size, 27);
 
   const explanationUrls = threeDAigcRoadmap.papers.flatMap((paper) => (paper.links.explanations || []).map((item) => item.url));
   assert.equal(explanationUrls.length, 27);
@@ -72,8 +74,10 @@ test('SceneSmith is classified as scene generation with an asset-generation cros
 test('TRELLIS series keeps recognizable project and code links', () => {
   const trellis = threeDAigcRoadmap.papers.find((paper) => paper.id === 'trellis');
   const trellis2 = threeDAigcRoadmap.papers.find((paper) => paper.id === 'trellis-2');
-  assert.equal(trellis.track, 'structured-latents');
-  assert.equal(trellis2.track, 'structured-latents');
+  assert.equal(trellis.track, 'geometry-representation');
+  assert.equal(trellis2.track, 'geometry-representation');
+  assert.equal(trellis.shortTitle, 'TRELLIS');
+  assert.equal(trellis2.shortTitle, 'TRELLIS.2');
   assert.equal(trellis.links.project, 'https://microsoft.github.io/TRELLIS/');
   assert.equal(trellis.links.code, 'https://github.com/Microsoft/TRELLIS');
   assert.equal(trellis2.links.project, 'https://microsoft.github.io/TRELLIS.2/');

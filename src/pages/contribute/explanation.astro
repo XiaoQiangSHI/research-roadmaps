@@ -9,6 +9,7 @@ const contributionDomains = roadmaps.map((roadmap) => ({
   papers: roadmap.papers.map((paper) => ({
     id: paper.id,
     title: paper.title,
+    shortTitle: paper.shortTitle,
     explanations: paper.links.explanations || []
   }))
 }));
@@ -64,7 +65,7 @@ const repositoryUrl = import.meta.env.PUBLIC_REPOSITORY_URL || 'https://github.c
   function activeDomain() { return contributionDomains.find((domain) => domain.id === domainSelect.value) || contributionDomains[0]; }
   function activePaper() { return activeDomain().papers.find((paper) => paper.id === paperSelect.value); }
   function renderPapers(requestedPaper) {
-    paperSelect.innerHTML = activeDomain().papers.map((paper) => `<option value="${paper.id}">${paper.title}</option>`).join('');
+    paperSelect.innerHTML = activeDomain().papers.map((paper) => `<option value="${paper.id}">${paper.shortTitle || paper.title}</option>`).join('');
     if (requestedPaper && activeDomain().papers.some((paper) => paper.id === requestedPaper)) paperSelect.value = requestedPaper;
     update();
   }
