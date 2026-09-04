@@ -1,0 +1,13 @@
+category:
+  url: https://www.cnblogs.com/sxq-blog/category/2530534.html
+  title: S-X-Q · 博客园 3D-AIGC 分类
+  note: 分类页共 26 篇文章，页面第二页为最后一页；本专题只整理该分类中的条目。
+paperMetadata:
+  note: arXiv 编号、正式标题和首次公开日期通过对应官方 arXiv 页面核对。除 Magic3D 外，博客正文没有直接给出 arXiv 编号，因此这些映射按标题、方法和官方页面进行 canonical match。
+selection:
+  include:
+    - 直接生成或重建三维物体、网格、神经场、3D Gaussian、场景或世界的工作。
+    - 为三维生成提供几何表示、材质生成或多视图一致性先验的工作。
+  exclude:
+    - 博客分类之外的文章。
+    - 只做三维感知、定位、渲染或机器人控制而不生成三维内容的工作。

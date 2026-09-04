@@ -1,0 +1,255 @@
+institutions:
+  - id: meshy-ai
+    name: Meshy AI
+    shortName: Meshy
+    type: company
+    website: https://www.meshy.ai/
+    logo:
+      kind: text
+      value: M
+  - id: meta
+    name: Meta Superintelligence Labs
+    shortName: Meta
+    type: company
+    website: https://ai.meta.com/
+    logo:
+      kind: text
+      value: Meta
+  - id: tencent
+    name: Tencent Hunyuan
+    shortName: Tencent
+    type: company
+    website: https://hunyuan.tencent.com/
+    logo:
+      kind: text
+      value: TX
+  - id: microsoft
+    name: Microsoft Research
+    shortName: Microsoft
+    type: company
+    website: https://www.microsoft.com/en-us/research/
+    logo:
+      kind: text
+      value: MS
+  - id: huawei
+    name: Huawei
+    shortName: Huawei
+    type: company
+    website: https://www.huawei.com/
+    logo:
+      kind: text
+      value: 华为
+  - id: hust
+    name: Huazhong University of Science and Technology
+    shortName: HUST
+    type: university
+    logo:
+      kind: text
+      value: HUST
+  - id: jilin-university
+    name: Jilin University
+    shortName: JLU
+    type: university
+    logo:
+      kind: text
+      value: JLU
+  - id: cas-institute-software
+    name: Institute of Software, Chinese Academy of Sciences
+    shortName: ISCAS
+    type: research-institute
+    logo:
+      kind: text
+      value: CAS
+  - id: zhejiang-lab
+    name: Zhejiang Lab
+    shortName: Zhejiang Lab
+    type: research-institute
+    logo:
+      kind: text
+      value: ZL
+  - id: peking-university
+    name: Peking University
+    shortName: PKU
+    type: university
+    logo:
+      kind: text
+      value: PKU
+  - id: ntu
+    name: Nanyang Technological University
+    shortName: NTU
+    type: university
+    logo:
+      kind: text
+      value: NTU
+  - id: shanghai-ai-lab
+    name: Shanghai Artificial Intelligence Laboratory
+    shortName: Shanghai AI Lab
+    type: research-institute
+    logo:
+      kind: text
+      value: 上海 AI
+  - id: stability-ai
+    name: Stability AI
+    shortName: Stability AI
+    type: company
+    website: https://stability.ai/
+    logo:
+      kind: text
+      value: SAI
+  - id: uiuc
+    name: University of Illinois Urbana-Champaign
+    shortName: UIUC
+    type: university
+    logo:
+      kind: text
+      value: UIUC
+  - id: tripo-ai
+    name: Tripo AI
+    shortName: Tripo AI
+    type: company
+    website: https://www.tripo3d.ai/
+    logo:
+      kind: text
+      value: Tripo
+  - id: shanghai-tech
+    name: ShanghaiTech University
+    shortName: ShanghaiTech
+    type: university
+    logo:
+      kind: text
+      value: STech
+  - id: deemos
+    name: Deemos Technology
+    shortName: Deemos
+    type: company
+    logo:
+      kind: text
+      value: D
+  - id: anu
+    name: Australian National University
+    shortName: ANU
+    type: university
+    logo:
+      kind: text
+      value: ANU
+  - id: adobe-research
+    name: Adobe Research
+    shortName: Adobe
+    type: company
+    website: https://research.adobe.com/
+    logo:
+      kind: text
+      value: Adobe
+  - id: hku
+    name: The University of Hong Kong
+    shortName: HKU
+    type: university
+    logo:
+      kind: text
+      value: HKU
+  - id: mpi-tuebingen
+    name: Max Planck Institute for Intelligent Systems and University of Tübingen
+    shortName: MPI-IS / Tübingen
+    type: research-institute
+    logo:
+      kind: text
+      value: MPI
+  - id: texas-am
+    name: Texas A&M University
+    shortName: Texas A&M
+    type: university
+    logo:
+      kind: text
+      value: TAMU
+  - id: ucsd
+    name: University of California, San Diego
+    shortName: UC San Diego
+    type: university
+    logo:
+      kind: text
+      value: UCSD
+  - id: ucla
+    name: University of California, Los Angeles
+    shortName: UCLA
+    type: university
+    logo:
+      kind: text
+      value: UCLA
+  - id: zhejiang-university
+    name: Zhejiang University
+    shortName: Zhejiang U
+    type: university
+    logo:
+      kind: text
+      value: ZJU
+  - id: vector-institute
+    name: Vector Institute
+    shortName: Vector
+    type: research-institute
+    logo:
+      kind: text
+      value: VI
+  - id: renmin-university
+    name: Renmin University of China
+    shortName: Renmin
+    type: university
+    logo:
+      kind: text
+      value: RUC
+  - id: google-research
+    name: Google Research
+    shortName: Google
+    type: company
+    website: https://research.google/
+    logo:
+      kind: text
+      value: G
+  - id: kaust
+    name: King Abdullah University of Science and Technology
+    shortName: KAUST
+    type: university
+    logo:
+      kind: text
+      value: KAUST
+  - id: tum
+    name: Technical University of Munich
+    shortName: TUM
+    type: university
+    logo:
+      kind: text
+      value: TUM
+  - id: university-of-washington
+    name: University of Washington
+    shortName: Washington
+    type: university
+    logo:
+      kind: text
+      value: UW
+  - id: mit
+    name: Massachusetts Institute of Technology
+    shortName: MIT
+    type: university
+    logo:
+      kind: text
+      value: MIT
+  - id: facebook-reality-labs
+    name: Facebook Reality Labs
+    shortName: FRL
+    type: company
+    logo:
+      kind: text
+      value: FRL
+  - id: vast-ai
+    name: VAST
+    shortName: VAST
+    type: company
+    logo:
+      kind: text
+      value: VAST
+  - id: mpi-informatics
+    name: Max Planck Institute for Informatics
+    shortName: MPI Informatics
+    type: research-institute
+    logo:
+      kind: text
+      value: MPI

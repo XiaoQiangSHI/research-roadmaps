@@ -1,0 +1,74 @@
+id: 3d-aigc
+name: 3D AIGC 研究路线图
+description: 梳理从连续三维表示、文本到三维、单图重建到可生成场景与世界的 3D AIGC 方法演进。
+kind: full
+category: task-domain
+scope:
+  include:
+    - 文本、图像或多视图条件下的三维物体、网格、神经场、3D Gaussian 和场景生成。
+    - 直接服务于三维生成的几何、材质、纹理、结构化潜变量和可编辑表示。
+    - 能够生成、重建或扩展具有多视角一致性的三维资产、场景或可导航世界的工作。
+  exclude:
+    - 只做三维检测、测量、定位或感知而不生成三维内容的工作归入计算机视觉。
+    - 没有三维输出、只生成二维图像或视频的通用生成工作归入生成模型。
+    - 以渲染器、SLAM、机器人控制或物理交互为主要贡献且不涉及三维内容生成的工作归入相应领域。
+  relatedDomains: [computer-vision, generative-models]
+period: { start: 2018-01-01, end: 2026-12-31 }
+tracks:
+  - id: geometry-representation
+    index: "01"
+    name: 三维几何表示与表面提取
+    color: "#be6246"
+    problem: 如何用连续、隐式或结构化表示表达三维形状，并稳定、高效地提取可用表面。
+    evolution:
+      - { id: geometry-representation-01, label: 连续 occupancy 与 SDF }
+      - { id: geometry-representation-02, label: 可微网格提取 }
+      - { id: geometry-representation-03, label: 结构化几何 latent }
+  - id: text-to-3d
+    index: "02"
+    name: 文本到三维生成
+    color: "#3e796d"
+    problem: 如何借助强大的二维生成先验，从文本优化出多视角一致、细节丰富且可编辑的三维资产。
+    evolution:
+      - { id: text-to-3d-01, label: 二维扩散先验与 SDS }
+      - { id: text-to-3d-02, label: 粗 NeRF 到高分辨率网格 }
+      - { id: text-to-3d-03, label: 分布蒸馏与多样性控制 }
+  - id: multi-view-prior
+    index: "03"
+    name: 多视图生成与一致性先验
+    color: "#6a63a8"
+    problem: 如何生成互相一致的新视角，为三维重建和生成提供可靠、覆盖充分的多视图证据。
+    evolution:
+      - { id: multi-view-prior-01, label: 相机条件新视图 }
+      - { id: multi-view-prior-02, label: 联合多视图扩散 }
+      - { id: multi-view-prior-03, label: 固定布局与细节保持 }
+  - id: object-reconstruction
+    index: "04"
+    name: 单图与多视图物体重建
+    color: "#3473a0"
+    problem: 如何从单图、场景图或多视图输入快速生成完整、可渲染、可编辑且具有真实材质的三维资产。
+    evolution:
+      - { id: object-reconstruction-01, label: 大规模单图重建模型 }
+      - { id: object-reconstruction-02, label: 三平面与高效显式表示 }
+      - { id: object-reconstruction-03, label: 几何—材质分离与生产级资产 }
+  - id: structured-latents
+    index: "05"
+    name: 结构化三维潜变量
+    color: "#ab7a27"
+    problem: 如何设计既紧凑又保留几何、材质和空间结构的三维 latent，使生成更高效、更可控并能复用多种解码器。
+    evolution:
+      - { id: structured-latents-01, label: 固定数量 latent 集合 }
+      - { id: structured-latents-02, label: 稀疏空间结构 latent }
+      - { id: structured-latents-03, label: 几何与材质统一潜空间 }
+  - id: scene-world-generation
+    index: "06"
+    name: 三维场景与世界生成
+    color: "#8e4d73"
+    problem: 如何生成大规模、连续、视角一致且可导航或可交互的三维场景和世界，同时控制长期漂移与局部细节。
+    evolution:
+      - { id: scene-world-generation-01, label: 轨迹驱动的三维场景记忆 }
+      - { id: scene-world-generation-02, label: 重叠窗口与场景扩展 }
+      - { id: scene-world-generation-03, label: 多模态可导航世界模型 }
+editorial:
+  note: 论文条目严格来自 S-X-Q 博客园 3D-AIGC 分类页；日期采用对应论文 arXiv 首次公开日期，路线归属属于编辑判断。
+  maintainers: [XiaoQiangSHI]

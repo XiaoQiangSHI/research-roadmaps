@@ -10,7 +10,7 @@ scope:
   exclude:
     - 主要贡献是视觉语言对齐或多模态统一交互，而非生成机制本身的工作归入多模态人工智能。
     - 只面向某一科学对象并以科学指标为主要贡献的生成设计工作归入 AI for Science。
-  relatedDomains: [multimodal-ai, computer-vision, speech-audio, ai-for-science]
+  relatedDomains: [multimodal-ai, computer-vision, speech-audio, ai-for-science, 3d-aigc]
 period: { start: 2013-01-01, end: 2026-12-31 }
 tracks:
   - id: likelihood

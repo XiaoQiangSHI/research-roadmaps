@@ -9,6 +9,7 @@ import { listRoadmaps, loadRoadmap, readStandaloneExplanations, readStandalonePa
 const roadmap = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/roadmap.yaml', import.meta.url), 'utf8'));
 const { papers } = YAML.parse(await fs.readFile(new URL('../datasets/embodied-ai/papers.yaml', import.meta.url), 'utf8'));
 const embodiedRoadmap = await loadRoadmap('embodied-ai');
+const threeDAigcRoadmap = await loadRoadmap('3d-aigc');
 const institutions = embodiedRoadmap.institutions;
 
 test('embodied AI migration preserves the source coverage', () => {
@@ -47,6 +48,16 @@ test('GaP and RoboTTT retain their reviewed routes, institutions, and explanatio
   assert.ok(robottt.links.explanations.some((item) => item.url.endsWith('/22480410')));
 });
 
+test('3D AIGC includes the complete blog category with explanation links', () => {
+  assert.equal(threeDAigcRoadmap.papers.length, 26);
+  assert.equal(threeDAigcRoadmap.tracks.length, 6);
+
+  const explanationUrls = threeDAigcRoadmap.papers.flatMap((paper) => (paper.links.explanations || []).map((item) => item.url));
+  assert.equal(explanationUrls.length, 26);
+  assert.equal(new Set(explanationUrls).size, 26);
+  assert.ok(explanationUrls.every((url) => /^https:\/\/www\.cnblogs\.com\/sxq-blog\/p\/\d+$/.test(url)));
+});
+
 test('legacy blog links are exposed as explanation lists', () => {
   const legacyPaper = papers.find((paper) => paper.links.blog);
   const normalizedPaper = embodiedRoadmap.papers.find((paper) => paper.id === legacyPaper.id);
@@ -75,8 +86,9 @@ test('standalone explanation files can be appended independently', async (contex
 
 test('the catalogue includes active and empty research domains', async () => {
   const roadmaps = await listRoadmaps();
-  assert.equal(roadmaps.length, 14);
+  assert.equal(roadmaps.length, 15);
   assert.equal(roadmaps[0].id, 'embodied-ai');
+  assert.ok(roadmaps.some((item) => item.id === '3d-aigc' && item.papers.length === 26));
   assert.ok(roadmaps.some((item) => item.id === 'computer-vision' && item.papers.length === 0));
 });
 
